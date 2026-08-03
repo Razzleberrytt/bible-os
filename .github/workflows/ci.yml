@@ -109,5 +109,9 @@ jobs:
         run: pip install '.[dev]'
       - name: Apply foundation migration
         run: psql -h localhost -U bible_os -d bible_os -v ON_ERROR_STOP=1 -f database/migrations/0001_foundation.up.sql
-      - name: Load and validate the verified WEBP corpus ephemerally
-        run: python -m scripts.webp_db_load
+      - name: Fingerprint, load, and validate WEBP without retention
+        run: >-
+          python -m scripts.webp_full_ci
+          --report webp-full-ci-report.json
+      - name: Display no-retention reproducibility evidence
+        run: cat webp-full-ci-report.json
