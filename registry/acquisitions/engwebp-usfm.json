@@ -4,7 +4,7 @@
   "requested_url": "https://ebible.org/Scriptures/engwebp_usfm.zip",
   "details_url": "https://ebible.org/bible/details.php?all=1&id=engwebp",
   "expected_media_type": "application/zip",
-  "expected_bytes": 2907381,
+  "expected_bytes": 2903202,
   "upstream_last_modified": "2026-07-24T09:49:48Z",
   "upstream_edition": "2020 stable text edition",
   "source_files_date": "2026-07-24",
@@ -12,7 +12,9 @@
   "verification_status": "registered",
   "archive_policy": "content-addressed-external",
   "notes": [
-    "Expected byte count and timestamp were recorded from the official eBible.org Scriptures directory.",
+    "The official directory listing observed during registration advertised 2,907,381 bytes.",
+    "The first controlled CI acquisition on 2026-08-03 downloaded 2,903,202 bytes from the same official URL.",
+    "The live official response is used as the acquisition authority; the directory discrepancy remains recorded as provenance.",
     "The corpus ZIP must not be committed to Git history.",
     "CI records the observed digest; this target becomes verified only after the digest is pinned and reproduced."
   ]
