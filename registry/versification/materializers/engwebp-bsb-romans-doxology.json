@@ -3,6 +3,7 @@
   "materializer_id": "mat_romdoxology2026",
   "observation_id": "obs_romdoxology2026",
   "mapping_shape": "one-to-one-ordered",
+  "execution_mode": "production-one-to-one",
   "allowed_book_codes": ["ROM"],
   "source_system": {
     "system_key": "engwebp-usfm-2026-07-28",
