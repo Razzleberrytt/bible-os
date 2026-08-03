@@ -22,7 +22,7 @@ Bible OS treats data correctness and provenance as product requirements.
 ## Local verification
 
 ```bash
-./scripts/verify.sh
+bash scripts/verify.sh
 ```
 
 ## Commit style
