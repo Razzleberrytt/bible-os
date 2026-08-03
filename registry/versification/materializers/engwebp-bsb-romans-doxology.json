@@ -1,0 +1,40 @@
+{
+  "profile_version": "1.0.0",
+  "materializer_id": "mat_romdoxology2026",
+  "observation_id": "obs_romdoxology2026",
+  "mapping_shape": "one-to-one-ordered",
+  "allowed_book_codes": ["ROM"],
+  "source_system": {
+    "system_key": "engwebp-usfm-2026-07-28",
+    "versification_system_id": "vrs_dfqdldqfzy7udzlxspyw",
+    "reference_id_namespace": "bible-os:ephemeral-webp-source-locus:v1",
+    "reference_key_template": "reference|{osis}"
+  },
+  "target_system": {
+    "system_key": "bsb-reference-alpha.1",
+    "versification_system_id": "vrs_tbgrhqbyag3ymkpq2lf4",
+    "reference_id_namespace": "bible-os:versification-mapping:romans-doxology:v1",
+    "reference_key_template": "bsb-reference|{reference}",
+    "name": "BSB reference baseline",
+    "version": "alpha.1",
+    "authority": "Bible OS pinned reference baseline"
+  },
+  "canonical_identity": {
+    "namespace": "bible-os:versification-mapping:romans-doxology:v1",
+    "passage_key_template": "romans-doxology-unit-{ordinal}",
+    "identity_status": "canonicalized-by-reference-observation"
+  },
+  "mapping_state": {
+    "method": "reference-observation-v1",
+    "review_state": "evidence-reviewed"
+  },
+  "preservation_checks": [
+    {
+      "system": "source",
+      "reference": "ROM 16:25",
+      "realization_type": "empty-placeholder",
+      "identity_status": "source-locus-only"
+    }
+  ],
+  "publication_eligible": false
+}
