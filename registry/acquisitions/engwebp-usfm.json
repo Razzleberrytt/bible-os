@@ -5,17 +5,18 @@
   "details_url": "https://ebible.org/bible/details.php?all=1&id=engwebp",
   "expected_media_type": "application/zip",
   "expected_bytes": 2903202,
-  "upstream_last_modified": "2026-07-24T09:49:48Z",
+  "upstream_last_modified": "2026-07-28T03:14:48Z",
   "upstream_edition": "2020 stable text edition",
   "source_files_date": "2026-07-24",
-  "expected_sha256": null,
-  "verification_status": "registered",
+  "expected_sha256": "9b4330ba6baf9bd5fa8ea63a8ff255c9ab326da8c843f0355c23734e61ee6276",
+  "verification_status": "verified",
   "archive_policy": "content-addressed-external",
   "notes": [
-    "The official directory listing observed during registration advertised 2,907,381 bytes.",
-    "The first controlled CI acquisition on 2026-08-03 downloaded 2,903,202 bytes from the same official URL.",
-    "The live official response is used as the acquisition authority; the directory discrepancy remains recorded as provenance.",
-    "The corpus ZIP must not be committed to Git history.",
-    "CI records the observed digest; this target becomes verified only after the digest is pinned and reproduced."
+    "The official directory listing observed during registration advertised 2,907,381 bytes and a July 24 timestamp.",
+    "Controlled CI acquisition observed 2,903,202 bytes and HTTP Last-Modified Tue, 28 Jul 2026 03:14:48 GMT.",
+    "The live response returned ETag \"2c4ca2-657a33dcfeec9\".",
+    "The downloaded ZIP contained 71 safe file entries, including 68 USFM/SFM files.",
+    "The live official response and reproduced digest are the artifact authority; the directory discrepancy remains recorded as provenance.",
+    "The corpus ZIP must not be committed to Git history."
   ]
 }
