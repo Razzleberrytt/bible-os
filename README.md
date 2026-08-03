@@ -27,7 +27,7 @@ No complete Bible corpus is committed in this bootstrap. Real source artifacts e
 
 ```bash
 python -m pip install -e '.[dev]'
-./scripts/verify.sh
+bash scripts/verify.sh
 ```
 
 ## Repository map
