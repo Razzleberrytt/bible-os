@@ -1,0 +1,16 @@
+[project]
+name = "bible-os"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+  "jsonschema[format]>=4.23,<5",
+  "PyYAML>=6,<7",
+  "pytest>=8,<9",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
