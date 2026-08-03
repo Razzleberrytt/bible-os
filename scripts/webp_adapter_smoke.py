@@ -11,7 +11,7 @@ from pathlib import Path
 from typing import Any
 
 from bible_os.importers.base import SourceRecord
-from bible_os.importers.webp_usfm import BOOK_ORDER, WebpUsfmAdapter
+from bible_os.importers.webp_usfm import BOOK_ORDER, WebpUsfmAdapter, extract_visible_text
 from scripts.probe_acquisition import CHUNK_SIZE, MAX_SIZE_MARGIN, USER_AGENT, safe_zip_members
 
 
@@ -107,10 +107,15 @@ def build_report(
     book_counts = Counter(record.book_code for record in records)
     chapter_loci = {(record.book_code, record.chapter) for record in records}
     empty_payloads = sum(not record.raw_payload.strip() for record in records)
+    marker_only_records = [
+        record.source_locator
+        for record in records
+        if not extract_visible_text(record.raw_payload)
+    ]
     range_labels = sum("-" in record.verse_label or "–" in record.verse_label for record in records)
 
     report: dict[str, Any] = {
-        "report_version": "1.0.0",
+        "report_version": "1.1.0",
         "adapter": adapter.name,
         "archive_files": probe.archive_files,
         "source_files": probe.source_files,
@@ -120,6 +125,9 @@ def build_report(
         "expected_canonical_books": len(BOOK_ORDER),
         "chapter_loci": len(chapter_loci),
         "verse_records": len(records),
+        "textual_records": len(records) - len(marker_only_records),
+        "marker_only_record_count": len(marker_only_records),
+        "marker_only_records": marker_only_records,
         "empty_raw_payloads": empty_payloads,
         "verse_range_labels": range_labels,
         "first_locator": records[0].source_locator if records else None,
