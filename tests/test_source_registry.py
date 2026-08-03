@@ -17,13 +17,17 @@ def load_json(path: str):
     return json.loads((ROOT / path).read_text(encoding="utf-8"))
 
 
-def test_webp_source_matches_foundation_contract():
+def validate_foundation(definition: str, document: dict):
     foundation = load_json("schemas/foundation.schema.json")
-    source = load_json("registry/sources/engwebp.source.json")
     Draft202012Validator(
-        foundation["$defs"]["source"],
+        foundation["$defs"][definition],
         format_checker=FormatChecker(),
-    ).validate(source)
+    ).validate(document)
+
+
+def test_webp_source_matches_foundation_contract():
+    source = load_json("registry/sources/engwebp.source.json")
+    validate_foundation("source", source)
     assert source["authority_status"] == "official"
     assert source["license_status"] == "public-domain"
     assert source["commercial_use"] == "allowed"
@@ -41,6 +45,22 @@ def test_webp_acquisition_target_contract():
     assert target["upstream_last_modified"] == "2026-07-28T03:14:48Z"
     assert target["verification_status"] == "verified"
     assert target["archive_policy"] == "content-addressed-external"
+
+
+def test_webp_acquisition_event_and_artifact_are_consistent():
+    event = load_json("registry/acquisition-events/engwebp-usfm-20260803.json")
+    artifact = load_json("registry/artifacts/engwebp-usfm.artifact.json")
+    target = load_json("registry/acquisitions/engwebp-usfm.json")
+
+    validate_foundation("acquisition_event", event)
+    validate_foundation("artifact_manifest", artifact)
+
+    assert artifact["acquisition_event_id"] == event["event_id"]
+    assert artifact["source_id"] == event["source_id"] == target["source_id"]
+    assert artifact["sha256"] == event["observed_sha256"] == target["expected_sha256"]
+    assert artifact["byte_size"] == event["observed_bytes"] == target["expected_bytes"]
+    assert artifact["archive_uri"] == f"artifact+sha256://{artifact['sha256']}"
+    assert artifact["verification_status"] == "verified"
 
 
 def test_verified_target_requires_pinned_digest():
