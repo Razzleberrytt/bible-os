@@ -1,0 +1,29 @@
+{
+  "manifest_version": "1.0.0",
+  "artifact_id": "art_engasvusfm202606",
+  "source_id": "src_engasv1901public",
+  "acquisition_event_id": "acq_engasv20260803a",
+  "sha256": "712b44107ec98a5b8ca339751b37a593061ee630390c6a6d2edc54e334e1d6e4",
+  "byte_size": 2875147,
+  "media_type": "application/zip",
+  "filename": "eng-asv_usfm.zip",
+  "upstream_version": "American Standard Version (1901); source files dated 2026-06-11",
+  "archive_uri": "artifact+sha256://712b44107ec98a5b8ca339751b37a593061ee630390c6a6d2edc54e334e1d6e4",
+  "verification_status": "verified",
+  "verified_at": "2026-08-03T23:32:53.947364Z",
+  "license_assertion": {
+    "status": "public-domain",
+    "spdx_expression": null,
+    "commercial_use": "allowed",
+    "attribution_text": "American Standard Version (1901). Public domain. Source files distributed by eBible.org.",
+    "evidence_urls": [
+      "https://ebible.org/eng-asv/copyright.htm"
+    ]
+  },
+  "notes": [
+    "Controlled acquisition observed HTTP Last-Modified Fri, 12 Jun 2026 00:56:56 GMT and ETag \"2bdf0b-65403f4154f1c\".",
+    "ZIP integrity and path safety passed for 72 entries; 68 entries used .usfm or .sfm extensions.",
+    "The archive is stored outside Git history using the content-addressed URI above.",
+    "Any later upstream byte change requires a new acquisition event and artifact ID; this manifest is immutable."
+  ]
+}
