@@ -4,16 +4,37 @@
   "target_system": "bsb-reference-alpha.1",
   "source_references": ["ROM 14:24", "ROM 14:25", "ROM 14:26"],
   "target_references": ["ROM 16:25", "ROM 16:26", "ROM 16:27"],
+  "reference_pairs": [
+    {
+      "source_reference": "ROM 14:24",
+      "target_reference": "ROM 16:25",
+      "relation_type": "relocated"
+    },
+    {
+      "source_reference": "ROM 14:25",
+      "target_reference": "ROM 16:26",
+      "relation_type": "relocated"
+    },
+    {
+      "source_reference": "ROM 14:26",
+      "target_reference": "ROM 16:27",
+      "relation_type": "relocated"
+    }
+  ],
   "relation_type": "relocated",
-  "status": "machine-observed",
+  "status": "evidence-reviewed",
   "confidence": 1.0,
-  "canonical_mapping_status": "pending-passage-identities",
+  "canonical_mapping_status": "materialized",
   "evidence": [
     "Pinned WEBP USFM smoke profile reports extra labels ROM 14:24-26 and missing labels ROM 16:26-27 relative to the BSB reference baseline.",
-    "Official WEB FAQ states that Romans 14:24-26 in WEB may appear as Romans 16:25-27 in other translations: https://ebible.org/eng-web/webfaq.htm"
+    "Official WEB FAQ states that Romans 14:24-26 in WEB may appear as Romans 16:25-27 in other translations: https://ebible.org/eng-web/webfaq.htm",
+    "Official WEB Romans 14 note states that verses 24-26 may be placed after Romans 16:24 and numbered 16:25-27: https://ebible.org/eng-web/ROM14.htm"
   ],
   "notes": [
-    "This is an evidence-layer reference observation, not a canonical passage mapping.",
-    "Materialize a passage mapping only after WEBP passage identities are created and the source text correspondence is reviewed."
+    "The three ordered reference pairs are materialized through shared canonical passage identities.",
+    "The WEBP ROM 16:25 marker-only source locus remains a distinct provisional placeholder and is not collapsed into the BSB ROM 16:25 reference.",
+    "This mapping is evidence-reviewed and machine-checked, not a completed human scholarly review.",
+    "No BSB verse text is imported or inferred from this reference-only mapping.",
+    "All mapped passages remain non-publishable until the broader canonical identity review is complete."
   ]
 }
