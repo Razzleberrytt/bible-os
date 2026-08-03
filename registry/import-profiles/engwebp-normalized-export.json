@@ -1,0 +1,14 @@
+{
+  "_profile_version": "1.0.0",
+  "profile": "WEBP provisional normalized export",
+  "artifact_sha256": "9b4330ba6baf9bd5fa8ea63a8ff255c9ab326da8c843f0355c23734e61ee6276",
+  "format": "application/x-ndjson; charset=utf-8",
+  "canonicalization": "json-sort-keys-compact-lf-v1",
+  "sha256": "5d721a56a3ef94a914255617203460ebf8976cd845f40d47e2963be74fce6568",
+  "byte_size": 27680660,
+  "record_count": 31103,
+  "runs_compared": 2,
+  "reproducibility_status": "verified",
+  "publication_eligible": false,
+  "retention": "serialized bytes hashed in memory and discarded"
+}
