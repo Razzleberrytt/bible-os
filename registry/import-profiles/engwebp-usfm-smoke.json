@@ -1,5 +1,6 @@
 {
-  "_profile_version": "1.0.0",
+  "_profile_version": "1.1.0",
+  "report_version": "1.1.0",
   "adapter": "webp-usfm-v1",
   "archive_files": 71,
   "source_files": 68,
@@ -8,6 +9,15 @@
   "expected_canonical_books": 66,
   "chapter_loci": 1189,
   "verse_records": 31103,
+  "textual_records": 31098,
+  "marker_only_record_count": 5,
+  "marker_only_records": [
+    "LUK 17:36",
+    "ACT 8:37",
+    "ACT 15:34",
+    "ACT 24:7",
+    "ROM 16:25"
+  ],
   "empty_raw_payloads": 0,
   "verse_range_labels": 0,
   "first_locator": "GEN 1:1",
