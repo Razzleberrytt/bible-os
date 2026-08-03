@@ -61,10 +61,21 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Install importer package
+        run: pip install .
       - name: Probe official WEBP USFM archive
         run: >-
           python scripts/probe_acquisition.py
           registry/acquisitions/engwebp-usfm.json
           --report acquisition-report.json
+      - name: Run WEBP adapter smoke test
+        run: >-
+          python -m scripts.webp_adapter_smoke
+          registry/acquisitions/engwebp-usfm.json
+          --baseline registry/versification/bsb-chapter-verse-counts.json
+          --expected registry/import-profiles/engwebp-usfm-smoke.json
+          --report webp-adapter-report.json
       - name: Display acquisition evidence
         run: cat acquisition-report.json
+      - name: Display adapter evidence
+        run: cat webp-adapter-report.json

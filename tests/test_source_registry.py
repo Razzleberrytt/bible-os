@@ -63,6 +63,26 @@ def test_webp_acquisition_event_and_artifact_are_consistent():
     assert artifact["verification_status"] == "verified"
 
 
+def test_webp_structural_profile_and_reference_observation():
+    baseline = load_json("registry/versification/bsb-chapter-verse-counts.json")
+    profile = load_json("registry/import-profiles/engwebp-usfm-smoke.json")
+    observation = load_json(
+        "registry/versification/observations/engwebp-bsb-romans-doxology.json"
+    )
+    schema = load_json("schemas/reference-mapping-observation.schema.json")
+
+    Draft202012Validator(schema).validate(observation)
+    assert baseline["reference_count"] == 31_102
+    assert sum(sum(chapters) for chapters in baseline["books"].values()) == 31_102
+    assert sum(len(chapters) for chapters in baseline["books"].values()) == 1_189
+    assert profile["verse_records"] == 31_103
+    assert profile["versification_delta_count"] == 2
+    assert observation["relation_type"] == "relocated"
+    assert observation["source_references"] == ["ROM 14:24", "ROM 14:25", "ROM 14:26"]
+    assert observation["target_references"] == ["ROM 16:25", "ROM 16:26", "ROM 16:27"]
+    assert observation["canonical_mapping_status"] == "pending-passage-identities"
+
+
 def test_verified_target_requires_pinned_digest():
     schema = load_json("schemas/acquisition-target.schema.json")
     target = load_json("registry/acquisitions/engwebp-usfm.json")
