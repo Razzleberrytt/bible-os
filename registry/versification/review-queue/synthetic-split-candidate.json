@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0.0",
+  "queue_item_id": "vrq_synthsplit01",
+  "candidate_kind": "split",
+  "status": "queued",
+  "priority": "normal",
+  "source_system": {
+    "versification_system_id": "vrs_synthsource01",
+    "references": ["SYN 3:1"]
+  },
+  "target_system": {
+    "versification_system_id": "vrs_synthtarget01",
+    "references": ["SYN 3:1", "SYN 3:2"]
+  },
+  "proposed_confidence": 0.5,
+  "detection": {
+    "method": "manual-observation",
+    "algorithm_version": null,
+    "detector_id": "synthetic-contract-fixture"
+  },
+  "evidence": [
+    {
+      "evidence_id": "evd_synthqueue001",
+      "evidence_type": "synthetic-fixture",
+      "locator": "registry/versification/observations/synthetic-split.json",
+      "summary": "Synthetic cardinality fixture for review-queue contract validation.",
+      "sha256": null,
+      "contains_source_text": false
+    }
+  ],
+  "review_requirements": {
+    "required_roles": ["data-curator", "engineering-reviewer"],
+    "minimum_approvals": 2,
+    "conflict_policy": "unanimous"
+  },
+  "created_at": "2026-08-03T22:25:00Z",
+  "created_by": "bible-os:test-fixture",
+  "materialization_state": "not-materialized",
+  "execution_eligible": false,
+  "publication_eligible": false
+}
