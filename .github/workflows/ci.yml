@@ -118,17 +118,17 @@ jobs:
           python -m scripts.webp_full_ci
           --expected-export registry/import-profiles/engwebp-normalized-export.json
           --report webp-full-ci-report.json
-      - name: Materialize and validate the Romans doxology mapping
+      - name: Materialize and validate the registered reference observation
         run: >-
-          python -m scripts.romans_doxology_mapping
-          --report romans-doxology-mapping-report.json
+          python -m scripts.reference_observation_materializer
+          --report reference-observation-report.json
       - name: Materialize and validate explicit reference relations
         run: >-
           python -m scripts.reference_relation_backfill
           --report reference-relation-report.json
       - name: Display no-retention reproducibility evidence
         run: cat webp-full-ci-report.json
-      - name: Display Romans doxology mapping evidence
-        run: cat romans-doxology-mapping-report.json
+      - name: Display reference observation evidence
+        run: cat reference-observation-report.json
       - name: Display reference relation evidence
         run: cat reference-relation-report.json
