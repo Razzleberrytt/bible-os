@@ -1,0 +1,16 @@
+{
+  "event_id": "acq_engasv20260803a",
+  "source_id": "src_engasv1901public",
+  "requested_url": "https://ebible.org/Scriptures/eng-asv_usfm.zip",
+  "resolved_url": "https://ebible.org/Scriptures/eng-asv_usfm.zip",
+  "started_at": "2026-08-03T23:32:52.372683Z",
+  "finished_at": "2026-08-03T23:32:53.947364Z",
+  "result": "success",
+  "retrieval_tool": {
+    "name": "Bible-OS-Acquisition-Probe",
+    "version": "0.1.0"
+  },
+  "observed_sha256": "712b44107ec98a5b8ca339751b37a593061ee630390c6a6d2edc54e334e1d6e4",
+  "observed_bytes": 2875147,
+  "error": null
+}
