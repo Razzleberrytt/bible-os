@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.0.0",
+  "aggregation_id": "vag_synthsummary01",
+  "queue_item_id": "vrq_synthsplit01",
+  "queue_item_sha256": "7ee02237fdfa7014bedc8931c61c5099f79af9aa60f54aa63eafe9ee595e9059",
+  "policy_snapshot": {
+    "required_roles": ["data-curator", "engineering-reviewer"],
+    "minimum_approvals": 2,
+    "conflict_policy": "unanimous"
+  },
+  "source_attestations": [
+    {
+      "attestation_id": "vra_synthreview01",
+      "sha256": "7d60f56778215cd813f0b48b98fb125d26cf8124247fa7db291c5049e598f852",
+      "reviewer_id": "bible-os:test:data-curator",
+      "role": "data-curator",
+      "recommendation": "needs-evidence",
+      "effective": true,
+      "superseded_by": null
+    }
+  ],
+  "evaluation": {
+    "attestation_count": 1,
+    "effective_attestation_count": 1,
+    "recommendation_counts": {
+      "approve": 0,
+      "reject": 0,
+      "needs_evidence": 1,
+      "abstain": 0
+    },
+    "represented_roles": ["data-curator"],
+    "missing_roles": ["engineering-reviewer"],
+    "quorum_met": false,
+    "conflicts_present": false,
+    "aggregation_status": "insufficient-reviews"
+  },
+  "generated_at": "2026-08-03T22:38:00Z",
+  "generated_by": "bible-os:test-fixture",
+  "record_policy": "derived-snapshot",
+  "decision_authority": "none",
+  "queue_status_authority": "none",
+  "materialization_authority": "none",
+  "execution_eligible": false,
+  "publication_eligible": false
+}
