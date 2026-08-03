@@ -18,27 +18,62 @@
     "publication_eligible"
   ],
   "properties": {
-    "profile_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
-    "materializer_id": {"type": "string", "pattern": "^mat_[a-z0-9]{12,}$"},
-    "observation_id": {"type": "string", "pattern": "^obs_[a-z0-9]{12,}$"},
-    "mapping_shape": {"const": "one-to-one-ordered"},
+    "profile_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "materializer_id": {
+      "type": "string",
+      "pattern": "^mat_[a-z0-9]{12,}$"
+    },
+    "observation_id": {
+      "type": "string",
+      "pattern": "^obs_[a-z0-9]{12,}$"
+    },
+    "mapping_shape": {
+      "enum": [
+        "one-to-one-ordered",
+        "one-to-many-split",
+        "many-to-one-join"
+      ]
+    },
     "allowed_book_codes": {
       "type": "array",
       "minItems": 1,
       "uniqueItems": true,
-      "items": {"type": "string", "pattern": "^[0-9A-Z]{3}$"}
+      "items": {
+        "type": "string",
+        "pattern": "^[0-9A-Z]{3}$"
+      }
     },
-    "source_system": {"$ref": "#/$defs/system"},
+    "source_system": {
+      "$ref": "#/$defs/system"
+    },
     "target_system": {
       "allOf": [
-        {"$ref": "#/$defs/system"},
+        {
+          "$ref": "#/$defs/system"
+        },
         {
           "type": "object",
-          "required": ["name", "version", "authority"],
+          "required": [
+            "name",
+            "version",
+            "authority"
+          ],
           "properties": {
-            "name": {"type": "string", "minLength": 1},
-            "version": {"type": "string", "minLength": 1},
-            "authority": {"type": "string", "minLength": 1}
+            "name": {
+              "type": "string",
+              "minLength": 1
+            },
+            "version": {
+              "type": "string",
+              "minLength": 1
+            },
+            "authority": {
+              "type": "string",
+              "minLength": 1
+            }
           }
         }
       ]
@@ -46,20 +81,42 @@
     "canonical_identity": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["namespace", "passage_key_template", "identity_status"],
+      "required": [
+        "namespace",
+        "passage_key_template",
+        "identity_status"
+      ],
       "properties": {
-        "namespace": {"type": "string", "minLength": 1},
-        "passage_key_template": {"type": "string", "minLength": 1},
-        "identity_status": {"type": "string", "minLength": 1}
+        "namespace": {
+          "type": "string",
+          "minLength": 1
+        },
+        "passage_key_template": {
+          "type": "string",
+          "minLength": 1
+        },
+        "identity_status": {
+          "type": "string",
+          "minLength": 1
+        }
       }
     },
     "mapping_state": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["method", "review_state"],
+      "required": [
+        "method",
+        "review_state"
+      ],
       "properties": {
-        "method": {"type": "string", "minLength": 1},
-        "review_state": {"type": "string", "minLength": 1}
+        "method": {
+          "type": "string",
+          "minLength": 1
+        },
+        "review_state": {
+          "type": "string",
+          "minLength": 1
+        }
       }
     },
     "preservation_checks": {
@@ -67,16 +124,37 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["system", "reference", "realization_type", "identity_status"],
+        "required": [
+          "system",
+          "reference",
+          "realization_type",
+          "identity_status"
+        ],
         "properties": {
-          "system": {"enum": ["source", "target"]},
-          "reference": {"type": "string", "minLength": 1},
-          "realization_type": {"type": "string", "minLength": 1},
-          "identity_status": {"type": "string", "minLength": 1}
+          "system": {
+            "enum": [
+              "source",
+              "target"
+            ]
+          },
+          "reference": {
+            "type": "string",
+            "minLength": 1
+          },
+          "realization_type": {
+            "type": "string",
+            "minLength": 1
+          },
+          "identity_status": {
+            "type": "string",
+            "minLength": 1
+          }
         }
       }
     },
-    "publication_eligible": {"const": false}
+    "publication_eligible": {
+      "const": false
+    }
   },
   "$defs": {
     "system": {
@@ -89,13 +167,34 @@
         "reference_key_template"
       ],
       "properties": {
-        "system_key": {"type": "string", "minLength": 1},
-        "versification_system_id": {"type": "string", "pattern": "^vrs_[a-z0-9]{12,}$"},
-        "reference_id_namespace": {"type": "string", "minLength": 1},
-        "reference_key_template": {"type": "string", "minLength": 1},
-        "name": {"type": "string", "minLength": 1},
-        "version": {"type": "string", "minLength": 1},
-        "authority": {"type": "string", "minLength": 1}
+        "system_key": {
+          "type": "string",
+          "minLength": 1
+        },
+        "versification_system_id": {
+          "type": "string",
+          "pattern": "^vrs_[a-z0-9]{12,}$"
+        },
+        "reference_id_namespace": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reference_key_template": {
+          "type": "string",
+          "minLength": 1
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "authority": {
+          "type": "string",
+          "minLength": 1
+        }
       }
     }
   }

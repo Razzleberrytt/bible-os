@@ -1,0 +1,35 @@
+{
+  "observation_id": "obs_synthjoin2026",
+  "source_system": "synthetic-join-source-v1",
+  "target_system": "synthetic-join-target-v1",
+  "source_references": [
+    "SYN 2:1",
+    "SYN 2:2"
+  ],
+  "target_references": [
+    "SYN 2:1"
+  ],
+  "reference_pairs": [
+    {
+      "source_reference": "SYN 2:1",
+      "target_reference": "SYN 2:1",
+      "relation_type": "join"
+    },
+    {
+      "source_reference": "SYN 2:2",
+      "target_reference": "SYN 2:1",
+      "relation_type": "join"
+    }
+  ],
+  "relation_type": "join",
+  "status": "synthetic-reviewed",
+  "confidence": 1.0,
+  "canonical_mapping_status": "materialized",
+  "evidence": [
+    "Synthetic fixture proving two ordered source references can map to two canonical components under one target reference."
+  ],
+  "notes": [
+    "No real biblical locus or corpus text is represented.",
+    "The fixture is non-publishable and exists only to validate join semantics."
+  ]
+}

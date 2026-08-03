@@ -1,0 +1,38 @@
+{
+  "profile_version": "1.0.0",
+  "materializer_id": "mat_synthsplit2026",
+  "observation_id": "obs_synthsplit2026",
+  "mapping_shape": "one-to-many-split",
+  "allowed_book_codes": [
+    "SYN"
+  ],
+  "source_system": {
+    "system_key": "synthetic-split-source-v1",
+    "versification_system_id": "vrs_47p7vq3fgtfhhpwzeqt7",
+    "reference_id_namespace": "bible-os:synthetic-split-join:v1:split-source",
+    "reference_key_template": "split-source|{reference}",
+    "name": "Synthetic split source",
+    "version": "1",
+    "authority": "Bible OS synthetic fixture"
+  },
+  "target_system": {
+    "system_key": "synthetic-split-target-v1",
+    "versification_system_id": "vrs_wuswbfnsb3jjcqoo63sl",
+    "reference_id_namespace": "bible-os:synthetic-split-join:v1:split-target",
+    "reference_key_template": "split-target|{reference}",
+    "name": "Synthetic split target",
+    "version": "1",
+    "authority": "Bible OS synthetic fixture"
+  },
+  "canonical_identity": {
+    "namespace": "bible-os:synthetic-split-join:v1:split-components",
+    "passage_key_template": "split-component-{ordinal}",
+    "identity_status": "synthetic-canonical-component"
+  },
+  "mapping_state": {
+    "method": "synthetic-reference-observation-v1",
+    "review_state": "synthetic-reviewed"
+  },
+  "preservation_checks": [],
+  "publication_eligible": false
+}
