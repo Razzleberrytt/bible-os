@@ -78,9 +78,27 @@ def test_webp_structural_profile_and_reference_observation():
     assert profile["verse_records"] == 31_103
     assert profile["versification_delta_count"] == 2
     assert observation["relation_type"] == "relocated"
+    assert observation["status"] == "evidence-reviewed"
     assert observation["source_references"] == ["ROM 14:24", "ROM 14:25", "ROM 14:26"]
     assert observation["target_references"] == ["ROM 16:25", "ROM 16:26", "ROM 16:27"]
-    assert observation["canonical_mapping_status"] == "pending-passage-identities"
+    assert observation["reference_pairs"] == [
+        {
+            "source_reference": "ROM 14:24",
+            "target_reference": "ROM 16:25",
+            "relation_type": "relocated",
+        },
+        {
+            "source_reference": "ROM 14:25",
+            "target_reference": "ROM 16:26",
+            "relation_type": "relocated",
+        },
+        {
+            "source_reference": "ROM 14:26",
+            "target_reference": "ROM 16:27",
+            "relation_type": "relocated",
+        },
+    ]
+    assert observation["canonical_mapping_status"] == "materialized"
 
 
 def test_verified_target_requires_pinned_digest():
