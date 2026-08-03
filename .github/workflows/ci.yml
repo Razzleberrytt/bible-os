@@ -140,12 +140,13 @@ jobs:
           cache: pip
       - name: Install Bible OS package
         run: pip install .
-      - name: Observe ASV structure and compare locators with WEBP
+      - name: Verify ASV structure and compare locators with WEBP
         run: >-
           python -m scripts.asv_adapter_smoke
           registry/acquisitions/eng-asv-usfm.json
           --webp-target registry/acquisitions/engwebp-usfm.json
           --baseline registry/versification/bsb-chapter-verse-counts.json
+          --expected registry/import-profiles/eng-asv-usfm-smoke.json
           --report asv-adapter-report.json
       - name: Display locator-only ASV structure evidence
         if: always()
