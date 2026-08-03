@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bible-os.example/schemas/acquisition-target.schema.json",
+  "title": "Bible OS Acquisition Target",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "target_id",
+    "source_id",
+    "requested_url",
+    "details_url",
+    "expected_media_type",
+    "expected_bytes",
+    "upstream_last_modified",
+    "expected_sha256",
+    "verification_status",
+    "archive_policy"
+  ],
+  "properties": {
+    "target_id": {"type": "string", "pattern": "^tgt_[a-z0-9]{12,}$"},
+    "source_id": {"type": "string", "pattern": "^src_[a-z0-9]{12,}$"},
+    "requested_url": {"type": "string", "format": "uri", "pattern": "^https://ebible\\.org/Scriptures/"},
+    "details_url": {"type": "string", "format": "uri"},
+    "expected_media_type": {"const": "application/zip"},
+    "expected_bytes": {"type": "integer", "minimum": 1},
+    "upstream_last_modified": {"type": "string", "format": "date-time"},
+    "upstream_edition": {"type": "string", "minLength": 1},
+    "source_files_date": {"type": "string", "format": "date"},
+    "expected_sha256": {
+      "type": ["string", "null"],
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "verification_status": {
+      "enum": ["registered", "verified", "rejected"]
+    },
+    "archive_policy": {
+      "enum": ["content-addressed-external", "do-not-archive", "rejected"]
+    },
+    "notes": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {"verification_status": {"const": "verified"}},
+        "required": ["verification_status"]
+      },
+      "then": {
+        "properties": {
+          "expected_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+        }
+      }
+    }
+  ]
+}
