@@ -73,6 +73,7 @@ jobs:
           python -m scripts.webp_adapter_smoke
           registry/acquisitions/engwebp-usfm.json
           --baseline registry/versification/bsb-chapter-verse-counts.json
+          --expected registry/import-profiles/engwebp-usfm-smoke.json
           --report webp-adapter-report.json
       - name: Display acquisition evidence
         run: cat acquisition-report.json
