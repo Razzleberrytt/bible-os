@@ -95,15 +95,17 @@ def compare_baseline(
 
 
 def build_report(
-    archive: zipfile.ZipFile, baseline: dict[str, Any] | None = None
+    archive: zipfile.ZipFile,
+    baseline: dict[str, Any] | None = None,
+    adapter: WebpUsfmAdapter | None = None,
 ) -> dict[str, Any]:
     safe_zip_members(archive)
-    adapter = WebpUsfmAdapter()
-    probe = adapter.probe(archive)
+    selected_adapter = adapter or WebpUsfmAdapter()
+    probe = selected_adapter.probe(archive)
     if not probe.compatible:
-        raise ValueError("WEBP adapter did not recognize the archive")
+        raise ValueError(f"{selected_adapter.name} did not recognize the archive")
 
-    records = list(adapter.iter_records(archive))
+    records = list(selected_adapter.iter_records(archive))
     book_counts = Counter(record.book_code for record in records)
     chapter_loci = {(record.book_code, record.chapter) for record in records}
     empty_payloads = sum(not record.raw_payload.strip() for record in records)
@@ -116,7 +118,7 @@ def build_report(
 
     report: dict[str, Any] = {
         "report_version": "1.1.0",
-        "adapter": adapter.name,
+        "adapter": selected_adapter.name,
         "archive_files": probe.archive_files,
         "source_files": probe.source_files,
         "recognized_books": len(probe.recognized_books),
@@ -149,7 +151,7 @@ def assert_expected(report: dict[str, Any], expected: dict[str, Any]) -> None:
         observed_value = report.get(key)
         if observed_value != expected_value:
             raise ValueError(
-                f"WEBP smoke metric mismatch for {key}: "
+                f"USFM smoke metric mismatch for {key}: "
                 f"expected {expected_value!r}, observed {observed_value!r}"
             )
 
