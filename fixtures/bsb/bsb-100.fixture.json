@@ -1,0 +1,39 @@
+{
+  "fixture_id": "fixture_bsb_shape_genesis_0001_0100",
+  "schema_version": "1.0.0",
+  "kind": "synthetic-relational-loader",
+  "book": {
+    "name": "Genesis",
+    "code": "Gen",
+    "order": 1
+  },
+  "chapters": [
+    {
+      "chapter": 1,
+      "verse_count": 31
+    },
+    {
+      "chapter": 2,
+      "verse_count": 25
+    },
+    {
+      "chapter": 3,
+      "verse_count": 24
+    },
+    {
+      "chapter": 4,
+      "verse_count": 20
+    }
+  ],
+  "expected_records": 100,
+  "first_reference": "Genesis 1:1",
+  "last_reference": "Genesis 4:20",
+  "text_policy": "Synthetic text only; no biblical source text is stored in this repository fixture.",
+  "publication_policy": "Prohibited. This fixture is test data and must never be published as a Bible corpus.",
+  "upstream_reference_only": {
+    "name": "Berean Standard Bible",
+    "edition": "Third Printing",
+    "official_url": "https://bereanbible.com/bsb.xlsx",
+    "source_sha256": "6152506a21bc3dd637248474254cc19cc58841de98f98137eec68cea6a9b38a2"
+  }
+}
