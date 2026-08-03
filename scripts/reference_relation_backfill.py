@@ -6,39 +6,27 @@ import os
 from pathlib import Path
 from typing import Any
 
-from bible_os.identity import stable_id
-from scripts.romans_doxology_mapping import (
-    OBSERVATION_PATH,
-    build_plan,
-    load_json,
+from bible_os.versification import build_materialization_plan, load_json
+from scripts.reference_observation_materializer import (
+    DEFAULT_OBSERVATION_PATH,
+    DEFAULT_PROFILE_PATH,
 )
 
 
-RELATION_NAMESPACE = "bible-os:reference-relation:v1"
-
-
-def build_relations(observation: dict[str, Any]) -> list[dict[str, Any]]:
-    plan = build_plan(observation)
-    pair_relations = [pair["relation_type"] for pair in observation["reference_pairs"]]
-    if pair_relations != [observation["relation_type"]] * len(plan):
-        raise ValueError("reference-pair relation types must match the observation relation type")
-
+def build_relations(
+    observation: dict[str, Any],
+    profile: dict[str, Any],
+) -> list[dict[str, Any]]:
+    plan = build_materialization_plan(observation, profile)
     return [
         {
-            "reference_relation_id": stable_id(
-                "rrl",
-                RELATION_NAMESPACE,
-                (
-                    f"{pair['source_reference_id']}|{pair['target_reference_id']}|"
-                    f"{observation['relation_type']}"
-                ),
-            ),
+            "reference_relation_id": pair["reference_relation_id"],
             "source_reference_id": pair["source_reference_id"],
             "target_reference_id": pair["target_reference_id"],
             "source_reference": pair["source_reference"],
             "target_reference": pair["target_reference"],
-            "relation_type": observation["relation_type"],
-            "confidence": observation["confidence"],
+            "relation_type": pair["relation_type"],
+            "confidence": pair["confidence"],
         }
         for pair in plan
     ]
@@ -47,17 +35,19 @@ def build_relations(observation: dict[str, Any]) -> list[dict[str, Any]]:
 def materialize(
     database_url: str,
     observation: dict[str, Any],
+    profile: dict[str, Any],
     relations: list[dict[str, Any]],
 ) -> None:
     import psycopg
     from psycopg.types.json import Jsonb
 
+    mapping_state = profile["mapping_state"]
     with psycopg.connect(database_url) as connection, connection.cursor() as cur:
         cur.executemany(
             """INSERT INTO reference_relation
                (reference_relation_id,source_reference_id,target_reference_id,
                 relation_type,confidence,method,review_state,evidence,metadata)
-               VALUES (%s,%s,%s,%s,%s,'reference-observation-v1','evidence-reviewed',%s,%s)""",
+               VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)""",
             [
                 (
                     relation["reference_relation_id"],
@@ -65,10 +55,13 @@ def materialize(
                     relation["target_reference_id"],
                     relation["relation_type"],
                     relation["confidence"],
+                    mapping_state["method"],
+                    mapping_state["review_state"],
                     Jsonb(
                         [
                             {
                                 "observation_id": observation["observation_id"],
+                                "materializer_id": profile["materializer_id"],
                                 "source_reference": relation["source_reference"],
                                 "target_reference": relation["target_reference"],
                                 "evidence": observation["evidence"],
@@ -80,6 +73,7 @@ def materialize(
                         {
                             "observation_status": observation["status"],
                             "canonical_mapping_status": observation["canonical_mapping_status"],
+                            "materializer_id": profile["materializer_id"],
                             "publication_eligible": False,
                         }
                     ),
@@ -92,20 +86,25 @@ def materialize(
 def validate(
     database_url: str,
     observation: dict[str, Any],
+    profile: dict[str, Any],
     relations: list[dict[str, Any]],
 ) -> dict[str, Any]:
     import psycopg
 
     failures: list[str] = []
     rows: list[dict[str, Any]] = []
+    expected_review_state = profile["mapping_state"]["review_state"]
+    expected_method = profile["mapping_state"]["method"]
+
     with psycopg.connect(database_url) as connection, connection.cursor() as cur:
         cur.execute(
             """SELECT rr.reference_relation_id,
                       sr.book_code || ' ' || sr.chapter || ':' || sr.verse,
                       tr.book_code || ' ' || tr.chapter || ':' || tr.verse,
-                      rr.relation_type, rr.confidence, rr.review_state,
+                      rr.relation_type, rr.confidence, rr.review_state, rr.method,
                       sm.passage_id, tm.passage_id,
-                      rr.metadata->>'publication_eligible'
+                      rr.metadata->>'publication_eligible',
+                      rr.metadata->>'materializer_id'
                FROM reference_relation rr
                JOIN versification_reference sr
                  ON sr.versification_reference_id=rr.source_reference_id
@@ -131,9 +130,11 @@ def validate(
                 relation_type,
                 confidence,
                 review_state,
+                method,
                 source_passage_id,
                 target_passage_id,
                 publication_eligible,
+                materializer_id,
             ) = observed
             expected_state = (
                 expected["reference_relation_id"],
@@ -141,8 +142,10 @@ def validate(
                 expected["target_reference"],
                 expected["relation_type"],
                 float(expected["confidence"]),
-                "evidence-reviewed",
+                expected_review_state,
+                expected_method,
                 "false",
+                profile["materializer_id"],
             )
             observed_state = (
                 relation_id,
@@ -151,7 +154,9 @@ def validate(
                 relation_type,
                 float(confidence),
                 review_state,
+                method,
                 publication_eligible,
+                materializer_id,
             )
             if observed_state != expected_state:
                 failures.append(
@@ -180,6 +185,8 @@ def validate(
 
     report = {
         "status": "passed" if not failures else "failed",
+        "materializer_id": profile["materializer_id"],
+        "profile_version": profile["profile_version"],
         "observation_id": observation["observation_id"],
         "reference_relation_count": len(rows),
         "relations": rows,
@@ -199,16 +206,18 @@ def validate(
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--database-url", default=os.environ.get("DATABASE_URL"))
-    parser.add_argument("--observation", type=Path, default=OBSERVATION_PATH)
+    parser.add_argument("--observation", type=Path, default=DEFAULT_OBSERVATION_PATH)
+    parser.add_argument("--profile", type=Path, default=DEFAULT_PROFILE_PATH)
     parser.add_argument("--report", type=Path)
     args = parser.parse_args()
     if not args.database_url:
         parser.error("--database-url or DATABASE_URL is required")
 
     observation = load_json(args.observation)
-    relations = build_relations(observation)
-    materialize(args.database_url, observation, relations)
-    report = validate(args.database_url, observation, relations)
+    profile = load_json(args.profile)
+    relations = build_relations(observation, profile)
+    materialize(args.database_url, observation, profile, relations)
+    report = validate(args.database_url, observation, profile, relations)
     rendered = json.dumps(report, indent=2, sort_keys=True) + "\n"
     if args.report:
         args.report.write_text(rendered, encoding="utf-8")

@@ -6,122 +6,50 @@ import os
 from pathlib import Path
 from typing import Any
 
-from bible_os.identity import stable_id
-from scripts.webp_db_load import CORPUS_ID, VERSIFICATION_ID
+from bible_os.versification import build_materialization_plan, load_json, parse_reference
 
 
 ROOT = Path(__file__).resolve().parents[1]
-OBSERVATION_PATH = (
+DEFAULT_OBSERVATION_PATH = (
     ROOT
     / "registry"
     / "versification"
     / "observations"
     / "engwebp-bsb-romans-doxology.json"
 )
-
-MAPPING_NAMESPACE = "bible-os:versification-mapping:romans-doxology:v1"
-BSB_VERSIFICATION_ID = stable_id(
-    "vrs", MAPPING_NAMESPACE, "bsb-reference-alpha.1"
+DEFAULT_PROFILE_PATH = (
+    ROOT
+    / "registry"
+    / "versification"
+    / "materializers"
+    / "engwebp-bsb-romans-doxology.json"
 )
-EXPECTED_SOURCE_SYSTEM = "engwebp-usfm-2026-07-28"
-EXPECTED_TARGET_SYSTEM = "bsb-reference-alpha.1"
 
 
-def load_json(path: Path) -> dict[str, Any]:
-    return json.loads(path.read_text(encoding="utf-8"))
+def scalar(cur: Any, query: str, params: tuple[Any, ...] = ()) -> Any:
+    cur.execute(query, params)
+    return cur.fetchone()[0]
 
 
-def parse_reference(reference: str) -> tuple[str, int, int]:
-    try:
-        book, locus = reference.split(" ", 1)
-        chapter_text, verse_text = locus.split(":", 1)
-        chapter = int(chapter_text)
-        verse = int(verse_text)
-    except (ValueError, TypeError) as exc:
-        raise ValueError(f"invalid reference: {reference!r}") from exc
-    if not book or chapter < 1 or verse < 0:
-        raise ValueError(f"invalid reference: {reference!r}")
-    return book, chapter, verse
+def database_counts(cur: Any) -> dict[str, int]:
+    return {
+        "passages": scalar(cur, "SELECT count(*) FROM passage"),
+        "references": scalar(cur, "SELECT count(*) FROM versification_reference"),
+        "mappings": scalar(cur, "SELECT count(*) FROM passage_reference_mapping"),
+        "text_units": scalar(cur, "SELECT count(*) FROM text_unit"),
+        "releases": scalar(cur, "SELECT count(*) FROM dataset_release"),
+    }
 
 
-def build_plan(observation: dict[str, Any]) -> list[dict[str, Any]]:
-    if observation["source_system"] != EXPECTED_SOURCE_SYSTEM:
-        raise ValueError("unexpected source versification system")
-    if observation["target_system"] != EXPECTED_TARGET_SYSTEM:
-        raise ValueError("unexpected target versification system")
-    if observation["relation_type"] != "relocated":
-        raise ValueError("Romans doxology observation must be a relocation")
-    if observation["status"] != "evidence-reviewed":
-        raise ValueError("observation must be evidence-reviewed before materialization")
-    if observation["canonical_mapping_status"] != "materialized":
-        raise ValueError("observation must declare materialized canonical mappings")
-
-    source_references = observation["source_references"]
-    target_references = observation["target_references"]
-    reference_pairs = observation["reference_pairs"]
-    if len(source_references) != 3 or len(target_references) != 3:
-        raise ValueError("Romans doxology mapping must contain exactly three references per system")
-    if len(reference_pairs) != 3:
-        raise ValueError("Romans doxology mapping must contain exactly three explicit pairs")
-
-    expected_pairs = list(zip(source_references, target_references, strict=True))
-    observed_pairs = [
-        (pair["source_reference"], pair["target_reference"])
-        for pair in reference_pairs
-    ]
-    if observed_pairs != expected_pairs:
-        raise ValueError("explicit reference pairs do not match the ordered reference arrays")
-
-    plan: list[dict[str, Any]] = []
-    for ordinal, (source_reference, target_reference) in enumerate(expected_pairs, start=1):
-        source_book, source_chapter, source_verse = parse_reference(source_reference)
-        target_book, target_chapter, target_verse = parse_reference(target_reference)
-        if source_book != "ROM" or target_book != "ROM":
-            raise ValueError("Romans doxology mapping may only contain ROM references")
-        canonical_key = f"romans-doxology-unit-{ordinal}"
-        passage_id = stable_id("pas", MAPPING_NAMESPACE, canonical_key)
-        source_reference_id = stable_id(
-            "ref",
-            "bible-os:ephemeral-webp-source-locus:v1",
-            f"reference|{source_book}.{source_chapter}.{source_verse}",
-        )
-        target_reference_id = stable_id(
-            "ref", MAPPING_NAMESPACE, f"bsb-reference|{target_reference}"
-        )
-        plan.append(
-            {
-                "ordinal": ordinal,
-                "canonical_key": canonical_key,
-                "passage_id": passage_id,
-                "source_reference": source_reference,
-                "source_book": source_book,
-                "source_chapter": source_chapter,
-                "source_verse": source_verse,
-                "source_reference_id": source_reference_id,
-                "target_reference": target_reference,
-                "target_book": target_book,
-                "target_chapter": target_chapter,
-                "target_verse": target_verse,
-                "target_reference_id": target_reference_id,
-                "source_mapping_id": stable_id(
-                    "prm",
-                    MAPPING_NAMESPACE,
-                    f"{passage_id}|{source_reference_id}|equivalent",
-                ),
-                "target_mapping_id": stable_id(
-                    "prm",
-                    MAPPING_NAMESPACE,
-                    f"{passage_id}|{target_reference_id}|equivalent",
-                ),
-            }
-        )
-    return plan
-
-
-def _mapping_evidence(observation: dict[str, Any], pair: dict[str, Any]) -> list[dict[str, Any]]:
+def mapping_evidence(
+    observation: dict[str, Any],
+    profile: dict[str, Any],
+    pair: dict[str, Any],
+) -> list[dict[str, Any]]:
     return [
         {
             "observation_id": observation["observation_id"],
+            "materializer_id": profile["materializer_id"],
             "observation_status": observation["status"],
             "relation_type_between_references": observation["relation_type"],
             "source_reference": pair["source_reference"],
@@ -132,21 +60,39 @@ def _mapping_evidence(observation: dict[str, Any], pair: dict[str, Any]) -> list
     ]
 
 
-def materialize(database_url: str, observation: dict[str, Any]) -> list[dict[str, Any]]:
+def materialize(
+    database_url: str,
+    observation: dict[str, Any],
+    profile: dict[str, Any],
+) -> tuple[list[dict[str, Any]], dict[str, int]]:
     import psycopg
     from psycopg.types.json import Jsonb
 
-    plan = build_plan(observation)
+    plan = build_materialization_plan(observation, profile)
+    source_system = profile["source_system"]
+    target_system = profile["target_system"]
+    canonical = profile["canonical_identity"]
+    mapping_state = profile["mapping_state"]
+
     with psycopg.connect(database_url) as connection, connection.cursor() as cur:
+        before = database_counts(cur)
+        cur.execute(
+            """SELECT name, version FROM versification_system
+               WHERE versification_system_id=%s""",
+            (source_system["versification_system_id"],),
+        )
+        if cur.fetchone() is None:
+            raise ValueError("source versification system is missing from the database")
+
         cur.execute(
             """INSERT INTO versification_system
                (versification_system_id,name,version,authority)
                VALUES (%s,%s,%s,%s)""",
             (
-                BSB_VERSIFICATION_ID,
-                "BSB reference baseline",
-                "alpha.1",
-                "Bible OS pinned reference baseline",
+                target_system["versification_system_id"],
+                target_system["name"],
+                target_system["version"],
+                target_system["authority"],
             ),
         )
 
@@ -165,11 +111,14 @@ def materialize(database_url: str, observation: dict[str, Any]) -> list[dict[str
                      ON m.versification_reference_id=r.versification_reference_id
                    JOIN passage p ON p.passage_id=m.passage_id
                    JOIN text_unit t
-                     ON t.passage_id=p.passage_id AND t.source_reference_id=r.versification_reference_id
+                     ON t.passage_id=p.passage_id
+                    AND t.source_reference_id=r.versification_reference_id
                    WHERE r.versification_system_id=%s
+                     AND r.versification_reference_id=%s
                      AND r.book_code=%s AND r.chapter=%s AND r.verse=%s""",
                 (
-                    VERSIFICATION_ID,
+                    source_system["versification_system_id"],
+                    pair["source_reference_id"],
                     pair["source_book"],
                     pair["source_chapter"],
                     pair["source_verse"],
@@ -191,7 +140,9 @@ def materialize(database_url: str, observation: dict[str, Any]) -> list[dict[str
             if observed_source_reference_id != pair["source_reference_id"]:
                 raise ValueError(f"source reference identity drift: {pair['source_reference']}")
             if realization_type != "text":
-                raise ValueError(f"relocated doxology source must contain text: {pair['source_reference']}")
+                raise ValueError(
+                    f"materialized source reference must contain text: {pair['source_reference']}"
+                )
             if old_metadata.get("identity_status") != "source-locus-only":
                 raise ValueError(f"source passage is not provisional: {pair['source_reference']}")
 
@@ -206,8 +157,9 @@ def materialize(database_url: str, observation: dict[str, Any]) -> list[dict[str
                     Jsonb(
                         {
                             "canonical_key": pair["canonical_key"],
-                            "identity_status": "canonicalized-by-reference-observation",
+                            "identity_status": canonical["identity_status"],
                             "observation_id": observation["observation_id"],
+                            "materializer_id": profile["materializer_id"],
                             "source_reference": pair["source_reference"],
                             "target_reference": pair["target_reference"],
                             "ephemeral": True,
@@ -226,17 +178,18 @@ def materialize(database_url: str, observation: dict[str, Any]) -> list[dict[str
             )
             cur.execute("DELETE FROM passage WHERE passage_id=%s", (old_passage_id,))
 
-            evidence = Jsonb(_mapping_evidence(observation, pair))
+            evidence = Jsonb(mapping_evidence(observation, profile, pair))
             cur.execute(
                 """INSERT INTO passage_reference_mapping
                    (passage_reference_mapping_id,passage_id,versification_reference_id,
                     relation_type,confidence,method,review_state,evidence)
-                   VALUES (%s,%s,%s,'equivalent',1.0,'reference-observation-v1',
-                           'evidence-reviewed',%s)""",
+                   VALUES (%s,%s,%s,'equivalent',1.0,%s,%s,%s)""",
                 (
                     pair["source_mapping_id"],
                     pair["passage_id"],
                     pair["source_reference_id"],
+                    mapping_state["method"],
+                    mapping_state["review_state"],
                     evidence,
                 ),
             )
@@ -247,7 +200,7 @@ def materialize(database_url: str, observation: dict[str, Any]) -> list[dict[str
                    VALUES (%s,%s,%s,%s,%s,NULL,%s,%s)""",
                 (
                     pair["target_reference_id"],
-                    BSB_VERSIFICATION_ID,
+                    target_system["versification_system_id"],
                     pair["target_book"],
                     pair["target_chapter"],
                     pair["target_verse"],
@@ -255,6 +208,7 @@ def materialize(database_url: str, observation: dict[str, Any]) -> list[dict[str
                     Jsonb(
                         {
                             "observation_id": observation["observation_id"],
+                            "materializer_id": profile["materializer_id"],
                             "baseline": observation["target_system"],
                             "source_reference": pair["source_reference"],
                             "publication_eligible": False,
@@ -266,69 +220,126 @@ def materialize(database_url: str, observation: dict[str, Any]) -> list[dict[str
                 """INSERT INTO passage_reference_mapping
                    (passage_reference_mapping_id,passage_id,versification_reference_id,
                     relation_type,confidence,method,review_state,evidence)
-                   VALUES (%s,%s,%s,'equivalent',1.0,'reference-observation-v1',
-                           'evidence-reviewed',%s)""",
+                   VALUES (%s,%s,%s,'equivalent',1.0,%s,%s,%s)""",
                 (
                     pair["target_mapping_id"],
                     pair["passage_id"],
                     pair["target_reference_id"],
+                    mapping_state["method"],
+                    mapping_state["review_state"],
                     evidence,
                 ),
             )
-    return plan
+
+    return plan, before
 
 
-def scalar(cur: Any, query: str, params: tuple[Any, ...] = ()) -> Any:
-    cur.execute(query, params)
-    return cur.fetchone()[0]
+def validate_preservation_checks(
+    cur: Any,
+    profile: dict[str, Any],
+    plan: list[dict[str, Any]],
+) -> list[str]:
+    failures: list[str] = []
+    systems = {
+        "source": profile["source_system"],
+        "target": profile["target_system"],
+    }
+    canonical_passage_ids = {pair["passage_id"] for pair in plan}
+
+    for check in profile["preservation_checks"]:
+        system = systems[check["system"]]
+        book, chapter, verse = parse_reference(check["reference"])
+        cur.execute(
+            """SELECT p.passage_id, t.realization_type,
+                      p.metadata->>'identity_status'
+               FROM versification_reference r
+               JOIN text_unit t ON t.source_reference_id=r.versification_reference_id
+               JOIN passage p ON p.passage_id=t.passage_id
+               WHERE r.versification_system_id=%s
+                 AND r.book_code=%s AND r.chapter=%s AND r.verse=%s""",
+            (system["versification_system_id"], book, chapter, verse),
+        )
+        row = cur.fetchone()
+        if row is None:
+            failures.append(f"preservation locus missing: {check['reference']}")
+            continue
+        passage_id, realization_type, identity_status = row
+        if realization_type != check["realization_type"]:
+            failures.append(
+                f"preservation realization mismatch for {check['reference']}: {realization_type}"
+            )
+        if identity_status != check["identity_status"]:
+            failures.append(
+                f"preservation identity mismatch for {check['reference']}: {identity_status}"
+            )
+        if passage_id in canonical_passage_ids:
+            failures.append(
+                f"preservation locus collapsed into a materialized passage: {check['reference']}"
+            )
+    return failures
 
 
-def validate(database_url: str, observation: dict[str, Any], plan: list[dict[str, Any]]) -> dict[str, Any]:
+def validate(
+    database_url: str,
+    observation: dict[str, Any],
+    profile: dict[str, Any],
+    plan: list[dict[str, Any]],
+    before: dict[str, int],
+) -> dict[str, Any]:
     import psycopg
 
     failures: list[str] = []
     pair_reports: list[dict[str, Any]] = []
-    with psycopg.connect(database_url) as connection, connection.cursor() as cur:
-        counts = {
-            "passages": scalar(cur, "SELECT count(*) FROM passage"),
-            "references": scalar(cur, "SELECT count(*) FROM versification_reference"),
-            "mappings": scalar(cur, "SELECT count(*) FROM passage_reference_mapping"),
-            "text_units": scalar(cur, "SELECT count(*) FROM text_unit WHERE corpus_id=%s", (CORPUS_ID,)),
-            "bsb_references": scalar(
-                cur,
-                "SELECT count(*) FROM versification_reference WHERE versification_system_id=%s",
-                (BSB_VERSIFICATION_ID,),
-            ),
-            "evidence_reviewed_mappings": scalar(
-                cur,
-                "SELECT count(*) FROM passage_reference_mapping WHERE review_state='evidence-reviewed'",
-            ),
-            "releases": scalar(cur, "SELECT count(*) FROM dataset_release"),
-            "orphans": scalar(
-                cur,
-                """SELECT count(*) FROM text_unit t
-                   LEFT JOIN passage p ON p.passage_id=t.passage_id
-                   LEFT JOIN versification_reference r
-                     ON r.versification_reference_id=t.source_reference_id
-                   WHERE t.corpus_id=%s
-                     AND (p.passage_id IS NULL OR r.versification_reference_id IS NULL)""",
-                (CORPUS_ID,),
-            ),
-        }
+    source_system = profile["source_system"]
+    target_system = profile["target_system"]
+    canonical = profile["canonical_identity"]
+    mapping_state = profile["mapping_state"]
+    pair_count = len(plan)
 
-        expected_counts = {
-            "passages": 31103,
-            "references": 31106,
-            "mappings": 31106,
-            "text_units": 31103,
-            "bsb_references": 3,
-            "evidence_reviewed_mappings": 6,
-            "releases": 0,
-            "orphans": 0,
+    with psycopg.connect(database_url) as connection, connection.cursor() as cur:
+        after = database_counts(cur)
+        expected_after = {
+            "passages": before["passages"],
+            "references": before["references"] + pair_count,
+            "mappings": before["mappings"] + pair_count,
+            "text_units": before["text_units"],
+            "releases": before["releases"],
         }
-        for name, expected in expected_counts.items():
-            if counts[name] != expected:
-                failures.append(f"{name}: expected {expected}, got {counts[name]}")
+        for name, expected in expected_after.items():
+            if after[name] != expected:
+                failures.append(f"{name}: expected {expected}, got {after[name]}")
+        if after["releases"] != 0:
+            failures.append(f"dataset releases: expected 0, got {after['releases']}")
+
+        target_reference_count = scalar(
+            cur,
+            "SELECT count(*) FROM versification_reference WHERE versification_system_id=%s",
+            (target_system["versification_system_id"],),
+        )
+        if target_reference_count != pair_count:
+            failures.append(
+                f"target references: expected {pair_count}, got {target_reference_count}"
+            )
+
+        reviewed_mapping_count = scalar(
+            cur,
+            """SELECT count(*) FROM passage_reference_mapping m
+               JOIN versification_reference r
+                 ON r.versification_reference_id=m.versification_reference_id
+               WHERE r.versification_system_id IN (%s,%s)
+                 AND m.review_state=%s
+                 AND m.method=%s""",
+            (
+                source_system["versification_system_id"],
+                target_system["versification_system_id"],
+                mapping_state["review_state"],
+                mapping_state["method"],
+            ),
+        )
+        if reviewed_mapping_count != pair_count * 2:
+            failures.append(
+                f"reviewed mappings: expected {pair_count * 2}, got {reviewed_mapping_count}"
+            )
 
         for pair in plan:
             cur.execute(
@@ -358,7 +369,7 @@ def validate(database_url: str, observation: dict[str, Any], plan: list[dict[str
             row = cur.fetchone()
             if row is None:
                 failures.append(
-                    f"shared canonical passage missing for {pair['source_reference']} -> {pair['target_reference']}"
+                    f"shared passage missing for {pair['source_reference']} -> {pair['target_reference']}"
                 )
                 continue
             (
@@ -373,17 +384,6 @@ def validate(database_url: str, observation: dict[str, Any], plan: list[dict[str
                 target_confidence,
                 realization_type,
             ) = row
-            expected = (
-                "canonicalized-by-reference-observation",
-                "false",
-                "equivalent",
-                "evidence-reviewed",
-                1.0,
-                "equivalent",
-                "evidence-reviewed",
-                1.0,
-                "text",
-            )
             observed = (
                 identity_status,
                 publication_eligible,
@@ -395,6 +395,17 @@ def validate(database_url: str, observation: dict[str, Any], plan: list[dict[str
                 float(target_confidence),
                 realization_type,
             )
+            expected = (
+                canonical["identity_status"],
+                "false",
+                "equivalent",
+                mapping_state["review_state"],
+                1.0,
+                "equivalent",
+                mapping_state["review_state"],
+                1.0,
+                "text",
+            )
             if observed != expected:
                 failures.append(f"mapping state mismatch for {pair['source_reference']}: {observed}")
             pair_reports.append(
@@ -402,54 +413,39 @@ def validate(database_url: str, observation: dict[str, Any], plan: list[dict[str
                     "source_reference": pair["source_reference"],
                     "target_reference": pair["target_reference"],
                     "passage_id": passage_id,
-                    "mapping_state": "evidence-reviewed",
+                    "mapping_state": mapping_state["review_state"],
                     "publication_eligible": False,
                 }
             )
 
-        cur.execute(
-            """SELECT p.passage_id, t.realization_type,
-                      p.metadata->>'identity_status'
-               FROM versification_reference r
-               JOIN text_unit t ON t.source_reference_id=r.versification_reference_id
-               JOIN passage p ON p.passage_id=t.passage_id
-               WHERE r.versification_system_id=%s
-                 AND r.book_code='ROM' AND r.chapter=16 AND r.verse=25""",
-            (VERSIFICATION_ID,),
-        )
-        placeholder = cur.fetchone()
-        if placeholder is None:
-            failures.append("WEBP ROM 16:25 placeholder is missing")
-        else:
-            placeholder_passage_id, realization_type, identity_status = placeholder
-            if realization_type != "empty-placeholder":
-                failures.append("WEBP ROM 16:25 is no longer an empty placeholder")
-            if identity_status != "source-locus-only":
-                failures.append("WEBP ROM 16:25 placeholder was incorrectly canonicalized")
-            if placeholder_passage_id == plan[0]["passage_id"]:
-                failures.append("WEBP ROM 16:25 placeholder collapsed into BSB ROM 16:25")
-
+        failures.extend(validate_preservation_checks(cur, profile, plan))
         target_text_units = scalar(
             cur,
             """SELECT count(*) FROM text_unit t
                JOIN versification_reference r
                  ON r.versification_reference_id=t.source_reference_id
                WHERE r.versification_system_id=%s""",
-            (BSB_VERSIFICATION_ID,),
+            (target_system["versification_system_id"],),
         )
         if target_text_units != 0:
-            failures.append(f"BSB reference-only system unexpectedly owns {target_text_units} text units")
+            failures.append(
+                f"target reference-only system unexpectedly owns {target_text_units} text units"
+            )
 
     report = {
         "status": "passed" if not failures else "failed",
+        "materializer_id": profile["materializer_id"],
+        "profile_version": profile["profile_version"],
+        "mapping_shape": profile["mapping_shape"],
         "observation_id": observation["observation_id"],
         "observation_status": observation["status"],
         "canonical_mapping_status": observation["canonical_mapping_status"],
         "relation_type_between_reference_systems": observation["relation_type"],
-        "counts": counts,
+        "counts_before": before,
+        "counts_after": after,
         "reference_pairs": pair_reports,
-        "webp_rom_16_25_placeholder_preserved": placeholder is not None and not any(
-            "ROM 16:25" in failure for failure in failures
+        "preservation_checks_passed": not any(
+            "preservation" in failure for failure in failures
         ),
         "corpus_text_in_report": False,
         "publication_eligible": False,
@@ -463,15 +459,17 @@ def validate(database_url: str, observation: dict[str, Any], plan: list[dict[str
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--database-url", default=os.environ.get("DATABASE_URL"))
-    parser.add_argument("--observation", type=Path, default=OBSERVATION_PATH)
+    parser.add_argument("--observation", type=Path, default=DEFAULT_OBSERVATION_PATH)
+    parser.add_argument("--profile", type=Path, default=DEFAULT_PROFILE_PATH)
     parser.add_argument("--report", type=Path)
     args = parser.parse_args()
     if not args.database_url:
         parser.error("--database-url or DATABASE_URL is required")
 
     observation = load_json(args.observation)
-    plan = materialize(args.database_url, observation)
-    report = validate(args.database_url, observation, plan)
+    profile = load_json(args.profile)
+    plan, before = materialize(args.database_url, observation, profile)
+    report = validate(args.database_url, observation, profile, plan, before)
     rendered = json.dumps(report, indent=2, sort_keys=True) + "\n"
     if args.report:
         args.report.write_text(rendered, encoding="utf-8")
