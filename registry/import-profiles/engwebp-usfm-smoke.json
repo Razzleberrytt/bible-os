@@ -1,0 +1,36 @@
+{
+  "_profile_version": "1.0.0",
+  "adapter": "webp-usfm-v1",
+  "archive_files": 71,
+  "source_files": 68,
+  "recognized_books": 66,
+  "unrecognized_book_ids": ["FRT", "GLO"],
+  "expected_canonical_books": 66,
+  "chapter_loci": 1189,
+  "verse_records": 31103,
+  "empty_raw_payloads": 0,
+  "verse_range_labels": 0,
+  "first_locator": "GEN 1:1",
+  "last_locator": "REV 22:21",
+  "first_sequence": 1,
+  "last_sequence": 31103,
+  "baseline_name": "BSB reference baseline",
+  "baseline_reference_count": 31102,
+  "baseline_source_release": "bible-os-bsb-release-v0.1-alpha.1",
+  "versification_delta_count": 2,
+  "versification_deltas": [
+    {
+      "book": "ROM",
+      "chapter": 14,
+      "missing_labels": [],
+      "extra_labels": [24, 25, 26]
+    },
+    {
+      "book": "ROM",
+      "chapter": 16,
+      "missing_labels": [26, 27],
+      "extra_labels": []
+    }
+  ],
+  "non_numeric_verse_labels": []
+}
