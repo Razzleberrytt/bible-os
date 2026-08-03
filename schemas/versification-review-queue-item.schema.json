@@ -1,0 +1,365 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bible-os.example/schemas/versification-review-queue-item.schema.json",
+  "title": "Bible OS Versification Review Queue Item",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "queue_item_id",
+    "candidate_kind",
+    "status",
+    "priority",
+    "source_system",
+    "target_system",
+    "proposed_confidence",
+    "detection",
+    "evidence",
+    "review_requirements",
+    "created_at",
+    "created_by",
+    "materialization_state",
+    "execution_eligible",
+    "publication_eligible"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "queue_item_id": {
+      "type": "string",
+      "pattern": "^vrq_[a-z0-9]{12,}$"
+    },
+    "candidate_kind": {
+      "enum": [
+        "equivalent",
+        "split",
+        "join",
+        "overlap",
+        "omitted",
+        "addition",
+        "relocated",
+        "uncertain"
+      ]
+    },
+    "status": {
+      "enum": [
+        "queued",
+        "in-review",
+        "needs-evidence",
+        "accepted",
+        "rejected",
+        "withdrawn"
+      ]
+    },
+    "priority": {
+      "enum": ["low", "normal", "high", "critical"]
+    },
+    "source_system": {
+      "$ref": "#/$defs/referenceSet"
+    },
+    "target_system": {
+      "$ref": "#/$defs/referenceSet"
+    },
+    "proposed_confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "detection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["method"],
+      "properties": {
+        "method": {
+          "enum": [
+            "manual-observation",
+            "structural-diff",
+            "parser-signal",
+            "algorithmic-candidate",
+            "imported-claim"
+          ]
+        },
+        "algorithm_version": {
+          "type": ["string", "null"]
+        },
+        "detector_id": {
+          "type": ["string", "null"]
+        }
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/evidence"
+      }
+    },
+    "review_requirements": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required_roles", "minimum_approvals", "conflict_policy"],
+      "properties": {
+        "required_roles": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "textual-scholar",
+              "data-curator",
+              "language-specialist",
+              "canon-specialist",
+              "engineering-reviewer"
+            ]
+          }
+        },
+        "minimum_approvals": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "conflict_policy": {
+          "enum": [
+            "unanimous",
+            "majority",
+            "designated-arbiter"
+          ]
+        }
+      }
+    },
+    "decision": {
+      "$ref": "#/$defs/decision"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "created_by": {
+      "type": "string",
+      "minLength": 1
+    },
+    "materialization_state": {
+      "const": "not-materialized"
+    },
+    "execution_eligible": {
+      "const": false
+    },
+    "publication_eligible": {
+      "const": false
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {"candidate_kind": {"const": "split"}},
+        "required": ["candidate_kind"]
+      },
+      "then": {
+        "properties": {
+          "source_system": {
+            "properties": {
+              "references": {"minItems": 1, "maxItems": 1}
+            }
+          },
+          "target_system": {
+            "properties": {
+              "references": {"minItems": 2}
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {"candidate_kind": {"const": "join"}},
+        "required": ["candidate_kind"]
+      },
+      "then": {
+        "properties": {
+          "source_system": {
+            "properties": {
+              "references": {"minItems": 2}
+            }
+          },
+          "target_system": {
+            "properties": {
+              "references": {"minItems": 1, "maxItems": 1}
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {"candidate_kind": {"const": "omitted"}},
+        "required": ["candidate_kind"]
+      },
+      "then": {
+        "properties": {
+          "source_system": {
+            "properties": {
+              "references": {"minItems": 1}
+            }
+          },
+          "target_system": {
+            "properties": {
+              "references": {"maxItems": 0}
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {"candidate_kind": {"const": "addition"}},
+        "required": ["candidate_kind"]
+      },
+      "then": {
+        "properties": {
+          "source_system": {
+            "properties": {
+              "references": {"maxItems": 0}
+            }
+          },
+          "target_system": {
+            "properties": {
+              "references": {"minItems": 1}
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "candidate_kind": {
+            "enum": ["equivalent", "overlap", "relocated", "uncertain"]
+          }
+        },
+        "required": ["candidate_kind"]
+      },
+      "then": {
+        "properties": {
+          "source_system": {
+            "properties": {
+              "references": {"minItems": 1}
+            }
+          },
+          "target_system": {
+            "properties": {
+              "references": {"minItems": 1}
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "enum": ["accepted", "rejected", "needs-evidence", "withdrawn"]
+          }
+        },
+        "required": ["status"]
+      },
+      "then": {
+        "required": ["decision"]
+      },
+      "else": {
+        "not": {
+          "required": ["decision"]
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "referenceSet": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["versification_system_id", "references"],
+      "properties": {
+        "versification_system_id": {
+          "type": "string",
+          "pattern": "^vrs_[a-z0-9]{12,}$"
+        },
+        "references": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "evidence_id",
+        "evidence_type",
+        "locator",
+        "summary",
+        "contains_source_text"
+      ],
+      "properties": {
+        "evidence_id": {
+          "type": "string",
+          "pattern": "^evd_[a-z0-9]{12,}$"
+        },
+        "evidence_type": {
+          "enum": [
+            "official-source",
+            "source-artifact",
+            "corpus-structure",
+            "scholarly-source",
+            "manual-observation",
+            "synthetic-fixture"
+          ]
+        },
+        "locator": {
+          "type": "string",
+          "minLength": 1
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": ["string", "null"],
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "contains_source_text": {
+          "const": false
+        }
+      }
+    },
+    "decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["outcome", "decided_at", "decided_by", "rationale"],
+      "properties": {
+        "outcome": {
+          "enum": ["accepted", "rejected", "needs-evidence", "withdrawn"]
+        },
+        "decided_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "decided_by": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}
