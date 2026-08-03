@@ -1,0 +1,16 @@
+{
+  "event_id": "acq_engwebp20260803a",
+  "source_id": "src_engwebp2020stable",
+  "requested_url": "https://ebible.org/Scriptures/engwebp_usfm.zip",
+  "resolved_url": "https://ebible.org/Scriptures/engwebp_usfm.zip",
+  "started_at": "2026-08-03T19:04:05.590634Z",
+  "finished_at": "2026-08-03T19:04:08.215406Z",
+  "result": "success",
+  "retrieval_tool": {
+    "name": "Bible-OS-Acquisition-Probe",
+    "version": "0.1.0"
+  },
+  "observed_sha256": "9b4330ba6baf9bd5fa8ea63a8ff255c9ab326da8c843f0355c23734e61ee6276",
+  "observed_bytes": 2903202,
+  "error": null
+}
