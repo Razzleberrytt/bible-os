@@ -43,6 +43,7 @@ jobs:
       - name: Fingerprint, load, and validate ASV without retention
         run: >-
           python -m scripts.asv_full_ci
+          --expected-export registry/import-profiles/eng-asv-normalized-export.json
           --report asv-full-ci-report.json
       - name: Display ASV no-retention database evidence
         if: always()
