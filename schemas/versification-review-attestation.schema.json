@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bible-os.example/schemas/versification-review-attestation.schema.json",
+  "title": "Bible OS Versification Review Attestation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "attestation_id",
+    "queue_item_id",
+    "queue_item_sha256",
+    "reviewer",
+    "recommendation",
+    "confidence",
+    "rationale",
+    "evidence_ids",
+    "conflict_disclosure",
+    "reviewed_at",
+    "record_policy",
+    "materialization_authority",
+    "execution_eligible",
+    "publication_eligible"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "attestation_id": {
+      "type": "string",
+      "pattern": "^vra_[a-z0-9]{12,}$"
+    },
+    "queue_item_id": {
+      "type": "string",
+      "pattern": "^vrq_[a-z0-9]{12,}$"
+    },
+    "queue_item_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "reviewer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["reviewer_id", "role"],
+      "properties": {
+        "reviewer_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "role": {
+          "enum": [
+            "textual-scholar",
+            "data-curator",
+            "language-specialist",
+            "canon-specialist",
+            "engineering-reviewer"
+          ]
+        },
+        "affiliation": {
+          "type": ["string", "null"]
+        }
+      }
+    },
+    "recommendation": {
+      "enum": ["approve", "reject", "needs-evidence", "abstain"]
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "rationale": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evidence_ids": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^evd_[a-z0-9]{12,}$"
+      }
+    },
+    "conflict_disclosure": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status", "details"],
+          "properties": {
+            "status": {"const": "none"},
+            "details": {"type": "null"}
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status", "details"],
+          "properties": {
+            "status": {"const": "disclosed"},
+            "details": {"type": "string", "minLength": 1}
+          }
+        }
+      ]
+    },
+    "reviewed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "supersedes_attestation_id": {
+      "type": ["string", "null"],
+      "pattern": "^vra_[a-z0-9]{12,}$"
+    },
+    "record_policy": {
+      "const": "append-only"
+    },
+    "materialization_authority": {
+      "const": "none"
+    },
+    "execution_eligible": {
+      "const": false
+    },
+    "publication_eligible": {
+      "const": false
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  }
+}
