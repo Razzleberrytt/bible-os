@@ -6,6 +6,7 @@ from pathlib import Path
 import pytest
 
 from bible_os.versification import (
+    SYNTHETIC_EXECUTION_ENV,
     build_group_alignment_plan,
     build_materialization_plan,
     load_json,
@@ -27,6 +28,11 @@ JOIN_PROFILE = (
 )
 
 
+@pytest.fixture(autouse=True)
+def enable_isolated_synthetic_execution(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv(SYNTHETIC_EXECUTION_ENV, "1")
+
+
 def build(observation_path: Path, profile_path: Path):
     observation = load_json(observation_path)
     profile = load_json(profile_path)
@@ -42,6 +48,7 @@ def test_split_plan_is_deterministic_and_pinned():
     assert first == second
     assert alignment == second_alignment
     assert profile["mapping_shape"] == "one-to-many-split"
+    assert profile["execution_mode"] == "synthetic-fixture"
     assert [row["source_reference"] for row in first] == ["SYN 1:1", "SYN 1:1"]
     assert [row["target_reference"] for row in first] == ["SYN 1:1", "SYN 1:2"]
     assert {row["source_mapping_relation"] for row in first} == {"split"}
@@ -53,6 +60,7 @@ def test_split_plan_is_deterministic_and_pinned():
     assert len({row["source_reference_id"] for row in first}) == 1
     assert len({row["target_reference_id"] for row in first}) == 2
     assert alignment["alignment_id"] == "aln_x4eniknij3uehhywq6ot"
+    assert alignment["provenance"]["execution_mode"] == "synthetic-fixture"
     assert len(alignment["source_ids"]) == 1
     assert len(alignment["target_ids"]) == 2
 
@@ -64,6 +72,7 @@ def test_join_plan_is_deterministic_and_pinned():
     assert first == second
     assert alignment == second_alignment
     assert profile["mapping_shape"] == "many-to-one-join"
+    assert profile["execution_mode"] == "synthetic-fixture"
     assert [row["source_reference"] for row in first] == ["SYN 2:1", "SYN 2:2"]
     assert [row["target_reference"] for row in first] == ["SYN 2:1", "SYN 2:1"]
     assert {row["source_mapping_relation"] for row in first} == {"equivalent"}
@@ -75,6 +84,7 @@ def test_join_plan_is_deterministic_and_pinned():
     assert len({row["source_reference_id"] for row in first}) == 2
     assert len({row["target_reference_id"] for row in first}) == 1
     assert alignment["alignment_id"] == "aln_yjhe42qcvvi4fq7wqcqo"
+    assert alignment["provenance"]["execution_mode"] == "synthetic-fixture"
     assert len(alignment["source_ids"]) == 2
     assert len(alignment["target_ids"]) == 1
 

@@ -3,6 +3,7 @@
   "materializer_id": "mat_synthsplit2026",
   "observation_id": "obs_synthsplit2026",
   "mapping_shape": "one-to-many-split",
+  "execution_mode": "synthetic-fixture",
   "allowed_book_codes": [
     "SYN"
   ],

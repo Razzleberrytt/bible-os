@@ -75,6 +75,7 @@ jobs:
     env:
       PGPASSWORD: bible_os_ci
       DATABASE_URL: postgresql://bible_os:bible_os_ci@localhost:5432/bible_os
+      BIBLE_OS_ENABLE_SYNTHETIC_MATERIALIZERS: '1'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5

@@ -9,6 +9,7 @@
     "materializer_id",
     "observation_id",
     "mapping_shape",
+    "execution_mode",
     "allowed_book_codes",
     "source_system",
     "target_system",
@@ -35,6 +36,12 @@
         "one-to-one-ordered",
         "one-to-many-split",
         "many-to-one-join"
+      ]
+    },
+    "execution_mode": {
+      "enum": [
+        "production-one-to-one",
+        "synthetic-fixture"
       ]
     },
     "allowed_book_codes": {
@@ -156,6 +163,49 @@
       "const": false
     }
   },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "execution_mode": {
+            "const": "production-one-to-one"
+          }
+        },
+        "required": [
+          "execution_mode"
+        ]
+      },
+      "then": {
+        "properties": {
+          "mapping_shape": {
+            "const": "one-to-one-ordered"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "execution_mode": {
+            "const": "synthetic-fixture"
+          }
+        },
+        "required": [
+          "execution_mode"
+        ]
+      },
+      "then": {
+        "properties": {
+          "mapping_shape": {
+            "enum": [
+              "one-to-many-split",
+              "many-to-one-join"
+            ]
+          }
+        }
+      }
+    }
+  ],
   "$defs": {
     "system": {
       "type": "object",

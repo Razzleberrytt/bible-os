@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 from typing import Any, Mapping
 
@@ -9,6 +10,9 @@ from bible_os.identity import stable_id
 
 RELATION_NAMESPACE = "bible-os:reference-relation:v1"
 ALIGNMENT_NAMESPACE = "bible-os:reference-alignment:v1"
+PRODUCTION_EXECUTION_MODE = "production-one-to-one"
+SYNTHETIC_EXECUTION_MODE = "synthetic-fixture"
+SYNTHETIC_EXECUTION_ENV = "BIBLE_OS_ENABLE_SYNTHETIC_MATERIALIZERS"
 SUPPORTED_MAPPING_SHAPES = {
     "one-to-one-ordered",
     "one-to-many-split",
@@ -56,6 +60,32 @@ def _reference_context(reference: str) -> dict[str, Any]:
 
 def _ordered_unique(values: list[str]) -> list[str]:
     return list(dict.fromkeys(values))
+
+
+def _validate_execution_mode(profile: dict[str, Any]) -> None:
+    execution_mode = profile.get("execution_mode")
+    mapping_shape = profile.get("mapping_shape")
+
+    if execution_mode == PRODUCTION_EXECUTION_MODE:
+        if mapping_shape != "one-to-one-ordered":
+            raise ValueError(
+                "production materializers support only one-to-one-ordered mappings"
+            )
+        return
+
+    if execution_mode == SYNTHETIC_EXECUTION_MODE:
+        if mapping_shape not in {"one-to-many-split", "many-to-one-join"}:
+            raise ValueError(
+                "synthetic materializers support only split and join mapping shapes"
+            )
+        if os.environ.get(SYNTHETIC_EXECUTION_ENV) != "1":
+            raise ValueError(
+                "synthetic materializer execution is disabled; "
+                f"set {SYNTHETIC_EXECUTION_ENV}=1 only in isolated fixture runs"
+            )
+        return
+
+    raise ValueError(f"unsupported materializer execution mode: {execution_mode!r}")
 
 
 def _expected_pairs(
@@ -108,6 +138,7 @@ def build_materialization_plan(
     observation: dict[str, Any],
     profile: dict[str, Any],
 ) -> list[dict[str, Any]]:
+    _validate_execution_mode(profile)
     mapping_shape = profile["mapping_shape"]
     if mapping_shape not in SUPPORTED_MAPPING_SHAPES:
         raise ValueError(f"unsupported materializer mapping shape: {mapping_shape}")
@@ -262,6 +293,7 @@ def build_group_alignment_plan(
             "observation_id": observation["observation_id"],
             "materializer_id": profile["materializer_id"],
             "mapping_shape": profile["mapping_shape"],
+            "execution_mode": profile["execution_mode"],
             "id_kind": "versification_reference",
             "publication_eligible": False,
         },
