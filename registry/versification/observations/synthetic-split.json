@@ -1,0 +1,35 @@
+{
+  "observation_id": "obs_synthsplit2026",
+  "source_system": "synthetic-split-source-v1",
+  "target_system": "synthetic-split-target-v1",
+  "source_references": [
+    "SYN 1:1"
+  ],
+  "target_references": [
+    "SYN 1:1",
+    "SYN 1:2"
+  ],
+  "reference_pairs": [
+    {
+      "source_reference": "SYN 1:1",
+      "target_reference": "SYN 1:1",
+      "relation_type": "split"
+    },
+    {
+      "source_reference": "SYN 1:1",
+      "target_reference": "SYN 1:2",
+      "relation_type": "split"
+    }
+  ],
+  "relation_type": "split",
+  "status": "synthetic-reviewed",
+  "confidence": 1.0,
+  "canonical_mapping_status": "materialized",
+  "evidence": [
+    "Synthetic fixture proving one source reference can map to two ordered canonical components and two target references."
+  ],
+  "notes": [
+    "No real biblical locus or corpus text is represented.",
+    "The fixture is non-publishable and exists only to validate split semantics."
+  ]
+}
