@@ -6,6 +6,7 @@ import zipfile
 import pytest
 
 from bible_os.importers.webp_usfm import WebpUsfmAdapter
+from scripts.webp_adapter_smoke import compare_baseline
 
 
 def make_archive(files: dict[str, str]) -> zipfile.ZipFile:
@@ -41,6 +42,36 @@ def test_probe_and_records_use_canonical_book_order():
     ]
     assert records[0].raw_payload == "first\ncontinued"
     assert [record.source_sequence for record in records] == [1, 2, 3]
+
+
+def test_baseline_comparison_reports_reference_only_deltas():
+    archive = make_archive(
+        {
+            "gen.usfm": "\\id GEN Synthetic\n\\c 1\n\\v 1 one\n\\v 2 two\n\\v 3 extra\n",
+            "exo.usfm": "\\id EXO Synthetic\n\\c 1\n\\v 1 one\n",
+        }
+    )
+    records = list(WebpUsfmAdapter().iter_records(archive))
+    result = compare_baseline(
+        records,
+        {
+            "name": "Synthetic baseline",
+            "source_release": "synthetic",
+            "reference_count": 3,
+            "books": {"GEN": [2], "EXO": [1]},
+        },
+    )
+
+    assert result["versification_delta_count"] == 1
+    assert result["versification_deltas"] == [
+        {
+            "book": "GEN",
+            "chapter": 1,
+            "missing_labels": [],
+            "extra_labels": [3],
+        }
+    ]
+    assert result["non_numeric_verse_labels"] == []
 
 
 def test_duplicate_book_ids_are_rejected():
