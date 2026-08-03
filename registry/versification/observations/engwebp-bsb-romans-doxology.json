@@ -1,0 +1,19 @@
+{
+  "observation_id": "obs_romdoxology2026",
+  "source_system": "engwebp-usfm-2026-07-28",
+  "target_system": "bsb-reference-alpha.1",
+  "source_references": ["ROM 14:24", "ROM 14:25", "ROM 14:26"],
+  "target_references": ["ROM 16:25", "ROM 16:26", "ROM 16:27"],
+  "relation_type": "relocated",
+  "status": "machine-observed",
+  "confidence": 1.0,
+  "canonical_mapping_status": "pending-passage-identities",
+  "evidence": [
+    "Pinned WEBP USFM smoke profile reports extra labels ROM 14:24-26 and missing labels ROM 16:26-27 relative to the BSB reference baseline.",
+    "Official WEB FAQ states that Romans 14:24-26 in WEB may appear as Romans 16:25-27 in other translations: https://ebible.org/eng-web/webfaq.htm"
+  ],
+  "notes": [
+    "This is an evidence-layer reference observation, not a canonical passage mapping.",
+    "Materialize a passage mapping only after WEBP passage identities are created and the source text correspondence is reviewed."
+  ]
+}
