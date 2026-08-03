@@ -1,0 +1,15 @@
+{
+  "_profile_version": "1.0.0",
+  "profile": "ASV 1901 provisional normalized export",
+  "artifact_sha256": "712b44107ec98a5b8ca339751b37a593061ee630390c6a6d2edc54e334e1d6e4",
+  "identity_namespace": "bible-os:ephemeral-asv-source-locus:v1",
+  "format": "application/x-ndjson; charset=utf-8",
+  "canonicalization": "json-sort-keys-compact-lf-v1",
+  "sha256": "8ac1c0635cbe1aa29713c57f0176f509690e6a369fd8c365ecdddd0b601618ab",
+  "byte_size": 27382291,
+  "record_count": 31102,
+  "runs_compared": 2,
+  "reproducibility_status": "verified",
+  "publication_eligible": false,
+  "retention": "serialized bytes hashed in memory and discarded"
+}

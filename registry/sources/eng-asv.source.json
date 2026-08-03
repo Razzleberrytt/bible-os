@@ -1,0 +1,25 @@
+{
+  "source_id": "src_engasv1901public",
+  "name": "American Standard Version (1901)",
+  "source_type": "translation",
+  "authority_status": "official",
+  "language_codes": ["eng"],
+  "official_urls": [
+    "https://ebible.org/find/show.php?id=eng-asv",
+    "https://ebible.org/eng-asv/copyright.htm",
+    "https://ebible.org/Scriptures/eng-asv_usfm.zip"
+  ],
+  "license_status": "public-domain",
+  "spdx_expression": null,
+  "commercial_use": "allowed",
+  "attribution_text": "American Standard Version (1901). Public domain. Source files distributed by eBible.org.",
+  "license_evidence_urls": [
+    "https://ebible.org/eng-asv/copyright.htm"
+  ],
+  "notes": [
+    "Official eBible identifier: eng-asv.",
+    "Archaic American English, 66-book Protestant canon.",
+    "The verified source archive was generated on 2026-06-12 from source files dated 2026-06-11.",
+    "Source registration and ephemeral loading do not create cross-translation passage or reference mappings."
+  ]
+}

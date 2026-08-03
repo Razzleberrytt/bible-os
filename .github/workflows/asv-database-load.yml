@@ -1,0 +1,50 @@
+name: asv-database-load
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  asv-database-load:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_USER: bible_os
+          POSTGRES_PASSWORD: bible_os_ci
+          POSTGRES_DB: bible_os
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U bible_os -d bible_os"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
+    env:
+      PGPASSWORD: bible_os_ci
+      DATABASE_URL: postgresql://bible_os:bible_os_ci@localhost:5432/bible_os
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: Install importer and database driver
+        run: pip install '.[dev]'
+      - name: Apply database migrations
+        run: |
+          psql -h localhost -U bible_os -d bible_os -v ON_ERROR_STOP=1 -f database/migrations/0001_foundation.up.sql
+          psql -h localhost -U bible_os -d bible_os -v ON_ERROR_STOP=1 -f database/migrations/0002_reference_relation.up.sql
+      - name: Fingerprint, load, and validate ASV without retention
+        run: >-
+          python -m scripts.asv_full_ci
+          --expected-export registry/import-profiles/eng-asv-normalized-export.json
+          --report asv-full-ci-report.json
+      - name: Display ASV no-retention database evidence
+        if: always()
+        run: cat asv-full-ci-report.json
