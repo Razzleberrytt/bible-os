@@ -114,6 +114,22 @@ jobs:
       - name: Display locator-only split and join evidence
         run: cat synthetic-split-join-report.json
 
+  asv-acquisition:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Probe official ASV 1901 USFM archive
+        run: >-
+          python scripts/probe_acquisition.py
+          registry/acquisitions/eng-asv-usfm.json
+          --report asv-acquisition-report.json
+      - name: Display ASV acquisition evidence
+        if: always()
+        run: cat asv-acquisition-report.json
+
   webp-acquisition:
     runs-on: ubuntu-latest
     steps:
