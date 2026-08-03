@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0.0",
+  "attestation_id": "vra_synthreview01",
+  "queue_item_id": "vrq_synthsplit01",
+  "queue_item_sha256": "7ee02237fdfa7014bedc8931c61c5099f79af9aa60f54aa63eafe9ee595e9059",
+  "reviewer": {
+    "reviewer_id": "bible-os:test:data-curator",
+    "role": "data-curator",
+    "affiliation": null
+  },
+  "recommendation": "needs-evidence",
+  "confidence": 0.9,
+  "rationale": "The synthetic candidate has valid split cardinality, but a production decision would require source-anchored component evidence.",
+  "evidence_ids": ["evd_synthqueue001"],
+  "conflict_disclosure": {
+    "status": "none",
+    "details": null
+  },
+  "reviewed_at": "2026-08-03T22:32:00Z",
+  "supersedes_attestation_id": null,
+  "record_policy": "append-only",
+  "materialization_authority": "none",
+  "execution_eligible": false,
+  "publication_eligible": false
+}
