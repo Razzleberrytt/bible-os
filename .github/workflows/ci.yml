@@ -39,12 +39,17 @@ jobs:
           --health-retries 12
     env:
       PGPASSWORD: bible_os_ci
+      DATABASE_URL: postgresql://bible_os:bible_os_ci@localhost:5432/bible_os
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: pip install 'psycopg[binary]>=3.2,<4'
       - name: Apply foundation migration
         run: psql -h localhost -U bible_os -d bible_os -v ON_ERROR_STOP=1 -f database/migrations/0001_foundation.up.sql
-      - name: Confirm core tables
-        run: |
-          psql -h localhost -U bible_os -d bible_os -Atc \
-            "SELECT count(*) FROM information_schema.tables WHERE table_schema='public';" |
-            grep -E '^[1-9][0-9]*$'
+      - name: Load synthetic 100-reference fixture
+        run: python scripts/bsb_fixture.py load
+      - name: Validate fixture and append-only controls
+        run: python scripts/bsb_fixture.py validate
