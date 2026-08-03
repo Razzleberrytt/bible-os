@@ -1,0 +1,157 @@
+openapi: 3.2.0
+info:
+  title: Bible OS Read API
+  version: 0.1.0
+  summary: Versioned read access to immutable Bible OS releases
+  description: |
+    Evidence, computation, and interpretation remain explicitly typed.
+    Substantive reads are scoped to an immutable release.
+servers:
+  - url: https://api.example.invalid/v1
+paths:
+  /releases:
+    get:
+      operationId: listReleases
+      responses:
+        '200':
+          description: Immutable release summaries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReleaseSummary'
+  /releases/{releaseId}:
+    get:
+      operationId: getRelease
+      parameters:
+        - $ref: '#/components/parameters/ReleaseId'
+      responses:
+        '200':
+          description: Release summary
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReleaseSummary'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /passages/{passageId}:
+    get:
+      operationId: getPassage
+      parameters:
+        - name: passageId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: '^pas_[a-z0-9]{12,}$'
+        - $ref: '#/components/parameters/ReleaseQuery'
+      responses:
+        '200':
+          description: Canonical passage and mapped source references
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Passage'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /comparisons:
+    get:
+      operationId: comparePassage
+      parameters:
+        - name: passage_id
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: corpus_id
+          in: query
+          required: true
+          schema:
+            type: array
+            minItems: 2
+            items:
+              type: string
+        - $ref: '#/components/parameters/ReleaseQuery'
+      responses:
+        '200':
+          description: Corpus realizations and typed alignments
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comparison'
+components:
+  parameters:
+    ReleaseId:
+      name: releaseId
+      in: path
+      required: true
+      schema:
+        type: string
+        pattern: '^rel_[a-z0-9]{12,}$'
+    ReleaseQuery:
+      name: release
+      in: query
+      required: true
+      schema:
+        type: string
+        pattern: '^rel_[a-z0-9]{12,}$'
+  responses:
+    NotFound:
+      description: Resource not found in the requested release
+  schemas:
+    ReleaseSummary:
+      type: object
+      required: [release_id, version, status, created_at]
+      properties:
+        release_id:
+          type: string
+        version:
+          type: string
+        status:
+          type: string
+          enum: [provisional, approved, withdrawn]
+        created_at:
+          type: string
+          format: date-time
+    Passage:
+      type: object
+      required: [passage_id, references]
+      properties:
+        passage_id:
+          type: string
+        references:
+          type: array
+          items:
+            type: object
+            required: [system_id, display]
+            properties:
+              system_id:
+                type: string
+              display:
+                type: string
+    Comparison:
+      type: object
+      required: [passage_id, release_id, realizations]
+      properties:
+        passage_id:
+          type: string
+        release_id:
+          type: string
+        realizations:
+          type: array
+          items:
+            type: object
+            required: [corpus_id, evidence_type, text]
+            properties:
+              corpus_id:
+                type: string
+              evidence_type:
+                type: string
+                const: evidence
+              text:
+                type: string
+              alignment_confidence:
+                type: number
+                minimum: 0
+                maximum: 1
