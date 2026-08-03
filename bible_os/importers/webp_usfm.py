@@ -25,6 +25,36 @@ VERSE_RE = re.compile(
     r"^\\v\s+(?P<label>[0-9]+(?:[-–][0-9]+)?[a-z]?)"
     r"(?:\s+(?P<payload>.*))?$"
 )
+NOTE_BLOCK_RE = re.compile(
+    r"\\(?P<marker>fe|ef|ex|f|x)\b.*?\\(?P=marker)\*",
+    flags=re.IGNORECASE | re.DOTALL,
+)
+MILESTONE_RE = re.compile(
+    r"\\[a-z0-9-]+-(?:s|e)\b(?:\s+\|?[^\\\n]*)?\\\*",
+    flags=re.IGNORECASE,
+)
+ATTRIBUTE_RE = re.compile(r"\|[^\\\n]*")
+MARKER_RE = re.compile(r"\\[a-z0-9][a-z0-9-]*\*?", flags=re.IGNORECASE)
+WHITESPACE_RE = re.compile(r"\s+")
+
+
+def extract_visible_text(raw_payload: str) -> str:
+    """Return visible verse text while excluding notes and USFM control markup.
+
+    This is a structural detector, not the canonical normalization layer. It is
+    intentionally conservative and leaves ordinary punctuation and words intact.
+    """
+
+    text = raw_payload.replace("~", " ")
+    previous = None
+    while previous != text:
+        previous = text
+        text = NOTE_BLOCK_RE.sub(" ", text)
+    text = MILESTONE_RE.sub(" ", text)
+    text = ATTRIBUTE_RE.sub("", text)
+    text = MARKER_RE.sub(" ", text)
+    text = text.replace("\\*", " ")
+    return WHITESPACE_RE.sub(" ", text).strip()
 
 
 @dataclass(frozen=True, slots=True)

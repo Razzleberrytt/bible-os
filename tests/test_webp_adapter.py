@@ -5,7 +5,7 @@ import zipfile
 
 import pytest
 
-from bible_os.importers.webp_usfm import WebpUsfmAdapter
+from bible_os.importers.webp_usfm import WebpUsfmAdapter, extract_visible_text
 from scripts.webp_adapter_smoke import compare_baseline
 
 
@@ -42,6 +42,17 @@ def test_probe_and_records_use_canonical_book_order():
     ]
     assert records[0].raw_payload == "first\ncontinued"
     assert [record.source_sequence for record in records] == [1, 2, 3]
+
+
+def test_visible_text_excludes_notes_and_control_markers():
+    assert extract_visible_text(r"\f + \fr 16:25 \ft A relocation note.\f*") == ""
+    assert extract_visible_text(r"\p") == ""
+    assert extract_visible_text(r"\wj Lord\wj* spoke") == "Lord spoke"
+    assert (
+        extract_visible_text(r"Main text. \f + \fr 1:1 \ft Note text.\f*")
+        == "Main text."
+    )
+    assert extract_visible_text(r"\w Word|lemma=G3056 strong=G3056\w*") == "Word"
 
 
 def test_baseline_comparison_reports_reference_only_deltas():
