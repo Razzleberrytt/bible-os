@@ -68,7 +68,7 @@ def test_conflict_disclosure_requires_matching_details():
     attestation = deepcopy(load(ATTESTATION_PATH))
     attestation["conflict_disclosure"] = {
         "status": "disclosed",
-        "details": null,
+        "details": None,
     }
     assert errors(attestation)
 
