@@ -1,0 +1,102 @@
+{
+  "fixture_id": "canon_mapping_edges_0001",
+  "publication_policy": "Synthetic contract fixture only.",
+  "mappings": [
+    {
+      "mapping_id": "map_equivalent01",
+      "mapping_release_id": "maprel_canonfixture01",
+      "source_passage_ids": ["pas_source000001"],
+      "target_passage_ids": ["pas_target000001"],
+      "relation_type": "equivalent",
+      "method": "curated",
+      "algorithm_version": null,
+      "confidence": 1.0,
+      "review_state": "accepted",
+      "evidence": ["Synthetic one-to-one fixture"]
+    },
+    {
+      "mapping_id": "map_split0000001",
+      "mapping_release_id": "maprel_canonfixture01",
+      "source_passage_ids": ["pas_source000002"],
+      "target_passage_ids": ["pas_target000002", "pas_target000003"],
+      "relation_type": "split",
+      "method": "curated",
+      "algorithm_version": null,
+      "confidence": 0.99,
+      "review_state": "human-reviewed",
+      "evidence": ["Synthetic one-to-many fixture"]
+    },
+    {
+      "mapping_id": "map_join00000001",
+      "mapping_release_id": "maprel_canonfixture01",
+      "source_passage_ids": ["pas_source000003", "pas_source000004"],
+      "target_passage_ids": ["pas_target000004"],
+      "relation_type": "join",
+      "method": "curated",
+      "algorithm_version": null,
+      "confidence": 0.99,
+      "review_state": "human-reviewed",
+      "evidence": ["Synthetic many-to-one fixture"]
+    },
+    {
+      "mapping_id": "map_overlap000001",
+      "mapping_release_id": "maprel_canonfixture01",
+      "source_passage_ids": ["pas_source000005", "pas_source000006"],
+      "target_passage_ids": ["pas_target000005", "pas_target000006"],
+      "relation_type": "overlap",
+      "method": "hybrid",
+      "algorithm_version": "fixture-1",
+      "confidence": 0.8,
+      "review_state": "machine-checked",
+      "evidence": ["Synthetic partial-boundary fixture"]
+    },
+    {
+      "mapping_id": "map_omitted000001",
+      "mapping_release_id": "maprel_canonfixture01",
+      "source_passage_ids": ["pas_source000007"],
+      "target_passage_ids": [],
+      "relation_type": "omitted",
+      "method": "curated",
+      "algorithm_version": null,
+      "confidence": 1.0,
+      "review_state": "accepted",
+      "evidence": ["Synthetic explicit-omission fixture"]
+    },
+    {
+      "mapping_id": "map_addition00001",
+      "mapping_release_id": "maprel_canonfixture01",
+      "source_passage_ids": [],
+      "target_passage_ids": ["pas_target000007"],
+      "relation_type": "addition",
+      "method": "curated",
+      "algorithm_version": null,
+      "confidence": 1.0,
+      "review_state": "accepted",
+      "evidence": ["Synthetic source-specific-addition fixture"]
+    },
+    {
+      "mapping_id": "map_relocated0001",
+      "mapping_release_id": "maprel_canonfixture01",
+      "source_passage_ids": ["pas_source000008"],
+      "target_passage_ids": ["pas_target000008"],
+      "relation_type": "relocated",
+      "method": "curated",
+      "algorithm_version": null,
+      "confidence": 0.95,
+      "review_state": "human-reviewed",
+      "evidence": ["Synthetic alternate-locator fixture"]
+    },
+    {
+      "mapping_id": "map_uncertain00001",
+      "mapping_release_id": "maprel_canonfixture01",
+      "source_passage_ids": ["pas_source000009"],
+      "target_passage_ids": ["pas_target000009"],
+      "relation_type": "uncertain",
+      "method": "statistical",
+      "algorithm_version": "fixture-1",
+      "confidence": 0.4,
+      "review_state": "unreviewed",
+      "evidence": ["Synthetic unresolved-candidate fixture"]
+    }
+  ]
+}

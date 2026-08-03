@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bible-os.example/schemas/passage-mapping.schema.json",
+  "title": "Bible OS Passage Mapping",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "mapping_id",
+    "mapping_release_id",
+    "source_passage_ids",
+    "target_passage_ids",
+    "relation_type",
+    "method",
+    "confidence",
+    "review_state",
+    "evidence"
+  ],
+  "properties": {
+    "mapping_id": {"type": "string", "pattern": "^map_[a-z0-9]{12,}$"},
+    "mapping_release_id": {"type": "string", "pattern": "^maprel_[a-z0-9]{12,}$"},
+    "source_passage_ids": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"type": "string", "pattern": "^pas_[a-z0-9]{12,}$"}
+    },
+    "target_passage_ids": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"type": "string", "pattern": "^pas_[a-z0-9]{12,}$"}
+    },
+    "relation_type": {
+      "enum": ["equivalent", "split", "join", "overlap", "omitted", "addition", "relocated", "uncertain"]
+    },
+    "method": {"enum": ["curated", "rule-based", "statistical", "hybrid", "imported"]},
+    "algorithm_version": {"type": ["string", "null"]},
+    "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+    "review_state": {"enum": ["unreviewed", "machine-checked", "human-reviewed", "accepted", "rejected"]},
+    "evidence": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"relation_type": {"const": "equivalent"}}, "required": ["relation_type"]},
+      "then": {
+        "properties": {
+          "source_passage_ids": {"minItems": 1, "maxItems": 1},
+          "target_passage_ids": {"minItems": 1, "maxItems": 1}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"relation_type": {"const": "split"}}, "required": ["relation_type"]},
+      "then": {
+        "properties": {
+          "source_passage_ids": {"minItems": 1, "maxItems": 1},
+          "target_passage_ids": {"minItems": 2}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"relation_type": {"const": "join"}}, "required": ["relation_type"]},
+      "then": {
+        "properties": {
+          "source_passage_ids": {"minItems": 2},
+          "target_passage_ids": {"minItems": 1, "maxItems": 1}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"relation_type": {"const": "overlap"}}, "required": ["relation_type"]},
+      "then": {
+        "properties": {
+          "source_passage_ids": {"minItems": 1},
+          "target_passage_ids": {"minItems": 1}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"relation_type": {"const": "omitted"}}, "required": ["relation_type"]},
+      "then": {
+        "properties": {
+          "source_passage_ids": {"minItems": 1},
+          "target_passage_ids": {"maxItems": 0}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"relation_type": {"const": "addition"}}, "required": ["relation_type"]},
+      "then": {
+        "properties": {
+          "source_passage_ids": {"maxItems": 0},
+          "target_passage_ids": {"minItems": 1}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"relation_type": {"const": "relocated"}}, "required": ["relation_type"]},
+      "then": {
+        "properties": {
+          "source_passage_ids": {"minItems": 1},
+          "target_passage_ids": {"minItems": 1}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"relation_type": {"const": "uncertain"}}, "required": ["relation_type"]},
+      "then": {
+        "properties": {
+          "source_passage_ids": {"minItems": 1},
+          "target_passage_ids": {"minItems": 1}
+        }
+      }
+    }
+  ]
+}
