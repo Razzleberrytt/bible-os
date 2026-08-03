@@ -1,0 +1,50 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: python -m pip install --upgrade pip
+      - run: pip install '.[dev]'
+      - run: bash scripts/verify.sh
+
+  migration:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_USER: bible_os
+          POSTGRES_PASSWORD: bible_os_ci
+          POSTGRES_DB: bible_os
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U bible_os -d bible_os"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
+    env:
+      PGPASSWORD: bible_os_ci
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply foundation migration
+        run: psql -h localhost -U bible_os -d bible_os -v ON_ERROR_STOP=1 -f database/migrations/0001_foundation.up.sql
+      - name: Confirm core tables
+        run: |
+          psql -h localhost -U bible_os -d bible_os -Atc \
+            "SELECT count(*) FROM information_schema.tables WHERE table_schema='public';" |
+            grep -E '^[1-9][0-9]*$'
