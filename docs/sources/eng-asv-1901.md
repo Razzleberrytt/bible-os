@@ -23,15 +23,27 @@ The official eBible.org pages identify the work as:
 
 The copyright statement explicitly says the translation is in the Public Domain and may be copied freely.
 
-## Registration boundary
+## Verified artifact identity
 
-This record authorizes source evaluation and ephemeral verification only. It does not assert that:
+Controlled CI acquisition reproduced the official directory byte count and pinned the live archive as:
 
-- the archive has already been cryptographically pinned;
-- the archive structure has been accepted by an importer;
+- bytes: `2,875,147`
+- SHA-256: `712b44107ec98a5b8ca339751b37a593061ee630390c6a6d2edc54e334e1d6e4`
+- Last-Modified: `Fri, 12 Jun 2026 00:56:56 GMT`
+- ETag: `"2bdf0b-65403f4154f1c"`
+- safe ZIP entries: `72`
+- USFM/SFM files: `68`
+
+The downloaded archive was deleted after verification and is not retained in Git.
+
+## Current boundary
+
+This record verifies source identity and safe acquisition only. It does not assert that:
+
+- the archive structure has been accepted by an importer profile;
 - every verse locator matches WEBP or another versification system;
 - any ASV text has been retained in Git;
-- any mapping has been reviewed;
+- any passage mapping has been reviewed;
 - any corpus or dataset release is publication eligible.
 
-The registered acquisition target remains `registered` until a controlled CI acquisition confirms the exact byte count, SHA-256 digest, response metadata, and safe ZIP structure.
+The next milestone is a structure-only ASV adapter smoke test using ephemeral source bytes.
