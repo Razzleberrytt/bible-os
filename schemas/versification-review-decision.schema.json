@@ -1,0 +1,245 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bible-os.example/schemas/versification-review-decision.schema.json",
+  "title": "Bible OS Versification Human Review Decision",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "decision_id",
+    "queue_item_id",
+    "queue_item_sha256",
+    "aggregation_id",
+    "aggregation_sha256",
+    "aggregation_evaluation",
+    "outcome",
+    "decision_makers",
+    "rationale",
+    "decided_at",
+    "record_policy",
+    "decision_authority",
+    "decision_scope",
+    "decision_effect",
+    "queue_status_mutation",
+    "materialization_authority",
+    "execution_eligible",
+    "publication_eligible"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "decision_id": {
+      "type": "string",
+      "pattern": "^vrd_[a-z0-9]{12,}$"
+    },
+    "queue_item_id": {
+      "type": "string",
+      "pattern": "^vrq_[a-z0-9]{12,}$"
+    },
+    "queue_item_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "aggregation_id": {
+      "type": "string",
+      "pattern": "^vag_[a-z0-9]{12,}$"
+    },
+    "aggregation_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "aggregation_evaluation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "aggregation_status",
+        "quorum_met",
+        "required_roles_satisfied",
+        "conflicts_present",
+        "decision_preconditions_satisfied"
+      ],
+      "properties": {
+        "aggregation_status": {
+          "enum": [
+            "insufficient-reviews",
+            "conflicted",
+            "ready-for-human-decision"
+          ]
+        },
+        "quorum_met": {
+          "type": "boolean"
+        },
+        "required_roles_satisfied": {
+          "type": "boolean"
+        },
+        "conflicts_present": {
+          "type": "boolean"
+        },
+        "decision_preconditions_satisfied": {
+          "type": "boolean"
+        }
+      }
+    },
+    "outcome": {
+      "enum": ["accepted", "rejected", "needs-evidence", "withdrawn"]
+    },
+    "decision_makers": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["actor_id", "actor_type", "role"],
+        "properties": {
+          "actor_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "actor_type": {
+            "const": "human"
+          },
+          "role": {
+            "enum": [
+              "textual-scholar",
+              "data-curator",
+              "language-specialist",
+              "canon-specialist",
+              "engineering-reviewer",
+              "designated-arbiter"
+            ]
+          },
+          "affiliation": {
+            "type": ["string", "null"]
+          }
+        }
+      }
+    },
+    "rationale": {
+      "type": "string",
+      "minLength": 1
+    },
+    "requested_follow_up": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evidence_requirements"],
+      "properties": {
+        "evidence_requirements": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "decided_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "supersedes_decision_id": {
+      "type": ["string", "null"],
+      "pattern": "^vrd_[a-z0-9]{12,}$"
+    },
+    "record_policy": {
+      "const": "append-only"
+    },
+    "decision_authority": {
+      "const": "human-review-governance"
+    },
+    "decision_scope": {
+      "const": "review-governance-only"
+    },
+    "decision_effect": {
+      "const": "record-only"
+    },
+    "queue_status_mutation": {
+      "const": "not-applied"
+    },
+    "materialization_authority": {
+      "const": "none"
+    },
+    "execution_eligible": {
+      "const": false
+    },
+    "publication_eligible": {
+      "const": false
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "aggregation_evaluation": {
+            "properties": {
+              "aggregation_status": {
+                "enum": ["insufficient-reviews", "conflicted"]
+              }
+            },
+            "required": ["aggregation_status"]
+          }
+        },
+        "required": ["aggregation_evaluation"]
+      },
+      "then": {
+        "properties": {
+          "outcome": {
+            "enum": ["needs-evidence", "withdrawn"]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "outcome": {
+            "enum": ["accepted", "rejected"]
+          }
+        },
+        "required": ["outcome"]
+      },
+      "then": {
+        "properties": {
+          "aggregation_evaluation": {
+            "properties": {
+              "aggregation_status": {
+                "const": "ready-for-human-decision"
+              },
+              "quorum_met": {
+                "const": true
+              },
+              "required_roles_satisfied": {
+                "const": true
+              },
+              "conflicts_present": {
+                "const": false
+              },
+              "decision_preconditions_satisfied": {
+                "const": true
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "outcome": {
+            "const": "needs-evidence"
+          }
+        },
+        "required": ["outcome"]
+      },
+      "then": {
+        "required": ["requested_follow_up"]
+      }
+    }
+  ],
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  }
+}

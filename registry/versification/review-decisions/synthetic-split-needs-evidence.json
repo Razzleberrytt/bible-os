@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.0.0",
+  "decision_id": "vrd_synthdecision01",
+  "queue_item_id": "vrq_synthsplit01",
+  "queue_item_sha256": "7ee02237fdfa7014bedc8931c61c5099f79af9aa60f54aa63eafe9ee595e9059",
+  "aggregation_id": "vag_synthsummary01",
+  "aggregation_sha256": "347eab2c78f1d3d2548e87801465f47447ab54bdf89628693365c3c39288a459",
+  "aggregation_evaluation": {
+    "aggregation_status": "insufficient-reviews",
+    "quorum_met": false,
+    "required_roles_satisfied": false,
+    "conflicts_present": false,
+    "decision_preconditions_satisfied": false
+  },
+  "outcome": "needs-evidence",
+  "decision_makers": [
+    {
+      "actor_id": "bible-os:test:decision-maker",
+      "actor_type": "human",
+      "role": "data-curator",
+      "affiliation": null
+    }
+  ],
+  "rationale": "The review cannot advance because the engineering-reviewer role and the required two-review quorum are not satisfied.",
+  "requested_follow_up": {
+    "evidence_requirements": [
+      "Add an independent engineering-reviewer attestation anchored to the current queue-item hash."
+    ]
+  },
+  "decided_at": "2026-08-03T22:44:00Z",
+  "supersedes_decision_id": null,
+  "record_policy": "append-only",
+  "decision_authority": "human-review-governance",
+  "decision_scope": "review-governance-only",
+  "decision_effect": "record-only",
+  "queue_status_mutation": "not-applied",
+  "materialization_authority": "none",
+  "execution_eligible": false,
+  "publication_eligible": false
+}
