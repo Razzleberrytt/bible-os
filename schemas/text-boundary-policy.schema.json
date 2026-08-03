@@ -1,0 +1,219 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bible-os.example/schemas/text-boundary-policy.schema.json",
+  "title": "Bible OS Text Boundary Policy",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "policy_version",
+    "policy_id",
+    "operation",
+    "coordinate_system",
+    "review_state",
+    "publication_eligible"
+  ],
+  "properties": {
+    "policy_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "policy_id": {
+      "type": "string",
+      "pattern": "^tbp_[a-z0-9]{12,}$"
+    },
+    "operation": {
+      "enum": [
+        "split",
+        "join"
+      ]
+    },
+    "coordinate_system": {
+      "const": "unicode-codepoint-index-v1"
+    },
+    "review_state": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_reference": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_text_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "coverage": {
+      "const": "full-no-gaps-no-overlap"
+    },
+    "components": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "ordinal",
+          "target_reference",
+          "start",
+          "end",
+          "text_sha256"
+        ],
+        "properties": {
+          "ordinal": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "target_reference": {
+            "type": "string",
+            "minLength": 1
+          },
+          "start": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "end": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "text_sha256": {
+            "$ref": "#/$defs/sha256"
+          }
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "ordinal",
+          "source_reference",
+          "text_sha256"
+        ],
+        "properties": {
+          "ordinal": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "source_reference": {
+            "type": "string",
+            "minLength": 1
+          },
+          "text_sha256": {
+            "$ref": "#/$defs/sha256"
+          }
+        }
+      }
+    },
+    "target_reference": {
+      "type": "string",
+      "minLength": 1
+    },
+    "separator": {
+      "type": "string"
+    },
+    "output_text_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "publication_eligible": {
+      "const": false
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "operation": {
+            "const": "split"
+          }
+        },
+        "required": [
+          "operation"
+        ]
+      },
+      "then": {
+        "required": [
+          "source_reference",
+          "source_text_sha256",
+          "coverage",
+          "components"
+        ],
+        "not": {
+          "anyOf": [
+            {
+              "required": [
+                "sources"
+              ]
+            },
+            {
+              "required": [
+                "target_reference"
+              ]
+            },
+            {
+              "required": [
+                "separator"
+              ]
+            },
+            {
+              "required": [
+                "output_text_sha256"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "operation": {
+            "const": "join"
+          }
+        },
+        "required": [
+          "operation"
+        ]
+      },
+      "then": {
+        "required": [
+          "sources",
+          "target_reference",
+          "separator",
+          "output_text_sha256"
+        ],
+        "not": {
+          "anyOf": [
+            {
+              "required": [
+                "source_reference"
+              ]
+            },
+            {
+              "required": [
+                "source_text_sha256"
+              ]
+            },
+            {
+              "required": [
+                "coverage"
+              ]
+            },
+            {
+              "required": [
+                "components"
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  }
+}
