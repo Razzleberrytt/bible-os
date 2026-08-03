@@ -1,0 +1,117 @@
+{
+  "source": {
+    "source_id": "src_synthetic001",
+    "name": "Synthetic Test Corpus",
+    "source_type": "translation",
+    "authority_status": "unverified",
+    "language_codes": ["eng"],
+    "official_urls": ["https://example.invalid/synthetic-corpus"],
+    "license_status": "rejected",
+    "spdx_expression": null,
+    "commercial_use": "prohibited",
+    "attribution_text": null,
+    "license_evidence_urls": [],
+    "notes": ["Synthetic fixture only. Not biblical source text."]
+  },
+  "acquisition": {
+    "event_id": "acq_synthetic001",
+    "source_id": "src_synthetic001",
+    "requested_url": "https://example.invalid/synthetic-corpus",
+    "resolved_url": "https://example.invalid/synthetic-corpus",
+    "started_at": "2026-08-03T17:00:00Z",
+    "finished_at": "2026-08-03T17:00:01Z",
+    "result": "rejected",
+    "http_status": null,
+    "retrieval_tool": {"name": "synthetic-fixture", "version": "1.0.0"},
+    "observed_sha256": null,
+    "observed_bytes": null,
+    "error": "Synthetic fixture intentionally rejected from publication."
+  },
+  "artifact": {
+    "manifest_version": "1.0.0",
+    "artifact_id": "art_synthetic001",
+    "source_id": "src_synthetic001",
+    "acquisition_event_id": "acq_synthetic001",
+    "sha256": "b592a1760cde51b595e402bff6eb963945e6f86ab304c86436b518e295c0d05c",
+    "byte_size": 26,
+    "media_type": "text/plain",
+    "filename": "synthetic.txt",
+    "upstream_version": "fixture-1",
+    "archive_uri": "artifact+sha256://b592a1760cde51b595e402bff6eb963945e6f86ab304c86436b518e295c0d05c",
+    "verification_status": "rejected",
+    "verified_at": "2026-08-03T17:00:02Z",
+    "license_assertion": {
+      "status": "rejected",
+      "spdx_expression": null,
+      "commercial_use": "prohibited",
+      "attribution_text": null,
+      "evidence_urls": []
+    },
+    "notes": ["Contract fixture only."]
+  },
+  "release": {
+    "release_id": "rel_synthetic001",
+    "version": "0.0.0-fixture.1",
+    "status": "provisional",
+    "created_at": "2026-08-03T17:00:03Z",
+    "pipeline_revision": "fixture00",
+    "schema_version": "0.1.0",
+    "corpus_ids": ["cor_synthetic001"],
+    "source_artifacts": [
+      {
+        "artifact_id": "art_synthetic001",
+        "sha256": "b592a1760cde51b595e402bff6eb963945e6f86ab304c86436b518e295c0d05c"
+      }
+    ],
+    "outputs": [
+      {
+        "path": "examples/synthetic-output.txt",
+        "sha256": "b1aeaf4a9990b7d310bad67703fdfb2adf841ec746f041563432efcf256a1a0e",
+        "byte_size": 17,
+        "media_type": "text/plain"
+      }
+    ],
+    "quality": {
+      "status": "provisional",
+      "validation_report_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+      "critical_failures": 1
+    },
+    "licenses": [
+      {
+        "artifact_id": "art_synthetic001",
+        "status": "rejected",
+        "commercial_use": "prohibited"
+      }
+    ],
+    "reproducibility": {
+      "status": "not-tested",
+      "runs_compared": 0,
+      "comparison_scope": "synthetic contract fixture"
+    },
+    "provenance_attestation_path": "examples/synthetic.provenance.intoto.json"
+  },
+  "provenance": {
+    "_type": "https://in-toto.io/Statement/v1",
+    "subject": [
+      {
+        "name": "examples/synthetic-output.txt",
+        "digest": {
+          "sha256": "b1aeaf4a9990b7d310bad67703fdfb2adf841ec746f041563432efcf256a1a0e"
+        }
+      }
+    ],
+    "predicateType": "https://slsa.dev/provenance/v1",
+    "predicate": {
+      "buildDefinition": {
+        "buildType": "https://bible-os.example/build-types/synthetic-fixture/v1",
+        "externalParameters": {},
+        "internalParameters": {},
+        "resolvedDependencies": []
+      },
+      "runDetails": {
+        "builder": {"id": "https://bible-os.example/builders/test/v1"},
+        "metadata": {"invocationId": "synthetic-fixture"}
+      }
+    }
+  }
+}
