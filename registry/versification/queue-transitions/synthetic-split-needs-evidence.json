@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0.0",
+  "transition_id": "vqt_synthtransition01",
+  "transition_kind": "apply-human-governance-decision",
+  "queue_item_id": "vrq_synthsplit01",
+  "queue_item_sha256": "7ee02237fdfa7014bedc8931c61c5099f79af9aa60f54aa63eafe9ee595e9059",
+  "decision_id": "vrd_synthdecision01",
+  "decision_sha256": "589e733f3b5b2b886c48412919a933193e392d76736876df260f9dc4aa81f554",
+  "decision_outcome": "needs-evidence",
+  "from_status": "queued",
+  "to_status": "needs-evidence",
+  "applied_by": [
+    {
+      "actor_id": "bible-os:test:governance-operator",
+      "actor_type": "human",
+      "role": "governance-operator",
+      "affiliation": null
+    }
+  ],
+  "applied_at": "2026-08-03T22:51:00Z",
+  "supersedes_transition_id": null,
+  "record_policy": "append-only",
+  "application_scope": "queue-governance-status-only",
+  "status_effect": "effective-governance-status",
+  "queue_document_mutation": "not-performed",
+  "effective_status_source": "append-only-transition-event",
+  "materialization_authority": "none",
+  "mapping_execution_authority": "none",
+  "corpus_mutation_authority": "none",
+  "release_authority": "none",
+  "execution_eligible": false,
+  "publication_eligible": false
+}
