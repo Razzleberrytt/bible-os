@@ -112,6 +112,7 @@ jobs:
       - name: Fingerprint, load, and validate WEBP without retention
         run: >-
           python -m scripts.webp_full_ci
+          --expected-export registry/import-profiles/engwebp-normalized-export.json
           --report webp-full-ci-report.json
       - name: Display no-retention reproducibility evidence
         run: cat webp-full-ci-report.json
