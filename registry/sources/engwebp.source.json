@@ -1,0 +1,26 @@
+{
+  "source_id": "src_engwebp2020stable",
+  "name": "World English Bible Protestant Edition",
+  "source_type": "translation",
+  "authority_status": "official",
+  "language_codes": ["eng"],
+  "official_urls": [
+    "https://ebible.org/bible/details.php?all=1&id=engwebp",
+    "https://ebible.org/engwebp/copyright.htm",
+    "https://ebible.org/Scriptures/engwebp_usfm.zip"
+  ],
+  "license_status": "public-domain",
+  "spdx_expression": null,
+  "commercial_use": "allowed",
+  "attribution_text": "World English Bible Protestant Edition, published by eBible.org. Public domain. The World English Bible name is a trademark; altered text must not be represented as the World English Bible.",
+  "license_evidence_urls": [
+    "https://ebible.org/engwebp/copyright.htm",
+    "https://ebible.org/eng-web/webfaq.htm"
+  ],
+  "notes": [
+    "Official identifier: ENGWEBP / engwebp.",
+    "American English, 66-book protocanon edition.",
+    "2020 stable text edition; upstream may still publish verified typo corrections.",
+    "Source registration does not imply that any downloaded artifact has passed digest verification."
+  ]
+}
