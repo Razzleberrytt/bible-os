@@ -23,9 +23,7 @@
     "publication_eligible"
   ],
   "properties": {
-    "schema_version": {
-      "const": "1.0.0"
-    },
+    "schema_version": {"const": "1.0.0"},
     "queue_item_id": {
       "type": "string",
       "pattern": "^vrq_[a-z0-9]{12,}$"
@@ -52,15 +50,9 @@
         "withdrawn"
       ]
     },
-    "priority": {
-      "enum": ["low", "normal", "high", "critical"]
-    },
-    "source_system": {
-      "$ref": "#/$defs/referenceSet"
-    },
-    "target_system": {
-      "$ref": "#/$defs/referenceSet"
-    },
+    "priority": {"enum": ["low", "normal", "high", "critical"]},
+    "source_system": {"$ref": "#/$defs/referenceSet"},
+    "target_system": {"$ref": "#/$defs/referenceSet"},
     "proposed_confidence": {
       "type": "number",
       "minimum": 0,
@@ -80,20 +72,14 @@
             "imported-claim"
           ]
         },
-        "algorithm_version": {
-          "type": ["string", "null"]
-        },
-        "detector_id": {
-          "type": ["string", "null"]
-        }
+        "algorithm_version": {"type": ["string", "null"]},
+        "detector_id": {"type": ["string", "null"]}
       }
     },
     "evidence": {
       "type": "array",
       "minItems": 1,
-      "items": {
-        "$ref": "#/$defs/evidence"
-      }
+      "items": {"$ref": "#/$defs/evidence"}
     },
     "review_requirements": {
       "type": "object",
@@ -114,39 +100,18 @@
             ]
           }
         },
-        "minimum_approvals": {
-          "type": "integer",
-          "minimum": 1
-        },
+        "minimum_approvals": {"type": "integer", "minimum": 1},
         "conflict_policy": {
-          "enum": [
-            "unanimous",
-            "majority",
-            "designated-arbiter"
-          ]
+          "enum": ["unanimous", "majority", "designated-arbiter"]
         }
       }
     },
-    "decision": {
-      "$ref": "#/$defs/decision"
-    },
-    "created_at": {
-      "type": "string",
-      "format": "date-time"
-    },
-    "created_by": {
-      "type": "string",
-      "minLength": 1
-    },
-    "materialization_state": {
-      "const": "not-materialized"
-    },
-    "execution_eligible": {
-      "const": false
-    },
-    "publication_eligible": {
-      "const": false
-    }
+    "decision": {"$ref": "#/$defs/decision"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "created_by": {"type": "string", "minLength": 1},
+    "materialization_state": {"const": "not-materialized"},
+    "execution_eligible": {"const": false},
+    "publication_eligible": {"const": false}
   },
   "allOf": [
     {
@@ -157,14 +122,10 @@
       "then": {
         "properties": {
           "source_system": {
-            "properties": {
-              "references": {"minItems": 1, "maxItems": 1}
-            }
+            "properties": {"references": {"minItems": 1, "maxItems": 1}}
           },
           "target_system": {
-            "properties": {
-              "references": {"minItems": 2}
-            }
+            "properties": {"references": {"minItems": 2}}
           }
         }
       }
@@ -177,14 +138,10 @@
       "then": {
         "properties": {
           "source_system": {
-            "properties": {
-              "references": {"minItems": 2}
-            }
+            "properties": {"references": {"minItems": 2}}
           },
           "target_system": {
-            "properties": {
-              "references": {"minItems": 1, "maxItems": 1}
-            }
+            "properties": {"references": {"minItems": 1, "maxItems": 1}}
           }
         }
       }
@@ -197,14 +154,10 @@
       "then": {
         "properties": {
           "source_system": {
-            "properties": {
-              "references": {"minItems": 1}
-            }
+            "properties": {"references": {"minItems": 1}}
           },
           "target_system": {
-            "properties": {
-              "references": {"maxItems": 0}
-            }
+            "properties": {"references": {"maxItems": 0}}
           }
         }
       }
@@ -217,14 +170,10 @@
       "then": {
         "properties": {
           "source_system": {
-            "properties": {
-              "references": {"maxItems": 0}
-            }
+            "properties": {"references": {"maxItems": 0}}
           },
           "target_system": {
-            "properties": {
-              "references": {"minItems": 1}
-            }
+            "properties": {"references": {"minItems": 1}}
           }
         }
       }
@@ -241,14 +190,10 @@
       "then": {
         "properties": {
           "source_system": {
-            "properties": {
-              "references": {"minItems": 1}
-            }
+            "properties": {"references": {"minItems": 1}}
           },
           "target_system": {
-            "properties": {
-              "references": {"minItems": 1}
-            }
+            "properties": {"references": {"minItems": 1}}
           }
         }
       }
@@ -262,12 +207,58 @@
         },
         "required": ["status"]
       },
-      "then": {
-        "required": ["decision"]
+      "then": {"required": ["decision"]},
+      "else": {"not": {"required": ["decision"]}}
+    },
+    {
+      "if": {
+        "properties": {"status": {"const": "accepted"}},
+        "required": ["status"]
       },
-      "else": {
-        "not": {
-          "required": ["decision"]
+      "then": {
+        "properties": {
+          "decision": {
+            "properties": {"outcome": {"const": "accepted"}}
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {"status": {"const": "rejected"}},
+        "required": ["status"]
+      },
+      "then": {
+        "properties": {
+          "decision": {
+            "properties": {"outcome": {"const": "rejected"}}
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {"status": {"const": "needs-evidence"}},
+        "required": ["status"]
+      },
+      "then": {
+        "properties": {
+          "decision": {
+            "properties": {"outcome": {"const": "needs-evidence"}}
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {"status": {"const": "withdrawn"}},
+        "required": ["status"]
+      },
+      "then": {
+        "properties": {
+          "decision": {
+            "properties": {"outcome": {"const": "withdrawn"}}
+          }
         }
       }
     }
@@ -285,10 +276,7 @@
         "references": {
           "type": "array",
           "uniqueItems": true,
-          "items": {
-            "type": "string",
-            "minLength": 1
-          }
+          "items": {"type": "string", "minLength": 1}
         }
       }
     },
@@ -317,21 +305,13 @@
             "synthetic-fixture"
           ]
         },
-        "locator": {
-          "type": "string",
-          "minLength": 1
-        },
-        "summary": {
-          "type": "string",
-          "minLength": 1
-        },
+        "locator": {"type": "string", "minLength": 1},
+        "summary": {"type": "string", "minLength": 1},
         "sha256": {
           "type": ["string", "null"],
           "pattern": "^[a-f0-9]{64}$"
         },
-        "contains_source_text": {
-          "const": false
-        }
+        "contains_source_text": {"const": false}
       }
     },
     "decision": {
@@ -342,23 +322,14 @@
         "outcome": {
           "enum": ["accepted", "rejected", "needs-evidence", "withdrawn"]
         },
-        "decided_at": {
-          "type": "string",
-          "format": "date-time"
-        },
+        "decided_at": {"type": "string", "format": "date-time"},
         "decided_by": {
           "type": "array",
           "minItems": 1,
           "uniqueItems": true,
-          "items": {
-            "type": "string",
-            "minLength": 1
-          }
+          "items": {"type": "string", "minLength": 1}
         },
-        "rationale": {
-          "type": "string",
-          "minLength": 1
-        }
+        "rationale": {"type": "string", "minLength": 1}
       }
     }
   }
