@@ -34,7 +34,12 @@ def test_webp_acquisition_target_contract():
     target = load_json("registry/acquisitions/engwebp-usfm.json")
     Draft202012Validator(schema, format_checker=FormatChecker()).validate(target)
     assert target["requested_url"] == "https://ebible.org/Scriptures/engwebp_usfm.zip"
-    assert target["expected_bytes"] == 2_907_381
+    assert target["expected_bytes"] == 2_903_202
+    assert target["expected_sha256"] == (
+        "9b4330ba6baf9bd5fa8ea63a8ff255c9ab326da8c843f0355c23734e61ee6276"
+    )
+    assert target["upstream_last_modified"] == "2026-07-28T03:14:48Z"
+    assert target["verification_status"] == "verified"
     assert target["archive_policy"] == "content-addressed-external"
 
 
