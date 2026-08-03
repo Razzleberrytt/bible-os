@@ -1,0 +1,146 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bible-os.example/schemas/foundation.schema.json",
+  "title": "Bible OS Foundation Contracts",
+  "$defs": {
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_id", "name", "source_type", "authority_status", "official_urls", "license_status", "commercial_use"],
+      "properties": {
+        "source_id": {"type": "string", "pattern": "^src_[a-z0-9]{12,}$"},
+        "name": {"type": "string", "minLength": 1},
+        "source_type": {"enum": ["translation", "textual-edition", "manuscript", "morphology", "lexicon", "apparatus", "metadata", "other"]},
+        "authority_status": {"enum": ["official", "publisher-hosted", "maintainer-hosted", "trusted-mirror", "unverified"]},
+        "language_codes": {"type": "array", "items": {"type": "string", "minLength": 2}, "uniqueItems": true},
+        "official_urls": {"type": "array", "minItems": 1, "items": {"type": "string", "format": "uri"}, "uniqueItems": true},
+        "license_status": {"enum": ["public-domain", "permissive", "restricted", "unknown", "rejected"]},
+        "spdx_expression": {"type": ["string", "null"]},
+        "commercial_use": {"enum": ["allowed", "conditional", "prohibited", "unknown"]},
+        "attribution_text": {"type": ["string", "null"]},
+        "license_evidence_urls": {"type": "array", "items": {"type": "string", "format": "uri"}, "uniqueItems": true},
+        "notes": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "acquisition_event": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["event_id", "source_id", "requested_url", "resolved_url", "started_at", "finished_at", "result", "retrieval_tool"],
+      "properties": {
+        "event_id": {"type": "string", "pattern": "^acq_[a-z0-9]{12,}$"},
+        "source_id": {"type": "string", "pattern": "^src_[a-z0-9]{12,}$"},
+        "requested_url": {"type": "string", "format": "uri"},
+        "resolved_url": {"type": "string", "format": "uri"},
+        "started_at": {"type": "string", "format": "date-time"},
+        "finished_at": {"type": "string", "format": "date-time"},
+        "result": {"enum": ["success", "failed", "quarantined", "rejected"]},
+        "http_status": {"type": ["integer", "null"], "minimum": 100, "maximum": 599},
+        "retrieval_tool": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["name", "version"],
+          "properties": {"name": {"type": "string"}, "version": {"type": "string"}}
+        },
+        "observed_sha256": {"type": ["string", "null"], "pattern": "^[a-f0-9]{64}$"},
+        "observed_bytes": {"type": ["integer", "null"], "minimum": 0},
+        "error": {"type": ["string", "null"]}
+      }
+    },
+    "artifact_manifest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["manifest_version", "artifact_id", "source_id", "acquisition_event_id", "sha256", "byte_size", "media_type", "archive_uri", "verification_status", "license_assertion"],
+      "properties": {
+        "manifest_version": {"const": "1.0.0"},
+        "artifact_id": {"type": "string", "pattern": "^art_[a-z0-9]{12,}$"},
+        "source_id": {"type": "string", "pattern": "^src_[a-z0-9]{12,}$"},
+        "acquisition_event_id": {"type": "string", "pattern": "^acq_[a-z0-9]{12,}$"},
+        "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "byte_size": {"type": "integer", "minimum": 1},
+        "media_type": {"type": "string", "minLength": 1},
+        "filename": {"type": "string", "minLength": 1},
+        "upstream_version": {"type": ["string", "null"]},
+        "archive_uri": {"type": "string", "pattern": "^artifact\\+sha256://[a-f0-9]{64}$"},
+        "verification_status": {"enum": ["verified", "quarantined", "rejected"]},
+        "verified_at": {"type": "string", "format": "date-time"},
+        "license_assertion": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status", "commercial_use", "evidence_urls"],
+          "properties": {
+            "status": {"enum": ["public-domain", "permissive", "restricted", "unknown", "rejected"]},
+            "spdx_expression": {"type": ["string", "null"]},
+            "commercial_use": {"enum": ["allowed", "conditional", "prohibited", "unknown"]},
+            "attribution_text": {"type": ["string", "null"]},
+            "evidence_urls": {"type": "array", "items": {"type": "string", "format": "uri"}}
+          }
+        },
+        "notes": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "release_manifest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["release_id", "version", "status", "created_at", "pipeline_revision", "schema_version", "corpus_ids", "source_artifacts", "outputs", "quality", "licenses", "reproducibility"],
+      "properties": {
+        "release_id": {"type": "string", "pattern": "^rel_[a-z0-9]{12,}$"},
+        "version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[0-9A-Za-z.-]+)?$"},
+        "status": {"enum": ["provisional", "approved", "withdrawn"]},
+        "created_at": {"type": "string", "format": "date-time"},
+        "pipeline_revision": {"type": "string", "minLength": 7},
+        "schema_version": {"type": "string", "minLength": 1},
+        "corpus_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^cor_[a-z0-9]{12,}$"}},
+        "source_artifacts": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["artifact_id", "sha256"],
+            "properties": {
+              "artifact_id": {"type": "string"},
+              "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+            }
+          }
+        },
+        "outputs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["path", "sha256", "byte_size", "media_type"],
+            "properties": {
+              "path": {"type": "string"},
+              "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+              "byte_size": {"type": "integer", "minimum": 0},
+              "media_type": {"type": "string"}
+            }
+          }
+        },
+        "quality": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status", "validation_report_sha256", "critical_failures"],
+          "properties": {
+            "status": {"enum": ["passed", "failed", "provisional"]},
+            "validation_report_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+            "critical_failures": {"type": "integer", "minimum": 0}
+          }
+        },
+        "licenses": {"type": "array", "minItems": 1, "items": {"type": "object"}},
+        "reproducibility": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status", "runs_compared", "comparison_scope"],
+          "properties": {
+            "status": {"enum": ["verified", "failed", "not-tested"]},
+            "runs_compared": {"type": "integer", "minimum": 0},
+            "comparison_scope": {"type": "string", "minLength": 1}
+          }
+        },
+        "provenance_attestation_path": {"type": "string"}
+      }
+    }
+  }
+}
