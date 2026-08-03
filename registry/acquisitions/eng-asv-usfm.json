@@ -1,0 +1,22 @@
+{
+  "target_id": "tgt_engasvusfm202606",
+  "source_id": "src_engasv1901public",
+  "requested_url": "https://ebible.org/Scriptures/eng-asv_usfm.zip",
+  "details_url": "https://ebible.org/find/show.php?id=eng-asv",
+  "expected_media_type": "application/zip",
+  "expected_bytes": 2875147,
+  "upstream_last_modified": "2026-06-12T00:56:56Z",
+  "upstream_edition": "American Standard Version (1901), public-domain eBible.org edition",
+  "source_files_date": "2026-06-11",
+  "expected_sha256": null,
+  "verification_status": "registered",
+  "archive_policy": "content-addressed-external",
+  "notes": [
+    "eBible.org identifies the translation as the American Standard Version (1901), dialect Archaic American, and public domain.",
+    "The official eBible.org format listing exposes eng-asv_usfm.zip as the USFM source archive.",
+    "The official directory listing observed during registration advertised 2,875,147 bytes and a 2026-06-12 00:56:56 timestamp.",
+    "The source page states that generated files dated 2026-06-12 were produced from source files dated 2026-06-11.",
+    "The initial registration intentionally leaves expected_sha256 unpinned until controlled CI acquisition observes the live artifact.",
+    "The corpus ZIP must not be committed to Git history."
+  ]
+}
