@@ -6,10 +6,11 @@ import json
 import tempfile
 import urllib.request
 import zipfile
-from collections import Counter
+from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any
 
+from bible_os.importers.base import SourceRecord
 from bible_os.importers.webp_usfm import BOOK_ORDER, WebpUsfmAdapter
 from scripts.probe_acquisition import CHUNK_SIZE, MAX_SIZE_MARGIN, USER_AGENT, safe_zip_members
 
@@ -47,7 +48,55 @@ def download_verified_archive(target: dict[str, Any], destination: Path) -> None
         )
 
 
-def build_report(archive: zipfile.ZipFile) -> dict[str, Any]:
+def compare_baseline(
+    records: list[SourceRecord], baseline: dict[str, Any]
+) -> dict[str, Any]:
+    observed: dict[str, dict[int, set[int]]] = defaultdict(lambda: defaultdict(set))
+    non_numeric_labels: list[str] = []
+
+    for record in records:
+        if record.verse_label.isdigit():
+            observed[record.book_code][record.chapter].add(int(record.verse_label))
+        else:
+            non_numeric_labels.append(record.source_locator)
+
+    deltas: list[dict[str, Any]] = []
+    baseline_books: dict[str, list[int]] = baseline["books"]
+    all_books = sorted(set(baseline_books) | set(observed), key=lambda book: BOOK_ORDER.index(book))
+
+    for book in all_books:
+        expected_chapters = baseline_books.get(book, [])
+        observed_chapters = observed.get(book, {})
+        maximum_chapter = max(len(expected_chapters), max(observed_chapters, default=0))
+        for chapter in range(1, maximum_chapter + 1):
+            expected_max = expected_chapters[chapter - 1] if chapter <= len(expected_chapters) else 0
+            expected_labels = set(range(1, expected_max + 1))
+            observed_labels = observed_chapters.get(chapter, set())
+            missing = sorted(expected_labels - observed_labels)
+            extra = sorted(observed_labels - expected_labels)
+            if missing or extra:
+                deltas.append(
+                    {
+                        "book": book,
+                        "chapter": chapter,
+                        "missing_labels": missing,
+                        "extra_labels": extra,
+                    }
+                )
+
+    return {
+        "baseline_name": baseline["name"],
+        "baseline_source_release": baseline["source_release"],
+        "baseline_reference_count": baseline["reference_count"],
+        "versification_delta_count": len(deltas),
+        "versification_deltas": deltas,
+        "non_numeric_verse_labels": non_numeric_labels,
+    }
+
+
+def build_report(
+    archive: zipfile.ZipFile, baseline: dict[str, Any] | None = None
+) -> dict[str, Any]:
     safe_zip_members(archive)
     adapter = WebpUsfmAdapter()
     probe = adapter.probe(archive)
@@ -60,7 +109,7 @@ def build_report(archive: zipfile.ZipFile) -> dict[str, Any]:
     empty_payloads = sum(not record.raw_payload.strip() for record in records)
     range_labels = sum("-" in record.verse_label or "–" in record.verse_label for record in records)
 
-    report = {
+    report: dict[str, Any] = {
         "report_version": "1.0.0",
         "adapter": adapter.name,
         "archive_files": probe.archive_files,
@@ -80,6 +129,8 @@ def build_report(archive: zipfile.ZipFile) -> dict[str, Any]:
         "book_record_counts": dict(sorted(book_counts.items(), key=lambda item: BOOK_ORDER.index(item[0]))),
         "text_retention": "raw payloads streamed for validation; no corpus text written to report",
     }
+    if baseline is not None:
+        report.update(compare_baseline(records, baseline))
     return report
 
 
@@ -98,16 +149,18 @@ def assert_expected(report: dict[str, Any], expected: dict[str, Any]) -> None:
 def main() -> int:
     parser = argparse.ArgumentParser(description="Run a no-retention WEBP adapter smoke test")
     parser.add_argument("target", type=Path)
+    parser.add_argument("--baseline", type=Path)
     parser.add_argument("--expected", type=Path)
     parser.add_argument("--report", type=Path, default=Path("webp-adapter-report.json"))
     args = parser.parse_args()
 
     target = load_json(args.target)
+    baseline = load_json(args.baseline) if args.baseline else None
     with tempfile.TemporaryDirectory(prefix="bible-os-webp-adapter-") as temp_dir:
         archive_path = Path(temp_dir) / "engwebp_usfm.zip"
         download_verified_archive(target, archive_path)
         with zipfile.ZipFile(archive_path) as archive:
-            report = build_report(archive)
+            report = build_report(archive, baseline)
 
     if args.expected:
         assert_expected(report, load_json(args.expected))
