@@ -21,6 +21,25 @@ jobs:
       - run: pip install '.[dev]'
       - run: bash scripts/verify.sh
 
+  versification-registry-integrity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: Install Bible OS package
+        run: pip install .
+      - name: Audit versification governance registry
+        run: >-
+          python -m scripts.versification_registry_integrity
+          --root .
+          --report versification-registry-integrity-report.json
+      - name: Display versification registry integrity evidence
+        if: always()
+        run: cat versification-registry-integrity-report.json
+
   migration:
     runs-on: ubuntu-latest
     services:
