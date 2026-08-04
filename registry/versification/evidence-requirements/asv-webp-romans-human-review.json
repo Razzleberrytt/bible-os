@@ -1,0 +1,85 @@
+{
+  "schema_version": "1.0.0",
+  "requirements_id": "ver_asvwebpromans01",
+  "queue_item_id": "vrq_asvwebpromans01",
+  "queue_item_sha256": "bfa642b831bf8014a81a758b857fa2ff91a49736f594daff492a9f5231dd8199",
+  "trigger_attestation_id": "vra_romanstextual01",
+  "trigger_attestation_sha256": "70fffae4d647a80b781e616b936bc44acdc80c9388b7f5422e3b926f127c0006",
+  "status": "open",
+  "scope": {
+    "source_references": ["ROM 16:25", "ROM 16:26", "ROM 16:27"],
+    "target_references": ["ROM 14:24", "ROM 14:25", "ROM 14:26", "ROM 16:25"],
+    "excluded_candidate_ids": ["can_k6cfuv7sbumommdi2ha7"]
+  },
+  "requirements": [
+    {
+      "requirement_id": "req_sourcetext001",
+      "category": "source-anchored-textual-comparison",
+      "description": "Inspect every scoped ASV and WEBP unit from the registered artifacts without storing the unit wording in this record.",
+      "required_artifacts": ["registered-source-locator-index", "source-unit-digests", "comparison-notes"],
+      "acceptance_criteria": [
+        "Every scoped locator is linked to a reproducible source-unit digest.",
+        "Notes describe continuity, ordering, and discontinuity without embedding unit wording.",
+        "Notes assess relocation, duplication, omission, numbering-only variation, and mixed relationships."
+      ],
+      "contains_source_text": false,
+      "human_validation_required": true
+    },
+    {
+      "requirement_id": "req_numberingprov01",
+      "category": "numbering-tradition-provenance",
+      "description": "Document the edition and numbering traditions behind the observed Romans arrangements.",
+      "required_artifacts": ["provenance-citations", "comparison-notes"],
+      "acceptance_criteria": [
+        "Citations identify the relevant edition, versification, or editorial tradition.",
+        "Placement, numbering, and placeholder behavior are distinguished.",
+        "Unresolved provenance conflicts remain explicit."
+      ],
+      "contains_source_text": false,
+      "human_validation_required": true
+    },
+    {
+      "requirement_id": "req_scholarship001",
+      "category": "independent-scholarly-analysis",
+      "description": "Collect independent scholarship about the Romans doxology placement and numbering problem.",
+      "required_artifacts": ["scholarly-citations", "comparison-notes"],
+      "acceptance_criteria": [
+        "At least two independently authored scholarly sources are cited.",
+        "Each citation is tied to a specific historical or structural claim.",
+        "Scholarly disagreement is represented explicitly."
+      ],
+      "contains_source_text": false,
+      "human_validation_required": true
+    },
+    {
+      "requirement_id": "req_hypothesismatrix01",
+      "category": "alternative-hypothesis-assessment",
+      "description": "Evaluate plausible explanations before any later mapping review.",
+      "required_artifacts": ["hypothesis-matrix", "comparison-notes"],
+      "acceptance_criteria": [
+        "Relocation, duplication, omission, numbering-only, and mixed hypotheses are evaluated separately.",
+        "Evidence for and against each hypothesis is linked to a digest or citation.",
+        "No hypothesis is accepted by this requirements record."
+      ],
+      "contains_source_text": false,
+      "human_validation_required": true
+    }
+  ],
+  "completion_policy": {
+    "all_requirements_required": true,
+    "required_reviewer_role": "textual-scholar",
+    "independent_human_reviewer_required": true,
+    "completion_effect": "evidence-ready-for-review-only",
+    "approval_implied": false
+  },
+  "supersedes_requirements_id": null,
+  "created_at": "2026-08-04T00:25:00Z",
+  "created_by": "bible-os:ai-assisted:evidence-planning",
+  "record_policy": "append-only",
+  "decision_authority": "none",
+  "queue_status_authority": "none",
+  "materialization_authority": "none",
+  "execution_eligible": false,
+  "publication_eligible": false,
+  "source_text_embedded": false
+}
