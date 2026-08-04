@@ -1,0 +1,154 @@
+{
+  "_profile_version": "1.0.0",
+  "format": "application/x-ndjson; charset=utf-8",
+  "canonicalization": "json-sort-keys-compact-lf-v1",
+  "sha256": "46215a091232f5701c5c1c149c507d69a9df54a63590c8a3feef31fd83e54366",
+  "byte_size": 16588947,
+  "record_count": 31105,
+  "runs_compared": 2,
+  "reproducibility_status": "verified",
+  "candidate_namespace": "bible-os:asv-webp-locator-candidate:v1",
+  "common_locator_count": 31100,
+  "same_locator_same_realization_count": 31087,
+  "both_text_count": 31083,
+  "both_placeholder_count": 4,
+  "asv_placeholder_webp_text_count": 12,
+  "asv_text_webp_placeholder_count": 1,
+  "realization_mismatch_count": 13,
+  "asv_only_locator_count": 2,
+  "webp_only_locator_count": 3,
+  "exceptional_candidate_count": 18,
+  "exceptional_candidates": [
+    {
+      "candidate_id": "can_blsuzu4ncdbtsnf63woh",
+      "candidate_class": "realization-mismatch-observation",
+      "locator": "MAT 17:21",
+      "asv_realization_type": "empty-placeholder",
+      "webp_realization_type": "text"
+    },
+    {
+      "candidate_id": "can_3o5rrchnqetzxvq2gllw",
+      "candidate_class": "realization-mismatch-observation",
+      "locator": "MAT 18:11",
+      "asv_realization_type": "empty-placeholder",
+      "webp_realization_type": "text"
+    },
+    {
+      "candidate_id": "can_oyugo77xofzgshllxaow",
+      "candidate_class": "realization-mismatch-observation",
+      "locator": "MAT 23:14",
+      "asv_realization_type": "empty-placeholder",
+      "webp_realization_type": "text"
+    },
+    {
+      "candidate_id": "can_dhrzu6zuszkcvlr5p5gt",
+      "candidate_class": "realization-mismatch-observation",
+      "locator": "MRK 7:16",
+      "asv_realization_type": "empty-placeholder",
+      "webp_realization_type": "text"
+    },
+    {
+      "candidate_id": "can_y5re4ybky46wtvaeoyxo",
+      "candidate_class": "realization-mismatch-observation",
+      "locator": "MRK 9:44",
+      "asv_realization_type": "empty-placeholder",
+      "webp_realization_type": "text"
+    },
+    {
+      "candidate_id": "can_qg3op2rbzyvhace4ve6s",
+      "candidate_class": "realization-mismatch-observation",
+      "locator": "MRK 9:46",
+      "asv_realization_type": "empty-placeholder",
+      "webp_realization_type": "text"
+    },
+    {
+      "candidate_id": "can_t7qqhfgsdew7qngkf3gg",
+      "candidate_class": "realization-mismatch-observation",
+      "locator": "MRK 11:26",
+      "asv_realization_type": "empty-placeholder",
+      "webp_realization_type": "text"
+    },
+    {
+      "candidate_id": "can_rsbu6h7yfkjxmecc54td",
+      "candidate_class": "realization-mismatch-observation",
+      "locator": "MRK 15:28",
+      "asv_realization_type": "empty-placeholder",
+      "webp_realization_type": "text"
+    },
+    {
+      "candidate_id": "can_6eumapr5jk7j66e4sr65",
+      "candidate_class": "realization-mismatch-observation",
+      "locator": "LUK 23:17",
+      "asv_realization_type": "empty-placeholder",
+      "webp_realization_type": "text"
+    },
+    {
+      "candidate_id": "can_dfsxlg5bm6lpmbutag7q",
+      "candidate_class": "realization-mismatch-observation",
+      "locator": "JHN 5:4",
+      "asv_realization_type": "empty-placeholder",
+      "webp_realization_type": "text"
+    },
+    {
+      "candidate_id": "can_rtxn2oj5o2qmv6qv3uv6",
+      "candidate_class": "realization-mismatch-observation",
+      "locator": "ACT 28:29",
+      "asv_realization_type": "empty-placeholder",
+      "webp_realization_type": "text"
+    },
+    {
+      "candidate_id": "can_py26v3umswbmzskskpp5",
+      "candidate_class": "webp-only-locus",
+      "locator": "ROM 14:24",
+      "asv_realization_type": null,
+      "webp_realization_type": "text"
+    },
+    {
+      "candidate_id": "can_wj6w6pd7c37roqplxvrh",
+      "candidate_class": "webp-only-locus",
+      "locator": "ROM 14:25",
+      "asv_realization_type": null,
+      "webp_realization_type": "text"
+    },
+    {
+      "candidate_id": "can_3sgamesf53renovukq6w",
+      "candidate_class": "webp-only-locus",
+      "locator": "ROM 14:26",
+      "asv_realization_type": null,
+      "webp_realization_type": "text"
+    },
+    {
+      "candidate_id": "can_k6cfuv7sbumommdi2ha7",
+      "candidate_class": "realization-mismatch-observation",
+      "locator": "ROM 16:24",
+      "asv_realization_type": "empty-placeholder",
+      "webp_realization_type": "text"
+    },
+    {
+      "candidate_id": "can_hdyty2uvb3s3kuylkc57",
+      "candidate_class": "realization-mismatch-observation",
+      "locator": "ROM 16:25",
+      "asv_realization_type": "text",
+      "webp_realization_type": "empty-placeholder"
+    },
+    {
+      "candidate_id": "can_lyiw5ovpe7ir3acvsd6m",
+      "candidate_class": "asv-only-locus",
+      "locator": "ROM 16:26",
+      "asv_realization_type": "text",
+      "webp_realization_type": null
+    },
+    {
+      "candidate_id": "can_qy4pdugmdaq26f52akxm",
+      "candidate_class": "asv-only-locus",
+      "locator": "ROM 16:27",
+      "asv_realization_type": "text",
+      "webp_realization_type": null
+    }
+  ],
+  "queue_documents_written": false,
+  "mapping_authority": "none",
+  "execution_eligible": false,
+  "publication_eligible": false,
+  "retention": "candidate records fingerprinted in memory; only exceptional locator metadata is reported"
+}
