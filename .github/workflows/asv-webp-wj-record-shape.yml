@@ -19,9 +19,10 @@ jobs:
           cache: pip
       - name: Install Bible OS package
         run: pip install .
-      - name: Observe compact text-private ASV and WEBP wj record shape
+      - name: Reproduce compact text-private ASV and WEBP wj record shape
         run: >-
           python -m scripts.asv_webp_wj_record_shape_profile_ci
+          --expected registry/experiments/asv-webp-wj-record-shape.json
           --report asv-webp-wj-record-shape-report.json
       - name: Display metadata-only wj record-shape evidence
         if: always()
