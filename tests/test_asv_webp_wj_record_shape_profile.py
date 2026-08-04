@@ -76,10 +76,11 @@ def test_profile_hashes_full_comparison_and_preserves_compact_counters() -> None
         canonical_json_bytes(comparison)
     )
     assert len(profile["comparison_sha256"]) == 64
+    assert profile["asv"]["corpus"]["opening_add_line_count"] == 1
     assert profile["webp"]["corpus"]["records_with_opening_wj"] == 1
     assert profile["webp"]["corpus"]["opening_wj_visible_token_count"] == 3
     assert profile["webp_books_with_opening_wj"][0]["book_code"] == "MAT"
-    assert profile["asv_books_with_opening_add"][0]["book_code"] == "MAT"
+    assert "asv_books_with_opening_add" not in profile
 
 
 def test_profile_hash_changes_when_internal_counter_changes() -> None:
