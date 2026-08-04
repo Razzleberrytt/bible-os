@@ -15,9 +15,8 @@ from scripts.webp_adapter_smoke import load_json
 
 
 RATIO_KEYS = (
-    "wj_record_opening_token_share_ppm",
-    "wj_record_wj_token_share_ppm",
-    "wj_record_non_wj_subsequent_token_share_ppm",
+    "opening_wj_record_opening_token_share_ppm",
+    "opening_wj_record_subsequent_token_share_ppm",
     "source_position_to_adapter_token_ratio_ppm",
 )
 
@@ -39,8 +38,8 @@ def compact_summary(summary: dict[str, Any]) -> dict[str, Any]:
         **{key: int(summary.get(key, 0)) for key in COUNT_KEYS},
         **{key: int(summary.get(key, 0)) for key in RATIO_KEYS},
         "record_shapes": summary.get("record_shapes", []),
-        "subsequent_wj_lines_per_wj_record": summary.get(
-            "subsequent_wj_lines_per_wj_record", []
+        "subsequent_lines_per_opening_wj_record": summary.get(
+            "subsequent_lines_per_opening_wj_record", []
         ),
     }
 
@@ -54,31 +53,33 @@ def compact_translation(translation: dict[str, Any]) -> dict[str, Any]:
 
 
 def compact_book(book: dict[str, Any]) -> dict[str, Any]:
-    return {
-        "book_code": book["book_code"],
-        **compact_summary(book),
-    }
+    return {"book_code": book["book_code"], **compact_summary(book)}
 
 
 def build_profile(comparison: dict[str, Any]) -> dict[str, Any]:
     canonical = canonical_json_bytes(comparison)
     return {
-        "profile_contract": "asv-webp-wj-record-shape-profile-v1",
+        "profile_contract": "asv-webp-wj-record-shape-profile-v2",
         "diagnostic_contract": comparison["diagnostic_contract"],
         "comparison_sha256": hashlib.sha256(canonical).hexdigest(),
         "comparison_byte_size": len(canonical),
         "focus_books": list(FOCUS_BOOKS),
         "verse_opening_definition": comparison["verse_opening_definition"],
+        "opening_wj_definition": comparison["opening_wj_definition"],
+        "opening_add_definition": comparison["opening_add_definition"],
         "subsequent_line_definition": comparison["subsequent_line_definition"],
-        "wj_line_definition": comparison["wj_line_definition"],
         "token_reconciliation_definition": comparison[
             "token_reconciliation_definition"
         ],
         "asv": compact_translation(comparison["asv"]),
         "webp": compact_translation(comparison["webp"]),
-        "webp_books_with_subsequent_wj": [
+        "webp_books_with_opening_wj": [
             compact_book(book)
-            for book in comparison["webp"]["books_with_subsequent_wj"]
+            for book in comparison["webp"]["books_with_opening_wj"]
+        ],
+        "asv_books_with_opening_add": [
+            compact_book(book)
+            for book in comparison["asv"]["books_with_opening_add"]
         ],
         "focus_book_profiles": comparison["focus_book_comparisons"],
         "scripture_text_reported": comparison["scripture_text_reported"],
@@ -121,7 +122,7 @@ def run(expected_path: Path | None = None) -> dict[str, Any]:
 
     return {
         "status": "passed",
-        "experiment": "asv-webp-wj-record-shape-v1",
+        "experiment": "asv-webp-wj-record-shape-v2",
         "asv_artifact_sha256": full_report["asv_artifact_sha256"],
         "webp_artifact_sha256": full_report["webp_artifact_sha256"],
         "profile": profile,
@@ -144,7 +145,7 @@ def run(expected_path: Path | None = None) -> dict[str, Any]:
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description=(
-            "Reproduce a compact text-private ASV/WEBP wj record-shape profile"
+            "Reproduce a compact text-private ASV/WEBP verse-opening wj profile"
         )
     )
     parser.add_argument("--expected", type=Path)
