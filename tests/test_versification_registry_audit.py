@@ -34,24 +34,36 @@ def test_current_registry_audits_cleanly_and_reports_effective_status():
     report = audit_registry(ROOT)
 
     assert report.clean is True
-    assert report.queue_document_count == 1
+    assert report.queue_document_count == 2
     assert report.transition_document_count == 1
-    assert report.valid_queue_count == 1
+    assert report.valid_queue_count == 2
     assert report.invalid_queue_count == 0
     assert report.orphan_transition_count == 0
-    assert report.status_counts == (("needs-evidence", 1),)
+    assert report.status_counts == (("needs-evidence", 1), ("queued", 1))
     assert report.findings == ()
 
-    entry = report.entries[0]
-    assert entry.queue_item_id == "vrq_synthsplit01"
-    assert entry.valid is True
-    assert entry.initial_status == "queued"
-    assert entry.effective_status == "needs-evidence"
-    assert entry.status_source == "append-only-transition-event"
-    assert entry.transition_count == 1
-    assert entry.effective_transition_ids == ("vqt_synthtransition01",)
-    assert entry.superseded_transition_ids == ()
-    assert entry.error_codes == ()
+    entries = {entry.queue_item_id: entry for entry in report.entries}
+
+    synthetic = entries["vrq_synthsplit01"]
+    assert synthetic.valid is True
+    assert synthetic.initial_status == "queued"
+    assert synthetic.effective_status == "needs-evidence"
+    assert synthetic.status_source == "append-only-transition-event"
+    assert synthetic.transition_count == 1
+    assert synthetic.effective_transition_ids == ("vqt_synthtransition01",)
+    assert synthetic.superseded_transition_ids == ()
+    assert synthetic.error_codes == ()
+
+    romans = entries["vrq_asvwebpromans01"]
+    assert romans.valid is True
+    assert romans.initial_status == "queued"
+    assert romans.effective_status == "queued"
+    assert romans.status_source == "queue-item"
+    assert romans.transition_count == 0
+    assert romans.effective_transition_ids == ()
+    assert romans.superseded_transition_ids == ()
+    assert romans.last_applied_at is None
+    assert romans.error_codes == ()
 
 
 def test_audit_is_read_only_for_repository_files(tmp_path: Path):
