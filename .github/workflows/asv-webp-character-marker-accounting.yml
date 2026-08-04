@@ -19,9 +19,9 @@ jobs:
           cache: pip
       - name: Install Bible OS package
         run: pip install .
-      - name: Observe text-private ASV and WEBP character marker accounting
+      - name: Observe compact text-private ASV and WEBP character marker profile
         run: >-
-          python -m scripts.asv_webp_character_marker_accounting_ci
+          python -m scripts.asv_webp_character_marker_profile_ci
           --report asv-webp-character-marker-accounting-report.json
       - name: Display metadata-only character marker evidence
         if: always()
