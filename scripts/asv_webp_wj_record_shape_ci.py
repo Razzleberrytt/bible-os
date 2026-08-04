@@ -42,6 +42,18 @@ COUNT_KEYS = (
     "opening_nonempty_line_count",
     "opening_zero_token_line_count",
     "opening_visible_token_count",
+    "opening_wj_line_count",
+    "opening_wj_zero_token_line_count",
+    "opening_wj_visible_token_count",
+    "opening_add_line_count",
+    "opening_add_zero_token_line_count",
+    "opening_add_visible_token_count",
+    "opening_other_marker_line_count",
+    "opening_other_marker_zero_token_line_count",
+    "opening_other_marker_visible_token_count",
+    "opening_unmarked_line_count",
+    "opening_unmarked_zero_token_line_count",
+    "opening_unmarked_visible_token_count",
     "subsequent_line_count",
     "subsequent_zero_token_line_count",
     "subsequent_visible_token_count",
@@ -52,23 +64,26 @@ COUNT_KEYS = (
     "subsequent_unmarked_visible_token_count",
     "subsequent_other_marker_line_count",
     "subsequent_other_marker_visible_token_count",
-    "records_with_subsequent_wj",
-    "records_with_multiple_subsequent_wj",
-    "wj_record_opening_visible_token_count",
-    "wj_record_wj_visible_token_count",
-    "wj_record_non_wj_subsequent_visible_token_count",
-    "wj_record_adapter_visible_token_count",
+    "records_with_opening_wj",
+    "records_with_opening_wj_and_subsequent_lines",
+    "records_with_opening_wj_and_visible_subsequent_tokens",
+    "opening_wj_record_opening_visible_token_count",
+    "opening_wj_record_subsequent_visible_token_count",
+    "opening_wj_record_adapter_visible_token_count",
 )
 SHAPE_ORDER = (
     "empty",
-    "opening-only",
-    "opening-plus-wj",
-    "opening-plus-non-wj",
-    "opening-plus-wj-and-non-wj",
-    "no-opening-wj-only",
-    "no-opening-non-wj-only",
-    "no-opening-wj-and-non-wj",
+    "empty-plus-later",
+    "opening-unmarked-only",
+    "opening-unmarked-plus-later",
+    "opening-wj-only",
+    "opening-wj-plus-later",
+    "opening-add-only",
+    "opening-add-plus-later",
+    "opening-other-marker-only",
+    "opening-other-marker-plus-later",
 )
+OPENING_CLASSES = ("empty", "unmarked", "wj", "add", "other-marker")
 
 
 @dataclass(frozen=True, slots=True)
@@ -122,6 +137,21 @@ def iter_source_shape_records(text: str) -> Iterable[SourceShapeRecord]:
         yield pending
 
 
+def classify_opening_payload(payload: str) -> str:
+    stripped = payload.strip()
+    if not stripped:
+        return "empty"
+    marker = leading_marker(stripped)
+    if marker is None:
+        return "unmarked"
+    root = marker_root(marker)
+    if root == "wj":
+        return "wj"
+    if root == "add":
+        return "add"
+    return "other-marker"
+
+
 def classify_subsequent_line(line: str) -> str:
     marker = leading_marker(line.strip())
     if marker is None:
@@ -131,27 +161,13 @@ def classify_subsequent_line(line: str) -> str:
     return "other-marker"
 
 
-def record_shape(
-    opening_tokens: tuple[str, ...],
-    has_wj: bool,
-    has_non_wj_source_line: bool,
-) -> str:
-    has_opening = bool(opening_tokens)
-    if has_opening and has_wj and has_non_wj_source_line:
-        return "opening-plus-wj-and-non-wj"
-    if has_opening and has_wj:
-        return "opening-plus-wj"
-    if has_opening and has_non_wj_source_line:
-        return "opening-plus-non-wj"
-    if has_opening:
-        return "opening-only"
-    if has_wj and has_non_wj_source_line:
-        return "no-opening-wj-and-non-wj"
-    if has_wj:
-        return "no-opening-wj-only"
-    if has_non_wj_source_line:
-        return "no-opening-non-wj-only"
-    return "empty"
+def record_shape(opening_class: str, has_later_source_line: bool) -> str:
+    if opening_class not in OPENING_CLASSES:
+        raise ValueError(f"unsupported opening class: {opening_class}")
+    if opening_class == "empty":
+        return "empty-plus-later" if has_later_source_line else "empty"
+    suffix = "plus-later" if has_later_source_line else "only"
+    return f"opening-{opening_class}-{suffix}"
 
 
 def empty_counts() -> Counter[str]:
@@ -180,15 +196,12 @@ def shape_rows(counter: Counter[str]) -> list[dict[str, Any]]:
 
 def finalize_counts(counts: dict[str, Any] | Counter[str]) -> dict[str, int]:
     result = {key: int(counts.get(key, 0)) for key in COUNT_KEYS}
-    denominator = result["wj_record_adapter_visible_token_count"]
-    result["wj_record_opening_token_share_ppm"] = ratio_ppm(
-        result["wj_record_opening_visible_token_count"], denominator
+    denominator = result["opening_wj_record_adapter_visible_token_count"]
+    result["opening_wj_record_opening_token_share_ppm"] = ratio_ppm(
+        result["opening_wj_record_opening_visible_token_count"], denominator
     )
-    result["wj_record_wj_token_share_ppm"] = ratio_ppm(
-        result["wj_record_wj_visible_token_count"], denominator
-    )
-    result["wj_record_non_wj_subsequent_token_share_ppm"] = ratio_ppm(
-        result["wj_record_non_wj_subsequent_visible_token_count"], denominator
+    result["opening_wj_record_subsequent_token_share_ppm"] = ratio_ppm(
+        result["opening_wj_record_subsequent_visible_token_count"], denominator
     )
     result["source_position_to_adapter_token_ratio_ppm"] = ratio_ppm(
         result["source_position_token_count"], result["adapter_visible_token_count"]
@@ -206,14 +219,13 @@ def summarize_shape_records(
 
     counts = empty_counts()
     shapes: Counter[str] = Counter()
-    wj_histogram: Counter[int] = Counter()
+    later_line_histogram_for_opening_wj: Counter[int] = Counter()
 
     for record_index, record in enumerate(records):
         opening_tokens = visible_tokens(record.opening_payload)
-        subsequent_wj_tokens = 0
-        subsequent_non_wj_tokens = 0
-        subsequent_wj_lines = 0
-        has_non_wj_source_line = False
+        opening_class = classify_opening_payload(record.opening_payload)
+        subsequent_token_count = 0
+        has_later_source_line = False
 
         counts["record_count"] += 1
         counts["opening_line_count"] += 1
@@ -223,35 +235,36 @@ def summarize_shape_records(
         else:
             counts["opening_zero_token_line_count"] += 1
 
+        class_prefix = f"opening_{opening_class.replace('-', '_')}"
+        if opening_class != "empty":
+            counts[f"{class_prefix}_line_count"] += 1
+            counts[f"{class_prefix}_visible_token_count"] += len(opening_tokens)
+            if not opening_tokens:
+                counts[f"{class_prefix}_zero_token_line_count"] += 1
+
         for line in record.subsequent_lines:
             classification = classify_subsequent_line(line)
             tokens = visible_tokens(line)
             counts["subsequent_line_count"] += 1
             counts["subsequent_visible_token_count"] += len(tokens)
+            subsequent_token_count += len(tokens)
+            has_later_source_line = has_later_source_line or bool(line.strip())
             if not tokens:
                 counts["subsequent_zero_token_line_count"] += 1
 
             if classification == "wj":
-                subsequent_wj_lines += 1
-                subsequent_wj_tokens += len(tokens)
                 counts["subsequent_wj_line_count"] += 1
                 counts["subsequent_wj_visible_token_count"] += len(tokens)
                 if not tokens:
                     counts["subsequent_wj_zero_token_line_count"] += 1
             elif classification == "unmarked":
-                has_non_wj_source_line = has_non_wj_source_line or bool(line.strip())
-                subsequent_non_wj_tokens += len(tokens)
                 counts["subsequent_unmarked_line_count"] += 1
                 counts["subsequent_unmarked_visible_token_count"] += len(tokens)
             else:
-                has_non_wj_source_line = has_non_wj_source_line or bool(line.strip())
-                subsequent_non_wj_tokens += len(tokens)
                 counts["subsequent_other_marker_line_count"] += 1
                 counts["subsequent_other_marker_visible_token_count"] += len(tokens)
 
-        has_wj = subsequent_wj_lines > 0
-        shape = record_shape(opening_tokens, has_wj, has_non_wj_source_line)
-        shapes[shape] += 1
+        shapes[record_shape(opening_class, has_later_source_line)] += 1
 
         if adapter_records is None:
             reconstructed_payload = "\n".join(
@@ -262,22 +275,30 @@ def summarize_shape_records(
             record_adapter_tokens = len(
                 visible_tokens(adapter_records[record_index].raw_payload)
             )
+
         counts["source_position_token_count"] += (
-            len(opening_tokens) + subsequent_wj_tokens + subsequent_non_wj_tokens
+            len(opening_tokens) + subsequent_token_count
         )
         counts["adapter_visible_token_count"] += record_adapter_tokens
 
-        if has_wj:
-            counts["records_with_subsequent_wj"] += 1
-            if subsequent_wj_lines > 1:
-                counts["records_with_multiple_subsequent_wj"] += 1
-            counts["wj_record_opening_visible_token_count"] += len(opening_tokens)
-            counts["wj_record_wj_visible_token_count"] += subsequent_wj_tokens
+        if opening_class == "wj":
+            counts["records_with_opening_wj"] += 1
+            if has_later_source_line:
+                counts["records_with_opening_wj_and_subsequent_lines"] += 1
+            if subsequent_token_count:
+                counts[
+                    "records_with_opening_wj_and_visible_subsequent_tokens"
+                ] += 1
             counts[
-                "wj_record_non_wj_subsequent_visible_token_count"
-            ] += subsequent_non_wj_tokens
-            counts["wj_record_adapter_visible_token_count"] += record_adapter_tokens
-            wj_histogram[subsequent_wj_lines] += 1
+                "opening_wj_record_opening_visible_token_count"
+            ] += len(opening_tokens)
+            counts[
+                "opening_wj_record_subsequent_visible_token_count"
+            ] += subsequent_token_count
+            counts[
+                "opening_wj_record_adapter_visible_token_count"
+            ] += record_adapter_tokens
+            later_line_histogram_for_opening_wj[len(record.subsequent_lines)] += 1
 
     counts["token_reconciliation_delta"] = (
         counts["source_position_token_count"]
@@ -287,7 +308,9 @@ def summarize_shape_records(
     return {
         **finalize_counts(counts),
         "record_shapes": shape_rows(shapes),
-        "subsequent_wj_lines_per_wj_record": histogram_rows(wj_histogram),
+        "subsequent_lines_per_opening_wj_record": histogram_rows(
+            later_line_histogram_for_opening_wj
+        ),
     }
 
 
@@ -310,7 +333,7 @@ def analyze_archive(
     book_summaries: list[dict[str, Any]] = []
     corpus_counts = empty_counts()
     corpus_shapes: Counter[str] = Counter()
-    corpus_wj_histogram: Counter[int] = Counter()
+    corpus_opening_wj_later_histogram: Counter[int] = Counter()
 
     for book_code in BOOK_ORDER:
         source_records = source_records_by_book.get(book_code)
@@ -331,8 +354,10 @@ def analyze_archive(
         add_counts(corpus_counts, summary)
         for row in summary["record_shapes"]:
             corpus_shapes[row["shape"]] += int(row["record_count"])
-        for row in summary["subsequent_wj_lines_per_wj_record"]:
-            corpus_wj_histogram[int(row["line_count"])] += int(row["record_count"])
+        for row in summary["subsequent_lines_per_opening_wj_record"]:
+            corpus_opening_wj_later_histogram[int(row["line_count"])] += int(
+                row["record_count"]
+            )
 
     corpus_counts["token_reconciliation_delta"] = (
         corpus_counts["source_position_token_count"]
@@ -341,7 +366,9 @@ def analyze_archive(
     corpus = {
         **finalize_counts(corpus_counts),
         "record_shapes": shape_rows(corpus_shapes),
-        "subsequent_wj_lines_per_wj_record": histogram_rows(corpus_wj_histogram),
+        "subsequent_lines_per_opening_wj_record": histogram_rows(
+            corpus_opening_wj_later_histogram
+        ),
     }
 
     return {
@@ -349,8 +376,11 @@ def analyze_archive(
         "book_count": len(book_summaries),
         "corpus": corpus,
         "books": book_summaries,
-        "books_with_subsequent_wj": [
-            book for book in book_summaries if book["records_with_subsequent_wj"]
+        "books_with_opening_wj": [
+            book for book in book_summaries if book["records_with_opening_wj"]
+        ],
+        "books_with_opening_add": [
+            book for book in book_summaries if book["opening_add_line_count"]
         ],
     }
 
@@ -362,21 +392,18 @@ def rows_by_book(analysis: dict[str, Any]) -> dict[str, dict[str, Any]]:
 def compact_summary(summary: dict[str, Any]) -> dict[str, Any]:
     return {
         **{key: int(summary.get(key, 0)) for key in COUNT_KEYS},
-        "wj_record_opening_token_share_ppm": int(
-            summary.get("wj_record_opening_token_share_ppm", 0)
+        "opening_wj_record_opening_token_share_ppm": int(
+            summary.get("opening_wj_record_opening_token_share_ppm", 0)
         ),
-        "wj_record_wj_token_share_ppm": int(
-            summary.get("wj_record_wj_token_share_ppm", 0)
-        ),
-        "wj_record_non_wj_subsequent_token_share_ppm": int(
-            summary.get("wj_record_non_wj_subsequent_token_share_ppm", 0)
+        "opening_wj_record_subsequent_token_share_ppm": int(
+            summary.get("opening_wj_record_subsequent_token_share_ppm", 0)
         ),
         "source_position_to_adapter_token_ratio_ppm": int(
             summary.get("source_position_to_adapter_token_ratio_ppm", 0)
         ),
         "record_shapes": summary.get("record_shapes", []),
-        "subsequent_wj_lines_per_wj_record": summary.get(
-            "subsequent_wj_lines_per_wj_record", []
+        "subsequent_lines_per_opening_wj_record": summary.get(
+            "subsequent_lines_per_opening_wj_record", []
         ),
     }
 
@@ -386,16 +413,14 @@ def compare_focus_books(
 ) -> list[dict[str, Any]]:
     asv_books = rows_by_book(asv)
     webp_books = rows_by_book(webp)
-    rows = []
-    for book_code in FOCUS_BOOKS:
-        rows.append(
-            {
-                "book_code": book_code,
-                "asv": compact_summary(asv_books.get(book_code, {})),
-                "webp": compact_summary(webp_books.get(book_code, {})),
-            }
-        )
-    return rows
+    return [
+        {
+            "book_code": book_code,
+            "asv": compact_summary(asv_books.get(book_code, {})),
+            "webp": compact_summary(webp_books.get(book_code, {})),
+        }
+        for book_code in FOCUS_BOOKS
+    ]
 
 
 def compact_analysis(analysis: dict[str, Any]) -> dict[str, Any]:
@@ -403,9 +428,13 @@ def compact_analysis(analysis: dict[str, Any]) -> dict[str, Any]:
         "translation_id": analysis["translation_id"],
         "book_count": analysis["book_count"],
         "corpus": compact_summary(analysis["corpus"]),
-        "books_with_subsequent_wj": [
+        "books_with_opening_wj": [
             {"book_code": row["book_code"], **compact_summary(row)}
-            for row in analysis["books_with_subsequent_wj"]
+            for row in analysis["books_with_opening_wj"]
+        ],
+        "books_with_opening_add": [
+            {"book_code": row["book_code"], **compact_summary(row)}
+            for row in analysis["books_with_opening_add"]
         ],
     }
 
@@ -414,19 +443,22 @@ def summarize_comparison(
     asv: dict[str, Any], webp: dict[str, Any]
 ) -> dict[str, Any]:
     return {
-        "diagnostic_contract": "source-record-position-accounting-v1",
+        "diagnostic_contract": "source-verse-opening-marker-accounting-v2",
         "focus_books": list(FOCUS_BOOKS),
         "verse_opening_definition": (
-            "visible tokens in the optional payload carried on the source USFM verse line"
+            "the optional source payload carried on the same USFM line as the verse marker"
+        ),
+        "opening_wj_definition": (
+            "a verse-opening payload whose exact leading marker root is wj"
+        ),
+        "opening_add_definition": (
+            "a verse-opening payload whose exact leading marker root is add"
         ),
         "subsequent_line_definition": (
             "source lines after a verse marker and before the next verse or chapter marker"
         ),
-        "wj_line_definition": (
-            "a subsequent source line whose exact leading marker root is wj"
-        ),
         "token_reconciliation_definition": (
-            "line-position token sum minus adapter raw-payload visible-token count"
+            "source-position visible-token sum minus adapter raw-payload visible-token count"
         ),
         "asv": compact_analysis(asv),
         "webp": compact_analysis(webp),
@@ -485,7 +517,7 @@ def run(expected_path: Path | None = None) -> dict[str, Any]:
 
     return {
         "status": "passed",
-        "experiment": "asv-webp-wj-record-shape-v1",
+        "experiment": "asv-webp-wj-record-shape-v2",
         "asv_artifact_sha256": asv_artifact["sha256"],
         "webp_artifact_sha256": webp_artifact["sha256"],
         "comparison": comparison,
@@ -507,8 +539,7 @@ def run(expected_path: Path | None = None) -> dict[str, Any]:
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description=(
-            "Measure verse-opening and subsequent wj source-record shape "
-            "without reporting scripture text"
+            "Measure source verse-opening wj marker shape without reporting scripture text"
         )
     )
     parser.add_argument("--expected", type=Path)
