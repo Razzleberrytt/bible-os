@@ -39,10 +39,6 @@ CORPUS_COUNT_KEYS = (
 BOOK_COUNT_KEYS = (
     "opening_wj_line_count",
     "opening_wj_visible_token_count",
-    "opening_add_line_count",
-    "opening_add_visible_token_count",
-    "subsequent_wj_line_count",
-    "subsequent_wj_visible_token_count",
     "records_with_opening_wj_and_subsequent_lines",
     "records_with_opening_wj_and_visible_subsequent_tokens",
     "opening_wj_record_subsequent_visible_token_count",
@@ -100,10 +96,6 @@ def build_profile(comparison: dict[str, Any]) -> dict[str, Any]:
         "webp_books_with_opening_wj": [
             compact_book(book)
             for book in comparison["webp"]["books_with_opening_wj"]
-        ],
-        "asv_books_with_opening_add": [
-            compact_book(book)
-            for book in comparison["asv"]["books_with_opening_add"]
         ],
         "scripture_text_reported": comparison["scripture_text_reported"],
         "token_lists_reported": comparison["token_lists_reported"],
