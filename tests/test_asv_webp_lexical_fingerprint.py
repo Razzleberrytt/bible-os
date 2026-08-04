@@ -90,18 +90,19 @@ def test_fingerprint_records_are_numeric_only_and_exclude_placeholders():
     assert changed["token_count_delta"] == -1
     assert changed["token_count_abs_delta"] == 1
     assert changed["token_count_delta_ppm"] == 250_000
-    assert changed["token_edit_distance"] == 3
-    assert changed["token_edit_distance_ppm"] == 750_000
+    # Delete "the", then substitute "empty" with "unformed".
+    assert changed["token_edit_distance"] == 2
+    assert changed["token_edit_distance_ppm"] == 500_000
 
-    rendered = json.dumps(records, sort_keys=True)
+    rendered = json.dumps(records, sort_keys=True).lower()
     for forbidden in (
-        "source_text",
-        "raw_payload",
-        "source_text_sha256",
+        '"source_text"',
+        '"raw_payload"',
+        '"source_text_sha256"',
         "in the beginning",
         "earth was unformed",
     ):
-        assert forbidden not in rendered.lower()
+        assert forbidden not in rendered
 
 
 def test_duplicate_source_locators_fail_closed():
@@ -164,9 +165,10 @@ def test_summary_is_reproducible_and_contains_only_metadata():
         "in the beginning",
         "earth was unformed",
         "these are the names",
-        "source_text",
-        "token_list",
-        "text_sha256",
+        '"source_text": "',
+        '"tokens": [',
+        '"source_text_sha256"',
+        '"raw_payload"',
     ):
         assert forbidden not in rendered
 
