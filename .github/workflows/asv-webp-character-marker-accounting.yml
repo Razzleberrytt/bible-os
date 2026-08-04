@@ -1,0 +1,28 @@
+name: asv-webp-character-marker-accounting
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  asv-webp-character-marker-accounting:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: Install Bible OS package
+        run: pip install .
+      - name: Observe text-private ASV and WEBP character marker accounting
+        run: >-
+          python -m scripts.asv_webp_character_marker_accounting_ci
+          --report asv-webp-character-marker-accounting-report.json
+      - name: Display metadata-only character marker evidence
+        if: always()
+        run: cat asv-webp-character-marker-accounting-report.json
