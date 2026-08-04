@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0.0",
+  "attestation_id": "vra_romanstextual01",
+  "queue_item_id": "vrq_asvwebpromans01",
+  "queue_item_sha256": "bfa642b831bf8014a81a758b857fa2ff91a49736f594daff492a9f5231dd8199",
+  "reviewer": {
+    "reviewer_id": "bible-os:ai-assisted:provisional-textual-review",
+    "role": "textual-scholar",
+    "affiliation": "AI-assisted provisional review; requires independent human textual-scholar validation."
+  },
+  "recommendation": "needs-evidence",
+  "confidence": 0.98,
+  "rationale": "The six structural observations establish a concentrated Romans locator anomaly, but structure alone cannot establish equivalence, relocation, split, join, or shared passage identity. Before any approval is considered, review requires source-anchored textual comparison for the affected ASV and WEBP units, provenance for the doxology numbering traditions, and independent scholarly evidence addressing whether the observed loci represent relocation, duplication, omission, or another relationship.",
+  "evidence_ids": [
+    "evd_romcandidate001",
+    "evd_romcandidate002",
+    "evd_romcandidate003",
+    "evd_romcandidate004",
+    "evd_romcandidate005",
+    "evd_romcandidate006"
+  ],
+  "conflict_disclosure": {
+    "status": "none",
+    "details": null
+  },
+  "reviewed_at": "2026-08-04T00:20:00Z",
+  "supersedes_attestation_id": null,
+  "record_policy": "append-only",
+  "materialization_authority": "none",
+  "execution_eligible": false,
+  "publication_eligible": false
+}
