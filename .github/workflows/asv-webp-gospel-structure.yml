@@ -1,0 +1,28 @@
+name: asv-webp-gospel-structure
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  asv-webp-gospel-structure:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: Install Bible OS package
+        run: pip install .
+      - name: Observe text-private ASV and WEBP Gospel structure
+        run: >-
+          python -m scripts.asv_webp_gospel_structure_ci
+          --report asv-webp-gospel-structure-report.json
+      - name: Display metadata-only Gospel structure evidence
+        if: always()
+        run: cat asv-webp-gospel-structure-report.json
