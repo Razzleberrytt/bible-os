@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0.0",
+  "queue_item_id": "vrq_asvwebpromans01",
+  "candidate_kind": "uncertain",
+  "status": "queued",
+  "priority": "high",
+  "source_system": {
+    "versification_system_id": "vrs_pmkqrxv7lvez52xxkan2",
+    "references": [
+      "ROM 16:25",
+      "ROM 16:26",
+      "ROM 16:27"
+    ]
+  },
+  "target_system": {
+    "versification_system_id": "vrs_dfqdldqfzy7udzlxspyw",
+    "references": [
+      "ROM 14:24",
+      "ROM 14:25",
+      "ROM 14:26",
+      "ROM 16:25"
+    ]
+  },
+  "proposed_confidence": 0.0,
+  "detection": {
+    "method": "algorithmic-candidate",
+    "algorithm_version": "asv-webp-source-locator-candidates-v1",
+    "detector_id": "bible-os:asv-webp-locator-candidate:v1"
+  },
+  "evidence": [
+    {
+      "evidence_id": "evd_asvwebpromans01",
+      "evidence_type": "corpus-structure",
+      "locator": "registry/experiments/asv-webp-locator-candidates.json",
+      "summary": "Verified metadata-only candidate stream isolates six union locators: WEBP-only ROM 14:24-26, ASV text versus WEBP placeholder at ROM 16:25, and ASV-only ROM 16:26-27. The proposal excludes ROM 16:24 and every other ASV-placeholder/WEBP-text observation. No equivalence, relocation, split, join, or canonical passage identity is asserted.",
+      "sha256": "46215a091232f5701c5c1c149c507d69a9df54a63590c8a3feef31fd83e54366",
+      "contains_source_text": false
+    }
+  ],
+  "review_requirements": {
+    "required_roles": [
+      "textual-scholar",
+      "data-curator",
+      "engineering-reviewer"
+    ],
+    "minimum_approvals": 3,
+    "conflict_policy": "unanimous"
+  },
+  "created_at": "2026-08-04T00:10:00Z",
+  "created_by": "bible-os:verified-candidate-promotion",
+  "materialization_state": "not-materialized",
+  "execution_eligible": false,
+  "publication_eligible": false
+}
