@@ -27,7 +27,6 @@ CORPUS_TOTAL_KEYS = (
 
 BOOK_COUNT_KEYS = (
     "source_bytes",
-    "compressed_bytes",
     "source_line_count",
     "source_marker_count",
     "record_count",
@@ -35,7 +34,6 @@ BOOK_COUNT_KEYS = (
     "empty_record_count",
     "payload_bytes",
     "payload_line_count",
-    "payload_nonempty_line_count",
     "unmarked_payload_line_count",
     "unmarked_line_local_token_count",
     "visible_token_count",
@@ -55,6 +53,13 @@ BOOK_RATIO_KEYS = (
     "payload_marker_ratio_ppm",
 )
 
+DECISIVE_MARKER_CLASSES = (
+    "note-cross-reference",
+    "word-attribute",
+    "character-style",
+    "paragraph-poetry-list",
+)
+
 
 def canonical_json_bytes(value: Any) -> bytes:
     return (
@@ -67,15 +72,19 @@ def compact_corpus_totals(totals: dict[str, Any]) -> dict[str, Any]:
     return {key: totals[key] for key in CORPUS_TOTAL_KEYS}
 
 
+def named_counts(rows: Sequence[dict[str, Any]]) -> dict[str, int]:
+    observed = {row["name"]: row["count"] for row in rows}
+    return {name: observed.get(name, 0) for name in DECISIVE_MARKER_CLASSES}
+
+
 def compact_translation_book(book: dict[str, Any]) -> dict[str, Any]:
     compact = {key: book[key] for key in BOOK_COUNT_KEYS}
-    compact["payload_marker_class_counts"] = book["payload_marker_class_counts"]
-    compact["leading_marker_class_line_counts"] = book[
-        "leading_marker_class_line_counts"
-    ]
-    compact["leading_marker_class_line_local_token_counts"] = book[
-        "leading_marker_class_line_local_token_counts"
-    ]
+    compact["leading_line_counts_by_class"] = named_counts(
+        book["leading_marker_class_line_counts"]
+    )
+    compact["leading_line_local_tokens_by_class"] = named_counts(
+        book["leading_marker_class_line_local_token_counts"]
+    )
     return compact
 
 
@@ -84,15 +93,6 @@ def compact_focus_book(row: dict[str, Any]) -> dict[str, Any]:
     compact.update({key: row[key] for key in BOOK_RATIO_KEYS})
     compact["asv"] = compact_translation_book(row["asv"])
     compact["webp"] = compact_translation_book(row["webp"])
-    compact["payload_marker_class_comparison"] = row[
-        "payload_marker_class_comparison"
-    ]
-    compact["leading_marker_line_class_comparison"] = row[
-        "leading_marker_line_class_comparison"
-    ]
-    compact["leading_marker_line_local_token_class_comparison"] = row[
-        "leading_marker_line_local_token_class_comparison"
-    ]
     return compact
 
 
@@ -115,7 +115,7 @@ def build_profile(comparison: dict[str, Any]) -> dict[str, Any]:
         ),
         "highest_visible_token_ratio_books": comparison[
             "highest_visible_token_ratio_books"
-        ],
+        ][:5],
         "focus_book_profiles": [
             compact_focus_book(row)
             for row in comparison["focus_book_comparisons"]
