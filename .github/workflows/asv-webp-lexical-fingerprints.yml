@@ -1,0 +1,29 @@
+name: asv-webp-lexical-fingerprints
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  asv-webp-lexical-fingerprints:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: Install Bible OS package
+        run: pip install .
+      - name: Reproduce text-private ASV and WEBP lexical fingerprints
+        run: >-
+          python -m scripts.asv_webp_lexical_fingerprint_ci
+          --expected registry/experiments/asv-webp-lexical-fingerprints.json
+          --report asv-webp-lexical-fingerprint-report.json
+      - name: Display metadata-only lexical fingerprint evidence
+        if: always()
+        run: cat asv-webp-lexical-fingerprint-report.json
