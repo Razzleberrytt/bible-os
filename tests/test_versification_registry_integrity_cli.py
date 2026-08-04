@@ -11,9 +11,13 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def test_registered_registry_integrity_cli_passes(tmp_path: Path):
     report_path = tmp_path / "registry-integrity.json"
-    queue_path = (
+    synthetic_queue_path = (
         ROOT
         / "registry/versification/review-queue/synthetic-split-candidate.json"
+    )
+    romans_queue_path = (
+        ROOT
+        / "registry/versification/review-queue/asv-webp-romans-structural-candidate.json"
     )
     transition_path = (
         ROOT
@@ -21,7 +25,8 @@ def test_registered_registry_integrity_cli_passes(tmp_path: Path):
         / "synthetic-split-needs-evidence.json"
     )
     before = {
-        queue_path: queue_path.read_bytes(),
+        synthetic_queue_path: synthetic_queue_path.read_bytes(),
+        romans_queue_path: romans_queue_path.read_bytes(),
         transition_path: transition_path.read_bytes(),
     }
 
@@ -36,9 +41,12 @@ def test_registered_registry_integrity_cli_passes(tmp_path: Path):
     assert result["execution_eligible"] is False
     assert result["publication_eligible"] is False
     assert result["audit"]["clean"] is True
-    assert result["audit"]["queue_document_count"] == 1
+    assert result["audit"]["queue_document_count"] == 2
     assert result["audit"]["transition_document_count"] == 1
-    assert result["audit"]["status_counts"] == [["needs-evidence", 1]]
+    assert result["audit"]["status_counts"] == [
+        ["needs-evidence", 1],
+        ["queued", 1],
+    ]
 
     assert {path: path.read_bytes() for path in before} == before
 
