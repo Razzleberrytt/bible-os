@@ -1,0 +1,297 @@
+{
+  "_profile_version": "1.0.0",
+  "format": "application/x-ndjson; charset=utf-8",
+  "canonicalization": "json-sort-keys-compact-lf-v1",
+  "sha256": "3f732e4dc901576e02d034394e4b897b0ca52f029ea709c93916b7011fa2b8cd",
+  "byte_size": 12311453,
+  "record_count": 31083,
+  "runs_compared": 2,
+  "reproducibility_status": "verified",
+  "fingerprint_namespace": "bible-os:asv-webp-lexical-fingerprint:v1",
+  "normalization_contract": "unicode-nfkc-casefold-alnum-apostrophe-token-v1",
+  "distance_contract": "token-levenshtein-and-token-set-jaccard-ppm-v1",
+  "shared_text_locator_count": 31083,
+  "asv_total_token_count": 788046,
+  "webp_total_token_count": 836388,
+  "normalized_equal_locator_count": 951,
+  "same_token_count_locator_count": 8405,
+  "mean_token_edit_distance_ppm": 297933,
+  "median_token_edit_distance_ppm": 260870,
+  "p90_token_edit_distance_ppm": 600000,
+  "p95_token_edit_distance_ppm": 716667,
+  "p99_token_edit_distance_ppm": 806452,
+  "mean_token_set_jaccard_distance_ppm": 308089,
+  "median_token_set_jaccard_distance_ppm": 303030,
+  "distance_band_counts": [
+    {
+      "band": "exact",
+      "lower_ppm": 0,
+      "upper_ppm": 0,
+      "count": 951
+    },
+    {
+      "band": "very-low",
+      "lower_ppm": 1,
+      "upper_ppm": 100000,
+      "count": 3172
+    },
+    {
+      "band": "low",
+      "lower_ppm": 100001,
+      "upper_ppm": 250000,
+      "count": 11094
+    },
+    {
+      "band": "moderate",
+      "lower_ppm": 250001,
+      "upper_ppm": 500000,
+      "count": 11540
+    },
+    {
+      "band": "high",
+      "lower_ppm": 500001,
+      "upper_ppm": 750000,
+      "count": 3424
+    },
+    {
+      "band": "very-high",
+      "lower_ppm": 750001,
+      "upper_ppm": 1000000,
+      "count": 902
+    }
+  ],
+  "highest_distance_locators": [
+    {
+      "locator": "1JN 5:7",
+      "asv_token_count": 14,
+      "webp_token_count": 6,
+      "token_count_delta": -8,
+      "token_edit_distance": 14,
+      "token_edit_distance_ppm": 1000000,
+      "token_set_jaccard_distance_ppm": 1000000
+    },
+    {
+      "locator": "PSA 119:38",
+      "asv_token_count": 15,
+      "webp_token_count": 11,
+      "token_count_delta": -4,
+      "token_edit_distance": 15,
+      "token_edit_distance_ppm": 1000000,
+      "token_set_jaccard_distance_ppm": 954545
+    },
+    {
+      "locator": "LEV 10:8",
+      "asv_token_count": 6,
+      "webp_token_count": 6,
+      "token_count_delta": 0,
+      "token_edit_distance": 6,
+      "token_edit_distance_ppm": 1000000,
+      "token_set_jaccard_distance_ppm": 909091
+    },
+    {
+      "locator": "NUM 31:33",
+      "asv_token_count": 6,
+      "webp_token_count": 6,
+      "token_count_delta": 0,
+      "token_edit_distance": 6,
+      "token_edit_distance_ppm": 1000000,
+      "token_set_jaccard_distance_ppm": 900000
+    },
+    {
+      "locator": "1TH 5:20",
+      "asv_token_count": 3,
+      "webp_token_count": 3,
+      "token_count_delta": 0,
+      "token_edit_distance": 3,
+      "token_edit_distance_ppm": 1000000,
+      "token_set_jaccard_distance_ppm": 800000
+    },
+    {
+      "locator": "PRO 24:26",
+      "asv_token_count": 9,
+      "webp_token_count": 10,
+      "token_count_delta": 1,
+      "token_edit_distance": 10,
+      "token_edit_distance_ppm": 1000000,
+      "token_set_jaccard_distance_ppm": 733333
+    },
+    {
+      "locator": "LEV 11:15",
+      "asv_token_count": 5,
+      "webp_token_count": 4,
+      "token_count_delta": -1,
+      "token_edit_distance": 5,
+      "token_edit_distance_ppm": 1000000,
+      "token_set_jaccard_distance_ppm": 714286
+    },
+    {
+      "locator": "PRO 22:19",
+      "asv_token_count": 19,
+      "webp_token_count": 15,
+      "token_count_delta": -4,
+      "token_edit_distance": 19,
+      "token_edit_distance_ppm": 1000000,
+      "token_set_jaccard_distance_ppm": 708333
+    },
+    {
+      "locator": "ISA 42:17",
+      "asv_token_count": 26,
+      "webp_token_count": 23,
+      "token_count_delta": -3,
+      "token_edit_distance": 26,
+      "token_edit_distance_ppm": 1000000,
+      "token_set_jaccard_distance_ppm": 571429
+    },
+    {
+      "locator": "JER 36:24",
+      "asv_token_count": 22,
+      "webp_token_count": 18,
+      "token_count_delta": -4,
+      "token_edit_distance": 22,
+      "token_edit_distance_ppm": 1000000,
+      "token_set_jaccard_distance_ppm": 416667
+    },
+    {
+      "locator": "1TH 5:16",
+      "asv_token_count": 2,
+      "webp_token_count": 2,
+      "token_count_delta": 0,
+      "token_edit_distance": 2,
+      "token_edit_distance_ppm": 1000000,
+      "token_set_jaccard_distance_ppm": 0
+    },
+    {
+      "locator": "ISA 30:21",
+      "asv_token_count": 32,
+      "webp_token_count": 31,
+      "token_count_delta": -1,
+      "token_edit_distance": 31,
+      "token_edit_distance_ppm": 968750,
+      "token_set_jaccard_distance_ppm": 321429
+    },
+    {
+      "locator": "ROM 13:7",
+      "asv_token_count": 23,
+      "webp_token_count": 24,
+      "token_count_delta": 1,
+      "token_edit_distance": 23,
+      "token_edit_distance_ppm": 958333,
+      "token_set_jaccard_distance_ppm": 958333
+    },
+    {
+      "locator": "PSA 101:5",
+      "asv_token_count": 23,
+      "webp_token_count": 17,
+      "token_count_delta": -6,
+      "token_edit_distance": 22,
+      "token_edit_distance_ppm": 956522,
+      "token_set_jaccard_distance_ppm": 833333
+    },
+    {
+      "locator": "PRO 26:17",
+      "asv_token_count": 23,
+      "webp_token_count": 21,
+      "token_count_delta": -2,
+      "token_edit_distance": 22,
+      "token_edit_distance_ppm": 956522,
+      "token_set_jaccard_distance_ppm": 700000
+    },
+    {
+      "locator": "JHN 1:31",
+      "asv_token_count": 22,
+      "webp_token_count": 21,
+      "token_count_delta": -1,
+      "token_edit_distance": 21,
+      "token_edit_distance_ppm": 954545,
+      "token_set_jaccard_distance_ppm": 481481
+    },
+    {
+      "locator": "PRO 28:16",
+      "asv_token_count": 19,
+      "webp_token_count": 15,
+      "token_count_delta": -4,
+      "token_edit_distance": 18,
+      "token_edit_distance_ppm": 947368,
+      "token_set_jaccard_distance_ppm": 935484
+    },
+    {
+      "locator": "PHP 1:16",
+      "asv_token_count": 17,
+      "webp_token_count": 16,
+      "token_count_delta": -1,
+      "token_edit_distance": 16,
+      "token_edit_distance_ppm": 941176,
+      "token_set_jaccard_distance_ppm": 928571
+    },
+    {
+      "locator": "2CO 9:1",
+      "asv_token_count": 17,
+      "webp_token_count": 16,
+      "token_count_delta": -1,
+      "token_edit_distance": 16,
+      "token_edit_distance_ppm": 941176,
+      "token_set_jaccard_distance_ppm": 470588
+    },
+    {
+      "locator": "JHN 13:23",
+      "asv_token_count": 16,
+      "webp_token_count": 15,
+      "token_count_delta": -1,
+      "token_edit_distance": 15,
+      "token_edit_distance_ppm": 937500,
+      "token_set_jaccard_distance_ppm": 388889
+    },
+    {
+      "locator": "PRO 23:20",
+      "asv_token_count": 9,
+      "webp_token_count": 15,
+      "token_count_delta": 6,
+      "token_edit_distance": 14,
+      "token_edit_distance_ppm": 933333,
+      "token_set_jaccard_distance_ppm": 904762
+    },
+    {
+      "locator": "MRK 2:3",
+      "asv_token_count": 15,
+      "webp_token_count": 8,
+      "token_count_delta": -7,
+      "token_edit_distance": 14,
+      "token_edit_distance_ppm": 933333,
+      "token_set_jaccard_distance_ppm": 842105
+    },
+    {
+      "locator": "1TI 3:3",
+      "asv_token_count": 12,
+      "webp_token_count": 15,
+      "token_count_delta": 3,
+      "token_edit_distance": 14,
+      "token_edit_distance_ppm": 933333,
+      "token_set_jaccard_distance_ppm": 764706
+    },
+    {
+      "locator": "PSA 119:165",
+      "asv_token_count": 15,
+      "webp_token_count": 13,
+      "token_count_delta": -2,
+      "token_edit_distance": 14,
+      "token_edit_distance_ppm": 933333,
+      "token_set_jaccard_distance_ppm": 761905
+    },
+    {
+      "locator": "ACT 16:2",
+      "asv_token_count": 15,
+      "webp_token_count": 14,
+      "token_count_delta": -1,
+      "token_edit_distance": 14,
+      "token_edit_distance_ppm": 933333,
+      "token_set_jaccard_distance_ppm": 727273
+    }
+  ],
+  "source_text_retained": false,
+  "token_lists_reported": false,
+  "per_locator_text_digests_reported": false,
+  "corpus_mutation": "not-performed",
+  "mapping_authority": "none",
+  "execution_eligible": false,
+  "publication_eligible": false
+}
