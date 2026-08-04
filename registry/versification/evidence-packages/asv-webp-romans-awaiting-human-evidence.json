@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.0.0",
+  "package_id": "vep_asvwebpromans01",
+  "requirements_id": "ver_asvwebpromans01",
+  "requirements_sha256": "05a0a8515636a4a2461332244d203595f0f95e80c2225af32fcedca7f2d2071c",
+  "queue_item_id": "vrq_asvwebpromans01",
+  "status": "awaiting-human-evidence",
+  "scope": {
+    "source_references": [
+      "ROM 16:25",
+      "ROM 16:26",
+      "ROM 16:27"
+    ],
+    "target_references": [
+      "ROM 14:24",
+      "ROM 14:25",
+      "ROM 14:26",
+      "ROM 16:25"
+    ],
+    "excluded_candidate_ids": [
+      "can_k6cfuv7sbumommdi2ha7"
+    ]
+  },
+  "requirement_states": [
+    {
+      "requirement_id": "req_sourcetext001",
+      "state": "missing",
+      "artifact_ids": []
+    },
+    {
+      "requirement_id": "req_numberingprov01",
+      "state": "missing",
+      "artifact_ids": []
+    },
+    {
+      "requirement_id": "req_scholarship001",
+      "state": "missing",
+      "artifact_ids": []
+    },
+    {
+      "requirement_id": "req_hypothesismatrix01",
+      "state": "missing",
+      "artifact_ids": []
+    }
+  ],
+  "artifacts": [],
+  "completion_summary": {
+    "requirement_count": 4,
+    "satisfied_requirement_count": 0,
+    "human_validated_requirement_count": 0,
+    "referenced_artifact_count": 0,
+    "review_readiness": "not-ready",
+    "approval_implied": false
+  },
+  "supersedes_package_id": null,
+  "created_at": "2026-08-04T00:36:00Z",
+  "created_by": "bible-os:ai-assisted:evidence-package-planning",
+  "record_policy": "append-only",
+  "package_semantics": "reference-manifest-only",
+  "decision_authority": "none",
+  "queue_status_authority": "none",
+  "materialization_authority": "none",
+  "execution_eligible": false,
+  "publication_eligible": false,
+  "source_text_embedded": false
+}
