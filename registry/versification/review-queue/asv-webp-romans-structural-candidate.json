@@ -1,0 +1,94 @@
+{
+  "schema_version": "1.0.0",
+  "queue_item_id": "vrq_asvwebpromans01",
+  "candidate_kind": "uncertain",
+  "status": "queued",
+  "priority": "high",
+  "source_system": {
+    "versification_system_id": "vrs_pmkqrxv7lvez52xxkan2",
+    "references": [
+      "ROM 16:25",
+      "ROM 16:26",
+      "ROM 16:27"
+    ]
+  },
+  "target_system": {
+    "versification_system_id": "vrs_dfqdldqfzy7udzlxspyw",
+    "references": [
+      "ROM 14:24",
+      "ROM 14:25",
+      "ROM 14:26",
+      "ROM 16:25"
+    ]
+  },
+  "proposed_confidence": 0.0,
+  "detection": {
+    "method": "structural-diff",
+    "algorithm_version": "asv-webp-source-locator-candidates-v1",
+    "detector_id": "bible-os:asv-webp-locator-candidate:v1"
+  },
+  "evidence": [
+    {
+      "evidence_id": "evd_romcandidate001",
+      "evidence_type": "corpus-structure",
+      "locator": "registry/experiments/asv-webp-locator-candidates.json#can_py26v3umswbmzskskpp5",
+      "summary": "WEBP-only source locus ROM 14:24 in the pinned ASV/WEBP structural candidate stream.",
+      "sha256": "46215a091232f5701c5c1c149c507d69a9df54a63590c8a3feef31fd83e54366",
+      "contains_source_text": false
+    },
+    {
+      "evidence_id": "evd_romcandidate002",
+      "evidence_type": "corpus-structure",
+      "locator": "registry/experiments/asv-webp-locator-candidates.json#can_wj6w6pd7c37roqplxvrh",
+      "summary": "WEBP-only source locus ROM 14:25 in the pinned ASV/WEBP structural candidate stream.",
+      "sha256": "46215a091232f5701c5c1c149c507d69a9df54a63590c8a3feef31fd83e54366",
+      "contains_source_text": false
+    },
+    {
+      "evidence_id": "evd_romcandidate003",
+      "evidence_type": "corpus-structure",
+      "locator": "registry/experiments/asv-webp-locator-candidates.json#can_3sgamesf53renovukq6w",
+      "summary": "WEBP-only source locus ROM 14:26 in the pinned ASV/WEBP structural candidate stream.",
+      "sha256": "46215a091232f5701c5c1c149c507d69a9df54a63590c8a3feef31fd83e54366",
+      "contains_source_text": false
+    },
+    {
+      "evidence_id": "evd_romcandidate004",
+      "evidence_type": "corpus-structure",
+      "locator": "registry/experiments/asv-webp-locator-candidates.json#can_hdyty2uvb3s3kuylkc57",
+      "summary": "ASV text versus WEBP empty-placeholder realization mismatch at ROM 16:25 in the pinned structural candidate stream.",
+      "sha256": "46215a091232f5701c5c1c149c507d69a9df54a63590c8a3feef31fd83e54366",
+      "contains_source_text": false
+    },
+    {
+      "evidence_id": "evd_romcandidate005",
+      "evidence_type": "corpus-structure",
+      "locator": "registry/experiments/asv-webp-locator-candidates.json#can_lyiw5ovpe7ir3acvsd6m",
+      "summary": "ASV-only source locus ROM 16:26 in the pinned ASV/WEBP structural candidate stream.",
+      "sha256": "46215a091232f5701c5c1c149c507d69a9df54a63590c8a3feef31fd83e54366",
+      "contains_source_text": false
+    },
+    {
+      "evidence_id": "evd_romcandidate006",
+      "evidence_type": "corpus-structure",
+      "locator": "registry/experiments/asv-webp-locator-candidates.json#can_qy4pdugmdaq26f52akxm",
+      "summary": "ASV-only source locus ROM 16:27 in the pinned ASV/WEBP structural candidate stream.",
+      "sha256": "46215a091232f5701c5c1c149c507d69a9df54a63590c8a3feef31fd83e54366",
+      "contains_source_text": false
+    }
+  ],
+  "review_requirements": {
+    "required_roles": [
+      "textual-scholar",
+      "data-curator",
+      "engineering-reviewer"
+    ],
+    "minimum_approvals": 3,
+    "conflict_policy": "unanimous"
+  },
+  "created_at": "2026-08-04T00:11:00Z",
+  "created_by": "bible-os:verified-structural-diff",
+  "materialization_state": "not-materialized",
+  "execution_eligible": false,
+  "publication_eligible": false
+}
