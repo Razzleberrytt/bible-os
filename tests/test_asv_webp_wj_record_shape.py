@@ -12,6 +12,7 @@ from scripts.asv_webp_wj_record_shape_ci import (
     SourceShapeRecord,
     analyze_archive,
     assert_expected,
+    classify_opening_payload,
     classify_subsequent_line,
     iter_source_shape_records,
     record_shape,
@@ -36,8 +37,11 @@ def analysis(
         "book_count": 1,
         "corpus": summary,
         "books": [book],
-        "books_with_subsequent_wj": (
-            [book] if summary["records_with_subsequent_wj"] else []
+        "books_with_opening_wj": (
+            [book] if summary["records_with_opening_wj"] else []
+        ),
+        "books_with_opening_add": (
+            [book] if summary["opening_add_line_count"] else []
         ),
     }
 
@@ -48,106 +52,118 @@ def test_source_parser_preserves_empty_verse_opening() -> None:
             "\\id MAT\n"
             "\\c 1\n"
             "\\v 1\n"
-            "\\wj later words\\wj*\n"
-            "\\v 2 opening words\n"
+            "\\wj later control\\wj*\n"
+            "\\v 2 \\wj opening words\\wj*\n"
             "\\p\n"
             "continued words\n"
         )
     )
 
     assert records == [
-        shape_record("", "\\wj later words\\wj*"),
-        shape_record("opening words", "\\p", "continued words"),
+        shape_record("", "\\wj later control\\wj*"),
+        shape_record("\\wj opening words\\wj*", "\\p", "continued words"),
     ]
 
 
-def test_record_shape_categories_are_mechanical() -> None:
-    assert record_shape(("opening",), True, False) == "opening-plus-wj"
-    assert record_shape((), True, False) == "no-opening-wj-only"
-    assert record_shape((), True, True) == "no-opening-wj-and-non-wj"
-    assert record_shape(("opening",), False, True) == "opening-plus-non-wj"
-    assert record_shape((), False, False) == "empty"
+def test_opening_payload_classification_is_exact() -> None:
+    assert classify_opening_payload("") == "empty"
+    assert classify_opening_payload("plain words") == "unmarked"
+    assert classify_opening_payload("\\wj words\\wj*") == "wj"
+    assert classify_opening_payload("\\add words\\add*") == "add"
+    assert classify_opening_payload("\\qt words\\qt*") == "other-marker"
 
 
-def test_exact_wj_line_classification_is_separate() -> None:
+def test_subsequent_wj_remains_a_separate_control() -> None:
     assert classify_subsequent_line("\\wj words\\wj*") == "wj"
     assert classify_subsequent_line("\\p") == "other-marker"
     assert classify_subsequent_line("plain continuation") == "unmarked"
 
 
-def test_summary_separates_opening_wj_and_other_subsequent_tokens() -> None:
+def test_record_shape_categories_use_opening_class_and_later_lines() -> None:
+    assert record_shape("wj", False) == "opening-wj-only"
+    assert record_shape("wj", True) == "opening-wj-plus-later"
+    assert record_shape("add", False) == "opening-add-only"
+    assert record_shape("unmarked", True) == "opening-unmarked-plus-later"
+    assert record_shape("empty", False) == "empty"
+    assert record_shape("empty", True) == "empty-plus-later"
+
+
+def test_summary_separates_opening_wj_add_and_later_controls() -> None:
     summary = summarize_shape_records(
         [
-            shape_record("opening alpha", "\\wj quoted beta gamma\\wj*"),
             shape_record(
-                "",
-                "\\wj delta epsilon\\wj*",
+                "\\wj alpha beta\\wj*",
                 "\\p",
-                "continued zeta",
+                "continued gamma",
             ),
+            shape_record("\\add supplied words\\add*"),
+            shape_record("ordinary opening"),
+            shape_record("", "\\wj later control\\wj*"),
         ]
     )
 
-    assert summary["record_count"] == 2
-    assert summary["opening_visible_token_count"] == 2
+    assert summary["record_count"] == 4
+    assert summary["opening_wj_line_count"] == 1
+    assert summary["opening_wj_visible_token_count"] == 2
+    assert summary["opening_add_line_count"] == 1
+    assert summary["opening_add_visible_token_count"] == 2
+    assert summary["opening_unmarked_line_count"] == 1
+    assert summary["opening_unmarked_visible_token_count"] == 2
     assert summary["opening_zero_token_line_count"] == 1
-    assert summary["subsequent_wj_line_count"] == 2
-    assert summary["subsequent_wj_visible_token_count"] == 5
-    assert summary["subsequent_other_marker_line_count"] == 1
-    assert summary["subsequent_unmarked_line_count"] == 1
-    assert summary["subsequent_unmarked_visible_token_count"] == 2
-    assert summary["records_with_subsequent_wj"] == 2
-    assert summary["wj_record_opening_visible_token_count"] == 2
-    assert summary["wj_record_wj_visible_token_count"] == 5
-    assert summary["wj_record_non_wj_subsequent_visible_token_count"] == 2
-    assert summary["wj_record_adapter_visible_token_count"] == 9
+    assert summary["subsequent_wj_line_count"] == 1
+    assert summary["subsequent_wj_visible_token_count"] == 2
+    assert summary["records_with_opening_wj"] == 1
+    assert summary["records_with_opening_wj_and_subsequent_lines"] == 1
+    assert summary["records_with_opening_wj_and_visible_subsequent_tokens"] == 1
+    assert summary["opening_wj_record_opening_visible_token_count"] == 2
+    assert summary["opening_wj_record_subsequent_visible_token_count"] == 1
+    assert summary["opening_wj_record_adapter_visible_token_count"] == 3
+    assert summary["opening_wj_record_opening_token_share_ppm"] == 666_667
+    assert summary["opening_wj_record_subsequent_token_share_ppm"] == 333_333
     assert summary["token_reconciliation_delta"] == 0
     assert summary["record_shapes"] == [
-        {"shape": "opening-plus-wj", "record_count": 1},
-        {"shape": "no-opening-wj-and-non-wj", "record_count": 1},
+        {"shape": "empty-plus-later", "record_count": 1},
+        {"shape": "opening-unmarked-only", "record_count": 1},
+        {"shape": "opening-wj-plus-later", "record_count": 1},
+        {"shape": "opening-add-only", "record_count": 1},
     ]
-    assert summary["subsequent_wj_lines_per_wj_record"] == [
-        {"line_count": 1, "record_count": 2}
-    ]
-
-
-def test_multiple_wj_lines_are_histogrammed_without_locators() -> None:
-    summary = summarize_shape_records(
-        [
-            shape_record(
-                "opening",
-                "\\wj first line\\wj*",
-                "\\wj second line\\wj*",
-            )
-        ]
-    )
-
-    assert summary["records_with_multiple_subsequent_wj"] == 1
-    assert summary["subsequent_wj_lines_per_wj_record"] == [
+    assert summary["subsequent_lines_per_opening_wj_record"] == [
         {"line_count": 2, "record_count": 1}
     ]
 
 
+def test_marker_only_opening_is_zero_token_but_still_classified() -> None:
+    summary = summarize_shape_records(
+        [shape_record("\\wj*"), shape_record("\\add*")]
+    )
+
+    assert summary["opening_wj_line_count"] == 1
+    assert summary["opening_wj_zero_token_line_count"] == 1
+    assert summary["opening_add_line_count"] == 1
+    assert summary["opening_add_zero_token_line_count"] == 1
+
+
 def test_summary_is_independent_of_record_order() -> None:
     records = [
-        shape_record("opening", "\\wj first line\\wj*"),
-        shape_record("", "\\p", "continuation"),
+        shape_record("\\wj first line\\wj*"),
+        shape_record("plain opening", "\\p"),
+        shape_record("\\add supplied\\add*"),
     ]
     assert summarize_shape_records(records) == summarize_shape_records(
         list(reversed(records))
     )
 
 
-def test_archive_analysis_reconciles_source_and_adapter_record_counts() -> None:
+def test_archive_analysis_finds_wj_on_verse_opening_payload() -> None:
     buffer = BytesIO()
     with ZipFile(buffer, "w") as archive:
         archive.writestr(
             "MAT.usfm",
             "\\id MAT\n"
             "\\c 1\n"
-            "\\v 1 opening words\n"
-            "\\wj later words\\wj*\n"
-            "\\v 2 second opening\n",
+            "\\v 1 \\wj opening words\\wj*\n"
+            "\\p\n"
+            "\\v 2 plain opening\n",
         )
     buffer.seek(0)
 
@@ -156,17 +172,21 @@ def test_archive_analysis_reconciles_source_and_adapter_record_counts() -> None:
 
     assert result["book_count"] == 1
     assert result["corpus"]["record_count"] == 2
-    assert result["corpus"]["records_with_subsequent_wj"] == 1
-    assert result["corpus"]["adapter_visible_token_count"] == 6
-    assert [row["book_code"] for row in result["books_with_subsequent_wj"]] == [
+    assert result["corpus"]["records_with_opening_wj"] == 1
+    assert result["corpus"]["opening_wj_visible_token_count"] == 2
+    assert result["corpus"]["subsequent_wj_line_count"] == 0
+    assert result["corpus"]["adapter_visible_token_count"] == 4
+    assert [row["book_code"] for row in result["books_with_opening_wj"]] == [
         "MAT"
     ]
 
 
 def test_comparison_reports_only_aggregate_source_shape() -> None:
-    asv_summary = summarize_shape_records([shape_record("Control wording")])
+    asv_summary = summarize_shape_records(
+        [shape_record("\\add Control wording\\add*")]
+    )
     webp_summary = summarize_shape_records(
-        [shape_record("Private opening", "\\wj Private later wording\\wj*")]
+        [shape_record("\\wj Private opening wording\\wj*", "\\p")]
     )
     comparison = summarize_comparison(
         analysis("eng-asv", asv_summary),
@@ -174,7 +194,7 @@ def test_comparison_reports_only_aggregate_source_shape() -> None:
     )
     rendered = json.dumps(comparison, sort_keys=True)
 
-    assert comparison["diagnostic_contract"] == "source-record-position-accounting-v1"
+    assert comparison["diagnostic_contract"] == "source-verse-opening-marker-accounting-v2"
     assert comparison["scripture_text_reported"] is False
     assert comparison["token_lists_reported"] is False
     assert comparison["locator_identifiers_reported"] is False
@@ -182,17 +202,16 @@ def test_comparison_reports_only_aggregate_source_shape() -> None:
     assert comparison["parser_behavior_changed"] is False
     assert comparison["corpus_mutation"] == "not-performed"
     assert "Control wording" not in rendered
-    assert "Private opening" not in rendered
-    assert "Private later wording" not in rendered
+    assert "Private opening wording" not in rendered
     assert "raw_payload" not in rendered
     assert "source_sequence" not in rendered
 
 
 def test_expected_profile_mismatch_fails_closed(tmp_path: Path) -> None:
-    observed = {"contract": "v1", "count": 2}
+    observed = {"contract": "v2", "count": 2}
     expected_path = tmp_path / "expected.json"
     expected_path.write_text(
-        json.dumps({"contract": "v1", "count": 1}),
+        json.dumps({"contract": "v2", "count": 1}),
         encoding="utf-8",
     )
 
