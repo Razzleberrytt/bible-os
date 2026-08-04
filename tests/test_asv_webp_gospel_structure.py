@@ -188,6 +188,7 @@ def test_translation_analysis_and_comparison_are_text_private_and_deterministic(
     assert matthew["record_ratio_ppm"] == 1_000_000
     assert matthew["webp"]["record_count"] == matthew["asv"]["record_count"] == 2
     assert first["scripture_text_reported"] is False
+    assert first["token_lists_reported"] is False
     assert first["text_boundaries_defined"] is False
     assert first["corpus_mutation"] == "not-performed"
 
@@ -200,7 +201,6 @@ def test_translation_analysis_and_comparison_are_text_private_and_deterministic(
         "longer structural heading",
         "source_text",
         "raw_payload",
-        "token_list",
     ):
         assert forbidden not in rendered
 
