@@ -1,0 +1,506 @@
+{
+  "asv": {
+    "book_count": 66,
+    "markers": [
+      {
+        "contained_duplicate_line_count": 0,
+        "contained_duplicate_token_count": 0,
+        "exact_duplicate_line_count": 0,
+        "exact_duplicate_token_count": 0,
+        "line_count": 119,
+        "marker": "add",
+        "record_count": 119,
+        "visible_token_count": 2262,
+        "zero_token_line_count": 0
+      }
+    ],
+    "record_count": 31102,
+    "records_with_character_style": 119,
+    "translation_id": "eng-asv"
+  },
+  "comparison_byte_size": 40242,
+  "comparison_sha256": "a48e8f6105736d7139092b8e369d0d686b3d8ee416b96b3e7cca7b3107bb3cff",
+  "control_books": [
+    "ACT",
+    "ROM"
+  ],
+  "corpus_mutation": "not-performed",
+  "diagnostic_contract": "character-marker-same-record-accounting-v1",
+  "duplicate_definition": "normalized nonempty character-style leading-line tokens occur contiguously in another nonempty line of the same adapter record",
+  "exact_duplicate_definition": "normalized nonempty character-style leading-line tokens exactly equal another nonempty line of the same adapter record",
+  "execution_eligible": false,
+  "focus_book_profiles": [
+    {
+      "asv": {
+        "contained_duplicate_line_count": 0,
+        "contained_duplicate_token_count": 0,
+        "exact_duplicate_line_count": 0,
+        "exact_duplicate_token_count": 0,
+        "line_count": 0,
+        "record_count": 0,
+        "visible_token_count": 0,
+        "zero_token_line_count": 0
+      },
+      "book_code": "MAT",
+      "marker_comparisons": [
+        {
+          "asv": {
+            "contained_duplicate_line_count": 0,
+            "contained_duplicate_token_count": 0,
+            "exact_duplicate_line_count": 0,
+            "exact_duplicate_token_count": 0,
+            "line_count": 0,
+            "record_count": 0,
+            "visible_token_count": 0,
+            "zero_token_line_count": 0
+          },
+          "marker": "wj",
+          "webp": {
+            "contained_duplicate_line_count": 0,
+            "contained_duplicate_token_count": 0,
+            "exact_duplicate_line_count": 0,
+            "exact_duplicate_token_count": 0,
+            "line_count": 509,
+            "record_count": 509,
+            "visible_token_count": 31217,
+            "zero_token_line_count": 0
+          }
+        }
+      ],
+      "webp": {
+        "contained_duplicate_line_count": 0,
+        "contained_duplicate_token_count": 0,
+        "exact_duplicate_line_count": 0,
+        "exact_duplicate_token_count": 0,
+        "line_count": 509,
+        "record_count": 509,
+        "visible_token_count": 31217,
+        "zero_token_line_count": 0
+      }
+    },
+    {
+      "asv": {
+        "contained_duplicate_line_count": 0,
+        "contained_duplicate_token_count": 0,
+        "exact_duplicate_line_count": 0,
+        "exact_duplicate_token_count": 0,
+        "line_count": 2,
+        "record_count": 2,
+        "visible_token_count": 67,
+        "zero_token_line_count": 0
+      },
+      "book_code": "MRK",
+      "marker_comparisons": [
+        {
+          "asv": {
+            "contained_duplicate_line_count": 0,
+            "contained_duplicate_token_count": 0,
+            "exact_duplicate_line_count": 0,
+            "exact_duplicate_token_count": 0,
+            "line_count": 0,
+            "record_count": 0,
+            "visible_token_count": 0,
+            "zero_token_line_count": 0
+          },
+          "marker": "wj",
+          "webp": {
+            "contained_duplicate_line_count": 0,
+            "contained_duplicate_token_count": 0,
+            "exact_duplicate_line_count": 0,
+            "exact_duplicate_token_count": 0,
+            "line_count": 160,
+            "record_count": 160,
+            "visible_token_count": 9435,
+            "zero_token_line_count": 0
+          }
+        },
+        {
+          "asv": {
+            "contained_duplicate_line_count": 0,
+            "contained_duplicate_token_count": 0,
+            "exact_duplicate_line_count": 0,
+            "exact_duplicate_token_count": 0,
+            "line_count": 2,
+            "record_count": 2,
+            "visible_token_count": 67,
+            "zero_token_line_count": 0
+          },
+          "marker": "add",
+          "webp": {
+            "contained_duplicate_line_count": 0,
+            "contained_duplicate_token_count": 0,
+            "exact_duplicate_line_count": 0,
+            "exact_duplicate_token_count": 0,
+            "line_count": 0,
+            "record_count": 0,
+            "visible_token_count": 0,
+            "zero_token_line_count": 0
+          }
+        }
+      ],
+      "webp": {
+        "contained_duplicate_line_count": 0,
+        "contained_duplicate_token_count": 0,
+        "exact_duplicate_line_count": 0,
+        "exact_duplicate_token_count": 0,
+        "line_count": 160,
+        "record_count": 160,
+        "visible_token_count": 9435,
+        "zero_token_line_count": 0
+      }
+    },
+    {
+      "asv": {
+        "contained_duplicate_line_count": 0,
+        "contained_duplicate_token_count": 0,
+        "exact_duplicate_line_count": 0,
+        "exact_duplicate_token_count": 0,
+        "line_count": 0,
+        "record_count": 0,
+        "visible_token_count": 0,
+        "zero_token_line_count": 0
+      },
+      "book_code": "LUK",
+      "marker_comparisons": [
+        {
+          "asv": {
+            "contained_duplicate_line_count": 0,
+            "contained_duplicate_token_count": 0,
+            "exact_duplicate_line_count": 0,
+            "exact_duplicate_token_count": 0,
+            "line_count": 0,
+            "record_count": 0,
+            "visible_token_count": 0,
+            "zero_token_line_count": 0
+          },
+          "marker": "wj",
+          "webp": {
+            "contained_duplicate_line_count": 0,
+            "contained_duplicate_token_count": 0,
+            "exact_duplicate_line_count": 0,
+            "exact_duplicate_token_count": 0,
+            "line_count": 415,
+            "record_count": 415,
+            "visible_token_count": 26137,
+            "zero_token_line_count": 0
+          }
+        }
+      ],
+      "webp": {
+        "contained_duplicate_line_count": 0,
+        "contained_duplicate_token_count": 0,
+        "exact_duplicate_line_count": 0,
+        "exact_duplicate_token_count": 0,
+        "line_count": 415,
+        "record_count": 415,
+        "visible_token_count": 26137,
+        "zero_token_line_count": 0
+      }
+    },
+    {
+      "asv": {
+        "contained_duplicate_line_count": 0,
+        "contained_duplicate_token_count": 0,
+        "exact_duplicate_line_count": 0,
+        "exact_duplicate_token_count": 0,
+        "line_count": 7,
+        "record_count": 7,
+        "visible_token_count": 159,
+        "zero_token_line_count": 0
+      },
+      "book_code": "JHN",
+      "marker_comparisons": [
+        {
+          "asv": {
+            "contained_duplicate_line_count": 0,
+            "contained_duplicate_token_count": 0,
+            "exact_duplicate_line_count": 0,
+            "exact_duplicate_token_count": 0,
+            "line_count": 0,
+            "record_count": 0,
+            "visible_token_count": 0,
+            "zero_token_line_count": 0
+          },
+          "marker": "wj",
+          "webp": {
+            "contained_duplicate_line_count": 0,
+            "contained_duplicate_token_count": 0,
+            "exact_duplicate_line_count": 0,
+            "exact_duplicate_token_count": 0,
+            "line_count": 273,
+            "record_count": 273,
+            "visible_token_count": 17307,
+            "zero_token_line_count": 0
+          }
+        },
+        {
+          "asv": {
+            "contained_duplicate_line_count": 0,
+            "contained_duplicate_token_count": 0,
+            "exact_duplicate_line_count": 0,
+            "exact_duplicate_token_count": 0,
+            "line_count": 7,
+            "record_count": 7,
+            "visible_token_count": 159,
+            "zero_token_line_count": 0
+          },
+          "marker": "add",
+          "webp": {
+            "contained_duplicate_line_count": 0,
+            "contained_duplicate_token_count": 0,
+            "exact_duplicate_line_count": 0,
+            "exact_duplicate_token_count": 0,
+            "line_count": 0,
+            "record_count": 0,
+            "visible_token_count": 0,
+            "zero_token_line_count": 0
+          }
+        }
+      ],
+      "webp": {
+        "contained_duplicate_line_count": 0,
+        "contained_duplicate_token_count": 0,
+        "exact_duplicate_line_count": 0,
+        "exact_duplicate_token_count": 0,
+        "line_count": 273,
+        "record_count": 273,
+        "visible_token_count": 17307,
+        "zero_token_line_count": 0
+      }
+    },
+    {
+      "asv": {
+        "contained_duplicate_line_count": 0,
+        "contained_duplicate_token_count": 0,
+        "exact_duplicate_line_count": 0,
+        "exact_duplicate_token_count": 0,
+        "line_count": 1,
+        "record_count": 1,
+        "visible_token_count": 34,
+        "zero_token_line_count": 0
+      },
+      "book_code": "ACT",
+      "marker_comparisons": [
+        {
+          "asv": {
+            "contained_duplicate_line_count": 0,
+            "contained_duplicate_token_count": 0,
+            "exact_duplicate_line_count": 0,
+            "exact_duplicate_token_count": 0,
+            "line_count": 0,
+            "record_count": 0,
+            "visible_token_count": 0,
+            "zero_token_line_count": 0
+          },
+          "marker": "wj",
+          "webp": {
+            "contained_duplicate_line_count": 0,
+            "contained_duplicate_token_count": 0,
+            "exact_duplicate_line_count": 0,
+            "exact_duplicate_token_count": 0,
+            "line_count": 9,
+            "record_count": 9,
+            "visible_token_count": 657,
+            "zero_token_line_count": 0
+          }
+        },
+        {
+          "asv": {
+            "contained_duplicate_line_count": 0,
+            "contained_duplicate_token_count": 0,
+            "exact_duplicate_line_count": 0,
+            "exact_duplicate_token_count": 0,
+            "line_count": 1,
+            "record_count": 1,
+            "visible_token_count": 34,
+            "zero_token_line_count": 0
+          },
+          "marker": "add",
+          "webp": {
+            "contained_duplicate_line_count": 0,
+            "contained_duplicate_token_count": 0,
+            "exact_duplicate_line_count": 0,
+            "exact_duplicate_token_count": 0,
+            "line_count": 0,
+            "record_count": 0,
+            "visible_token_count": 0,
+            "zero_token_line_count": 0
+          }
+        }
+      ],
+      "webp": {
+        "contained_duplicate_line_count": 0,
+        "contained_duplicate_token_count": 0,
+        "exact_duplicate_line_count": 0,
+        "exact_duplicate_token_count": 0,
+        "line_count": 9,
+        "record_count": 9,
+        "visible_token_count": 657,
+        "zero_token_line_count": 0
+      }
+    },
+    {
+      "asv": {
+        "contained_duplicate_line_count": 0,
+        "contained_duplicate_token_count": 0,
+        "exact_duplicate_line_count": 0,
+        "exact_duplicate_token_count": 0,
+        "line_count": 2,
+        "record_count": 2,
+        "visible_token_count": 17,
+        "zero_token_line_count": 0
+      },
+      "book_code": "ROM",
+      "marker_comparisons": [
+        {
+          "asv": {
+            "contained_duplicate_line_count": 0,
+            "contained_duplicate_token_count": 0,
+            "exact_duplicate_line_count": 0,
+            "exact_duplicate_token_count": 0,
+            "line_count": 2,
+            "record_count": 2,
+            "visible_token_count": 17,
+            "zero_token_line_count": 0
+          },
+          "marker": "add",
+          "webp": {
+            "contained_duplicate_line_count": 0,
+            "contained_duplicate_token_count": 0,
+            "exact_duplicate_line_count": 0,
+            "exact_duplicate_token_count": 0,
+            "line_count": 0,
+            "record_count": 0,
+            "visible_token_count": 0,
+            "zero_token_line_count": 0
+          }
+        }
+      ],
+      "webp": {
+        "contained_duplicate_line_count": 0,
+        "contained_duplicate_token_count": 0,
+        "exact_duplicate_line_count": 0,
+        "exact_duplicate_token_count": 0,
+        "line_count": 0,
+        "record_count": 0,
+        "visible_token_count": 0,
+        "zero_token_line_count": 0
+      }
+    }
+  ],
+  "focus_books": [
+    "MAT",
+    "MRK",
+    "LUK",
+    "JHN",
+    "ACT",
+    "ROM"
+  ],
+  "gospel_books": [
+    "MAT",
+    "MRK",
+    "LUK",
+    "JHN"
+  ],
+  "locator_identifiers_reported": false,
+  "mapping_authority": "none",
+  "per_locator_text_digests_reported": false,
+  "profile_contract": "asv-webp-character-marker-profile-v1",
+  "publication_eligible": false,
+  "scripture_text_reported": false,
+  "text_boundaries_defined": false,
+  "token_lists_reported": false,
+  "webp": {
+    "book_count": 66,
+    "markers": [
+      {
+        "contained_duplicate_line_count": 0,
+        "contained_duplicate_token_count": 0,
+        "exact_duplicate_line_count": 0,
+        "exact_duplicate_token_count": 0,
+        "line_count": 1430,
+        "marker": "wj",
+        "record_count": 1430,
+        "visible_token_count": 89366,
+        "zero_token_line_count": 0
+      }
+    ],
+    "record_count": 31103,
+    "records_with_character_style": 1430,
+    "translation_id": "eng-webp"
+  },
+  "webp_books_with_character_style": [
+    {
+      "book_code": "MAT",
+      "contained_duplicate_line_count": 0,
+      "contained_duplicate_token_count": 0,
+      "exact_duplicate_line_count": 0,
+      "exact_duplicate_token_count": 0,
+      "line_count": 509,
+      "record_count": 509,
+      "records_with_character_style": 509,
+      "visible_token_count": 31217,
+      "zero_token_line_count": 0
+    },
+    {
+      "book_code": "MRK",
+      "contained_duplicate_line_count": 0,
+      "contained_duplicate_token_count": 0,
+      "exact_duplicate_line_count": 0,
+      "exact_duplicate_token_count": 0,
+      "line_count": 160,
+      "record_count": 160,
+      "records_with_character_style": 160,
+      "visible_token_count": 9435,
+      "zero_token_line_count": 0
+    },
+    {
+      "book_code": "LUK",
+      "contained_duplicate_line_count": 0,
+      "contained_duplicate_token_count": 0,
+      "exact_duplicate_line_count": 0,
+      "exact_duplicate_token_count": 0,
+      "line_count": 415,
+      "record_count": 415,
+      "records_with_character_style": 415,
+      "visible_token_count": 26137,
+      "zero_token_line_count": 0
+    },
+    {
+      "book_code": "JHN",
+      "contained_duplicate_line_count": 0,
+      "contained_duplicate_token_count": 0,
+      "exact_duplicate_line_count": 0,
+      "exact_duplicate_token_count": 0,
+      "line_count": 273,
+      "record_count": 273,
+      "records_with_character_style": 273,
+      "visible_token_count": 17307,
+      "zero_token_line_count": 0
+    },
+    {
+      "book_code": "ACT",
+      "contained_duplicate_line_count": 0,
+      "contained_duplicate_token_count": 0,
+      "exact_duplicate_line_count": 0,
+      "exact_duplicate_token_count": 0,
+      "line_count": 9,
+      "record_count": 9,
+      "records_with_character_style": 9,
+      "visible_token_count": 657,
+      "zero_token_line_count": 0
+    },
+    {
+      "book_code": "REV",
+      "contained_duplicate_line_count": 0,
+      "contained_duplicate_token_count": 0,
+      "exact_duplicate_line_count": 0,
+      "exact_duplicate_token_count": 0,
+      "line_count": 64,
+      "record_count": 64,
+      "records_with_character_style": 64,
+      "visible_token_count": 4613,
+      "zero_token_line_count": 0
+    }
+  ]
+}
