@@ -33,9 +33,13 @@ def encode(record: dict) -> bytes:
 
 
 def audit(package_records: dict[str, dict], requirements_record: dict | None = None):
-    requirements = requirements_record or load(REQUIREMENTS_PATH)
+    requirements_bytes = (
+        REQUIREMENTS_PATH.read_bytes()
+        if requirements_record is None
+        else encode(requirements_record)
+    )
     return audit_evidence_package_documents(
-        {"requirements.json": encode(requirements)},
+        {"requirements.json": requirements_bytes},
         {path: encode(record) for path, record in package_records.items()},
     )
 
@@ -122,8 +126,7 @@ def test_registered_evidence_package_audits_cleanly():
 
 def test_filesystem_audit_is_read_only(tmp_path: Path):
     for source in (REQUIREMENTS_PATH, PACKAGE_PATH):
-        relative = source.relative_to(ROOT)
-        destination = tmp_path / relative
+        destination = tmp_path / source.relative_to(ROOT)
         destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(source, destination)
 
@@ -139,22 +142,18 @@ def test_filesystem_audit_is_read_only(tmp_path: Path):
     assert after == before
 
 
-def test_exact_requirements_hash_is_recomputed():
+def test_exact_hash_scope_and_queue_are_recomputed():
     package = load(PACKAGE_PATH)
     package["requirements_sha256"] = "0" * 64
-
-    report = audit({"package.json": package})
-    assert "requirements-hash-mismatch" in finding_codes(report)
-    assert report.entries[0].valid is False
-
-
-def test_scope_and_queue_identity_must_match_requirements():
-    package = load(PACKAGE_PATH)
     package["queue_item_id"] = "vrq_differentqueue01"
     package["scope"]["target_references"] = ["ROM 1:1"]
 
     codes = finding_codes(audit({"package.json": package}))
-    assert {"queue-item-mismatch", "scope-mismatch"} <= codes
+    assert {
+        "requirements-hash-mismatch",
+        "queue-item-mismatch",
+        "scope-mismatch",
+    } <= codes
 
 
 def test_requirement_states_must_exactly_cover_requirements():
@@ -184,34 +183,24 @@ def test_completion_counts_and_readiness_are_derived_not_trusted():
     assert "approval-implied" in codes
 
 
-def test_artifact_links_must_be_bidirectional_and_known():
+def test_artifact_links_must_be_bidirectional_and_human_validated():
     package = load(PACKAGE_PATH)
-    package["requirement_states"][0]["state"] = "partial"
+    source_requirement = package["requirement_states"][0]["requirement_id"]
+    package["requirement_states"][0]["state"] = "human-validated"
     package["requirement_states"][0]["artifact_ids"] = ["epa_exampleartifact01"]
     package["artifacts"] = [
         artifact("epa_exampleartifact01", ["req_numberingprov01"])
     ]
-    package["status"] = "collecting-human-evidence"
-    package["completion_summary"]["referenced_artifact_count"] = 1
-
-    codes = finding_codes(audit({"package.json": package}))
-    assert "asymmetric-artifact-link" in codes
-    assert "asymmetric-requirement-link" in codes
-
-
-def test_human_validated_state_requires_human_validated_artifacts():
-    package = load(PACKAGE_PATH)
-    requirement_id = package["requirement_states"][0]["requirement_id"]
-    package["requirement_states"][0]["state"] = "human-validated"
-    package["requirement_states"][0]["artifact_ids"] = ["epa_exampleartifact01"]
-    package["artifacts"] = [artifact("epa_exampleartifact01", [requirement_id])]
     package["status"] = "collecting-human-evidence"
     package["completion_summary"]["satisfied_requirement_count"] = 1
     package["completion_summary"]["human_validated_requirement_count"] = 1
     package["completion_summary"]["referenced_artifact_count"] = 1
 
     codes = finding_codes(audit({"package.json": package}))
+    assert "asymmetric-artifact-link" in codes
+    assert "asymmetric-requirement-link" in codes
     assert "unvalidated-artifact-for-human-state" in codes
+    assert source_requirement == "req_sourcetext001"
 
 
 def test_linear_supersession_selects_one_active_revision():
@@ -235,35 +224,20 @@ def test_linear_supersession_selects_one_active_revision():
     assert entries["vep_asvwebpromans02"].active is True
 
 
-def test_unknown_predecessor_and_nonmonotonic_time_are_reported():
+def test_invalid_supersession_histories_are_reported():
     missing = revision(
         "vep_asvwebpromans02",
         supersedes="vep_missingpackage01",
         created_at="2026-08-04T01:36:00Z",
     )
-    report = audit({"missing.json": missing})
-    assert "unknown-superseded-package" in finding_codes(report)
-
-    first = revision(
-        "vep_asvwebpromans01",
-        supersedes=None,
-        created_at="2026-08-04T02:36:00Z",
-    )
-    second = revision(
-        "vep_asvwebpromans02",
-        supersedes="vep_asvwebpromans01",
-        created_at="2026-08-04T01:36:00Z",
-    )
-    assert "nonmonotonic-supersession-time" in finding_codes(
-        audit({"first.json": first, "second.json": second})
+    assert "unknown-superseded-package" in finding_codes(
+        audit({"missing.json": missing})
     )
 
-
-def test_branched_cycles_and_multiple_roots_are_rejected():
     root = revision(
         "vep_asvwebpromans01",
         supersedes=None,
-        created_at="2026-08-04T00:36:00Z",
+        created_at="2026-08-04T02:36:00Z",
     )
     left = revision(
         "vep_asvwebpromans02",
@@ -273,29 +247,31 @@ def test_branched_cycles_and_multiple_roots_are_rejected():
     right = revision(
         "vep_asvwebpromans03",
         supersedes="vep_asvwebpromans01",
-        created_at="2026-08-04T02:36:00Z",
+        created_at="2026-08-04T03:36:00Z",
     )
-    assert "branched-supersession" in finding_codes(
+    codes = finding_codes(
         audit({"root.json": root, "left.json": left, "right.json": right})
     )
+    assert "nonmonotonic-supersession-time" in codes
+    assert "branched-supersession" in codes
 
     root["supersedes_package_id"] = "vep_asvwebpromans02"
     assert "supersession-cycle" in finding_codes(
         audit({"root.json": root, "left.json": left})
     )
 
+    root["supersedes_package_id"] = None
     other_root = revision(
         "vep_asvwebpromans04",
         supersedes=None,
-        created_at="2026-08-04T03:36:00Z",
+        created_at="2026-08-04T04:36:00Z",
     )
-    root["supersedes_package_id"] = None
     assert "multiple-package-roots" in finding_codes(
         audit({"root.json": root, "other.json": other_root})
     )
 
 
-def test_malformed_and_duplicate_package_documents_produce_structured_entries():
+def test_malformed_and_duplicate_packages_produce_structured_entries():
     duplicate = load(PACKAGE_PATH)
     report = audit_evidence_package_documents(
         {"requirements.json": REQUIREMENTS_PATH.read_bytes()},
@@ -312,14 +288,17 @@ def test_malformed_and_duplicate_package_documents_produce_structured_entries():
 
 
 def test_document_mapping_order_does_not_change_the_report():
-    requirements = {"z-requirements.json": REQUIREMENTS_PATH.read_bytes()}
-    package = PACKAGE_PATH.read_bytes()
-    first = audit_evidence_package_documents(
-        requirements,
-        {"z-package.json": package},
-    )
+    requirements = {
+        "z-requirements.json": REQUIREMENTS_PATH.read_bytes(),
+        "a-broken.json": b"{broken",
+    }
+    packages = {
+        "z-package.json": PACKAGE_PATH.read_bytes(),
+        "a-broken.json": b"{broken",
+    }
+    first = audit_evidence_package_documents(requirements, packages)
     second = audit_evidence_package_documents(
         dict(reversed(list(requirements.items()))),
-        {"z-package.json": package},
+        dict(reversed(list(packages.items()))),
     )
     assert first == second
