@@ -1,0 +1,512 @@
+{
+  "asv_corpus_totals": {
+    "book_count": 66,
+    "compressed_bytes": 2826932,
+    "empty_record_count": 16,
+    "payload_line_count": 46659,
+    "payload_marker_count": 1435080,
+    "record_count": 31102,
+    "source_bytes": 19355232,
+    "source_file_count": 66,
+    "source_line_count": 49614,
+    "text_record_count": 31086,
+    "translation_id": "eng-asv",
+    "visible_token_count": 788127
+  },
+  "comparison_byte_size": 35739,
+  "comparison_sha256": "0bf73b8371108dedeaebc6424ffe3d986d62a4a09264d1a607432c3aa5127ef7",
+  "control_books": [
+    "ACT",
+    "ROM"
+  ],
+  "corpus_mutation": "not-performed",
+  "diagnostic_contract": "usfm-source-and-parser-structure-counts-v1",
+  "execution_eligible": false,
+  "focus_book_profiles": [
+    {
+      "asv": {
+        "empty_record_count": 3,
+        "leading_line_counts_by_class": {
+          "character-style": 0,
+          "note-cross-reference": 3,
+          "paragraph-poetry-list": 218,
+          "word-attribute": 1052
+        },
+        "leading_line_local_tokens_by_class": {
+          "character-style": 0,
+          "note-cross-reference": 0,
+          "paragraph-poetry-list": 371,
+          "word-attribute": 22729
+        },
+        "leading_marker_line_count": 1273,
+        "payload_bytes": 582432,
+        "payload_line_count": 1289,
+        "payload_marker_count": 44094,
+        "record_count": 1071,
+        "source_bytes": 592466,
+        "source_line_count": 1353,
+        "source_marker_count": 45229,
+        "text_record_count": 1068,
+        "tokens_per_record_milli": 21899,
+        "unmarked_line_local_token_count": 354,
+        "unmarked_payload_line_count": 16,
+        "visible_token_count": 23454
+      },
+      "book_code": "MAT",
+      "payload_line_ratio_ppm": 1210240,
+      "payload_marker_ratio_ppm": 465528,
+      "record_ratio_ppm": 1000000,
+      "source_byte_ratio_ppm": 1048853,
+      "source_line_ratio_ppm": 1200296,
+      "tokens_per_record_ratio_ppm": 2030458,
+      "visible_token_delta": 24168,
+      "visible_token_ratio_ppm": 2030443,
+      "webp": {
+        "empty_record_count": 0,
+        "leading_line_counts_by_class": {
+          "character-style": 509,
+          "note-cross-reference": 0,
+          "paragraph-poetry-list": 489,
+          "word-attribute": 540
+        },
+        "leading_line_local_tokens_by_class": {
+          "character-style": 31217,
+          "note-cross-reference": 0,
+          "paragraph-poetry-list": 1614,
+          "word-attribute": 14425
+        },
+        "leading_marker_line_count": 1538,
+        "payload_bytes": 611178,
+        "payload_line_count": 1560,
+        "payload_marker_count": 20527,
+        "record_count": 1071,
+        "source_bytes": 621410,
+        "source_line_count": 1624,
+        "source_marker_count": 21662,
+        "text_record_count": 1071,
+        "tokens_per_record_milli": 44465,
+        "unmarked_line_local_token_count": 366,
+        "unmarked_payload_line_count": 22,
+        "visible_token_count": 47622
+      }
+    },
+    {
+      "asv": {
+        "empty_record_count": 5,
+        "leading_line_counts_by_class": {
+          "character-style": 2,
+          "note-cross-reference": 5,
+          "paragraph-poetry-list": 114,
+          "word-attribute": 660
+        },
+        "leading_line_local_tokens_by_class": {
+          "character-style": 67,
+          "note-cross-reference": 0,
+          "paragraph-poetry-list": 105,
+          "word-attribute": 14512
+        },
+        "leading_marker_line_count": 781,
+        "payload_bytes": 369708,
+        "payload_line_count": 792,
+        "payload_marker_count": 28006,
+        "record_count": 678,
+        "source_bytes": 376069,
+        "source_line_count": 830,
+        "source_marker_count": 28722,
+        "text_record_count": 673,
+        "tokens_per_record_milli": 21950,
+        "unmarked_line_local_token_count": 198,
+        "unmarked_payload_line_count": 11,
+        "visible_token_count": 14882
+      },
+      "book_code": "MRK",
+      "payload_line_ratio_ppm": 1209596,
+      "payload_marker_ratio_ppm": 645397,
+      "record_ratio_ppm": 1000000,
+      "source_byte_ratio_ppm": 1007480,
+      "source_line_ratio_ppm": 1202410,
+      "tokens_per_record_ratio_ppm": 1611617,
+      "visible_token_delta": 9102,
+      "visible_token_ratio_ppm": 1611611,
+      "webp": {
+        "empty_record_count": 0,
+        "leading_line_counts_by_class": {
+          "character-style": 160,
+          "note-cross-reference": 1,
+          "paragraph-poetry-list": 280,
+          "word-attribute": 504
+        },
+        "leading_line_local_tokens_by_class": {
+          "character-style": 9435,
+          "note-cross-reference": 27,
+          "paragraph-poetry-list": 566,
+          "word-attribute": 13694
+        },
+        "leading_marker_line_count": 945,
+        "payload_bytes": 372344,
+        "payload_line_count": 958,
+        "payload_marker_count": 18075,
+        "record_count": 678,
+        "source_bytes": 378882,
+        "source_line_count": 998,
+        "source_marker_count": 18793,
+        "text_record_count": 678,
+        "tokens_per_record_milli": 35375,
+        "unmarked_line_local_token_count": 262,
+        "unmarked_payload_line_count": 13,
+        "visible_token_count": 23984
+      }
+    },
+    {
+      "asv": {
+        "empty_record_count": 2,
+        "leading_line_counts_by_class": {
+          "character-style": 0,
+          "note-cross-reference": 2,
+          "paragraph-poetry-list": 229,
+          "word-attribute": 1134
+        },
+        "leading_line_local_tokens_by_class": {
+          "character-style": 0,
+          "note-cross-reference": 0,
+          "paragraph-poetry-list": 329,
+          "word-attribute": 25098
+        },
+        "leading_marker_line_count": 1365,
+        "payload_bytes": 636683,
+        "payload_line_count": 1380,
+        "payload_marker_count": 48401,
+        "record_count": 1151,
+        "source_bytes": 647393,
+        "source_line_count": 1434,
+        "source_marker_count": 49606,
+        "text_record_count": 1149,
+        "tokens_per_record_milli": 22339,
+        "unmarked_line_local_token_count": 285,
+        "unmarked_payload_line_count": 15,
+        "visible_token_count": 25712
+      },
+      "book_code": "LUK",
+      "payload_line_ratio_ppm": 1201449,
+      "payload_marker_ratio_ppm": 527448,
+      "record_ratio_ppm": 1000000,
+      "source_byte_ratio_ppm": 1006965,
+      "source_line_ratio_ppm": 1195258,
+      "tokens_per_record_ratio_ppm": 1815345,
+      "visible_token_delta": 20964,
+      "visible_token_ratio_ppm": 1815339,
+      "webp": {
+        "empty_record_count": 1,
+        "leading_line_counts_by_class": {
+          "character-style": 415,
+          "note-cross-reference": 2,
+          "paragraph-poetry-list": 507,
+          "word-attribute": 718
+        },
+        "leading_line_local_tokens_by_class": {
+          "character-style": 26137,
+          "note-cross-reference": 45,
+          "paragraph-poetry-list": 1322,
+          "word-attribute": 18921
+        },
+        "leading_marker_line_count": 1642,
+        "payload_bytes": 640943,
+        "payload_line_count": 1658,
+        "payload_marker_count": 25529,
+        "record_count": 1151,
+        "source_bytes": 651902,
+        "source_line_count": 1714,
+        "source_marker_count": 26736,
+        "text_record_count": 1150,
+        "tokens_per_record_milli": 40553,
+        "unmarked_line_local_token_count": 251,
+        "unmarked_payload_line_count": 16,
+        "visible_token_count": 46676
+      }
+    },
+    {
+      "asv": {
+        "empty_record_count": 1,
+        "leading_line_counts_by_class": {
+          "character-style": 7,
+          "note-cross-reference": 1,
+          "paragraph-poetry-list": 90,
+          "word-attribute": 859
+        },
+        "leading_line_local_tokens_by_class": {
+          "character-style": 159,
+          "note-cross-reference": 0,
+          "paragraph-poetry-list": 94,
+          "word-attribute": 18579
+        },
+        "leading_marker_line_count": 957,
+        "payload_bytes": 476563,
+        "payload_line_count": 969,
+        "payload_marker_count": 36309,
+        "record_count": 879,
+        "source_bytes": 484731,
+        "source_line_count": 1017,
+        "source_marker_count": 37236,
+        "text_record_count": 878,
+        "tokens_per_record_milli": 21655,
+        "unmarked_line_local_token_count": 203,
+        "unmarked_payload_line_count": 12,
+        "visible_token_count": 19035
+      },
+      "book_code": "JHN",
+      "payload_line_ratio_ppm": 1278638,
+      "payload_marker_ratio_ppm": 595500,
+      "record_ratio_ppm": 1000000,
+      "source_byte_ratio_ppm": 1042440,
+      "source_line_ratio_ppm": 1267453,
+      "tokens_per_record_ratio_ppm": 1808451,
+      "visible_token_delta": 15388,
+      "visible_token_ratio_ppm": 1808406,
+      "webp": {
+        "empty_record_count": 0,
+        "leading_line_counts_by_class": {
+          "character-style": 273,
+          "note-cross-reference": 0,
+          "paragraph-poetry-list": 360,
+          "word-attribute": 592
+        },
+        "leading_line_local_tokens_by_class": {
+          "character-style": 17307,
+          "note-cross-reference": 0,
+          "paragraph-poetry-list": 1118,
+          "word-attribute": 15749
+        },
+        "leading_marker_line_count": 1225,
+        "payload_bytes": 496892,
+        "payload_line_count": 1239,
+        "payload_marker_count": 21622,
+        "record_count": 879,
+        "source_bytes": 505303,
+        "source_line_count": 1289,
+        "source_marker_count": 22551,
+        "text_record_count": 879,
+        "tokens_per_record_milli": 39162,
+        "unmarked_line_local_token_count": 249,
+        "unmarked_payload_line_count": 14,
+        "visible_token_count": 34423
+      }
+    },
+    {
+      "asv": {
+        "empty_record_count": 4,
+        "leading_line_counts_by_class": {
+          "character-style": 1,
+          "note-cross-reference": 4,
+          "paragraph-poetry-list": 199,
+          "word-attribute": 980
+        },
+        "leading_line_local_tokens_by_class": {
+          "character-style": 34,
+          "note-cross-reference": 0,
+          "paragraph-poetry-list": 655,
+          "word-attribute": 23046
+        },
+        "leading_marker_line_count": 1184,
+        "payload_bytes": 603718,
+        "payload_line_count": 1206,
+        "payload_marker_count": 45489,
+        "record_count": 1007,
+        "source_bytes": 613065,
+        "source_line_count": 1268,
+        "source_marker_count": 46558,
+        "text_record_count": 1003,
+        "tokens_per_record_milli": 24061,
+        "unmarked_line_local_token_count": 494,
+        "unmarked_payload_line_count": 22,
+        "visible_token_count": 24229
+      },
+      "book_code": "ACT",
+      "payload_line_ratio_ppm": 1117745,
+      "payload_marker_ratio_ppm": 941348,
+      "record_ratio_ppm": 1000000,
+      "source_byte_ratio_ppm": 970318,
+      "source_line_ratio_ppm": 1112776,
+      "tokens_per_record_ratio_ppm": 999709,
+      "visible_token_delta": -7,
+      "visible_token_ratio_ppm": 999711,
+      "webp": {
+        "empty_record_count": 3,
+        "leading_line_counts_by_class": {
+          "character-style": 9,
+          "note-cross-reference": 4,
+          "paragraph-poetry-list": 341,
+          "word-attribute": 911
+        },
+        "leading_line_local_tokens_by_class": {
+          "character-style": 657,
+          "note-cross-reference": 15,
+          "paragraph-poetry-list": 710,
+          "word-attribute": 21046
+        },
+        "leading_marker_line_count": 1265,
+        "payload_bytes": 585345,
+        "payload_line_count": 1348,
+        "payload_marker_count": 42821,
+        "record_count": 1007,
+        "source_bytes": 594868,
+        "source_line_count": 1411,
+        "source_marker_count": 43891,
+        "text_record_count": 1004,
+        "tokens_per_record_milli": 24054,
+        "unmarked_line_local_token_count": 1794,
+        "unmarked_payload_line_count": 83,
+        "visible_token_count": 24222
+      }
+    },
+    {
+      "asv": {
+        "empty_record_count": 1,
+        "leading_line_counts_by_class": {
+          "character-style": 2,
+          "note-cross-reference": 1,
+          "paragraph-poetry-list": 110,
+          "word-attribute": 406
+        },
+        "leading_line_local_tokens_by_class": {
+          "character-style": 17,
+          "note-cross-reference": 0,
+          "paragraph-poetry-list": 371,
+          "word-attribute": 8716
+        },
+        "leading_marker_line_count": 519,
+        "payload_bytes": 235121,
+        "payload_line_count": 543,
+        "payload_marker_count": 17782,
+        "record_count": 433,
+        "source_bytes": 239258,
+        "source_line_count": 582,
+        "source_marker_count": 18254,
+        "text_record_count": 432,
+        "tokens_per_record_milli": 21935,
+        "unmarked_line_local_token_count": 394,
+        "unmarked_payload_line_count": 24,
+        "visible_token_count": 9498
+      },
+      "book_code": "ROM",
+      "payload_line_ratio_ppm": 1081031,
+      "payload_marker_ratio_ppm": 1007817,
+      "record_ratio_ppm": 1002309,
+      "source_byte_ratio_ppm": 1013680,
+      "source_line_ratio_ppm": 1077320,
+      "tokens_per_record_ratio_ppm": 1002735,
+      "visible_token_delta": 48,
+      "visible_token_ratio_ppm": 1005054,
+      "webp": {
+        "empty_record_count": 1,
+        "leading_line_counts_by_class": {
+          "character-style": 0,
+          "note-cross-reference": 1,
+          "paragraph-poetry-list": 153,
+          "word-attribute": 388
+        },
+        "leading_line_local_tokens_by_class": {
+          "character-style": 0,
+          "note-cross-reference": 0,
+          "paragraph-poetry-list": 460,
+          "word-attribute": 8300
+        },
+        "leading_marker_line_count": 542,
+        "payload_bytes": 238343,
+        "payload_line_count": 587,
+        "payload_marker_count": 17921,
+        "record_count": 434,
+        "source_bytes": 242531,
+        "source_line_count": 627,
+        "source_marker_count": 18395,
+        "text_record_count": 433,
+        "tokens_per_record_milli": 21995,
+        "unmarked_line_local_token_count": 786,
+        "unmarked_payload_line_count": 45,
+        "visible_token_count": 9546
+      }
+    }
+  ],
+  "focus_books": [
+    "MAT",
+    "MRK",
+    "LUK",
+    "JHN",
+    "ACT",
+    "ROM"
+  ],
+  "gospel_books": [
+    "MAT",
+    "MRK",
+    "LUK",
+    "JHN"
+  ],
+  "highest_visible_token_ratio_books": [
+    {
+      "asv_visible_token_count": 23454,
+      "book_code": "MAT",
+      "payload_line_ratio_ppm": 1210240,
+      "source_line_ratio_ppm": 1200296,
+      "tokens_per_record_ratio_ppm": 2030458,
+      "visible_token_ratio_ppm": 2030443,
+      "webp_visible_token_count": 47622
+    },
+    {
+      "asv_visible_token_count": 25712,
+      "book_code": "LUK",
+      "payload_line_ratio_ppm": 1201449,
+      "source_line_ratio_ppm": 1195258,
+      "tokens_per_record_ratio_ppm": 1815345,
+      "visible_token_ratio_ppm": 1815339,
+      "webp_visible_token_count": 46676
+    },
+    {
+      "asv_visible_token_count": 19035,
+      "book_code": "JHN",
+      "payload_line_ratio_ppm": 1278638,
+      "source_line_ratio_ppm": 1267453,
+      "tokens_per_record_ratio_ppm": 1808451,
+      "visible_token_ratio_ppm": 1808406,
+      "webp_visible_token_count": 34423
+    },
+    {
+      "asv_visible_token_count": 14882,
+      "book_code": "MRK",
+      "payload_line_ratio_ppm": 1209596,
+      "source_line_ratio_ppm": 1202410,
+      "tokens_per_record_ratio_ppm": 1611617,
+      "visible_token_ratio_ppm": 1611611,
+      "webp_visible_token_count": 23984
+    },
+    {
+      "asv_visible_token_count": 12168,
+      "book_code": "REV",
+      "payload_line_ratio_ppm": 1061896,
+      "source_line_ratio_ppm": 1058201,
+      "tokens_per_record_ratio_ppm": 1224609,
+      "visible_token_ratio_ppm": 1224606,
+      "webp_visible_token_count": 14901
+    }
+  ],
+  "mapping_authority": "none",
+  "per_locator_text_digests_reported": false,
+  "profile_contract": "asv-webp-gospel-structure-profile-v1",
+  "publication_eligible": false,
+  "scripture_text_reported": false,
+  "shared_book_count": 66,
+  "text_boundaries_defined": false,
+  "token_lists_reported": false,
+  "webp_corpus_totals": {
+    "book_count": 66,
+    "compressed_bytes": 2860948,
+    "empty_record_count": 5,
+    "payload_line_count": 57941,
+    "payload_marker_count": 1329374,
+    "record_count": 31103,
+    "source_bytes": 19022524,
+    "source_file_count": 66,
+    "source_line_count": 60960,
+    "text_record_count": 31098,
+    "translation_id": "eng-webp",
+    "visible_token_count": 836655
+  }
+}
