@@ -40,9 +40,10 @@ jobs:
         run: |
           psql -h localhost -U bible_os -d bible_os -v ON_ERROR_STOP=1 -f database/migrations/0001_foundation.up.sql
           psql -h localhost -U bible_os -d bible_os -v ON_ERROR_STOP=1 -f database/migrations/0002_reference_relation.up.sql
-      - name: Observe inert ASV and WEBP locator candidates
+      - name: Reproduce inert ASV and WEBP locator candidates
         run: >-
           python -m scripts.asv_webp_candidate_ci
+          --expected registry/experiments/asv-webp-locator-candidates.json
           --report asv-webp-candidate-report.json
       - name: Display metadata-only candidate evidence
         if: always()
