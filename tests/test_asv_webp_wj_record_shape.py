@@ -116,10 +116,10 @@ def test_summary_separates_opening_wj_add_and_later_controls() -> None:
     assert summary["records_with_opening_wj_and_subsequent_lines"] == 1
     assert summary["records_with_opening_wj_and_visible_subsequent_tokens"] == 1
     assert summary["opening_wj_record_opening_visible_token_count"] == 2
-    assert summary["opening_wj_record_subsequent_visible_token_count"] == 1
-    assert summary["opening_wj_record_adapter_visible_token_count"] == 3
-    assert summary["opening_wj_record_opening_token_share_ppm"] == 666_667
-    assert summary["opening_wj_record_subsequent_token_share_ppm"] == 333_333
+    assert summary["opening_wj_record_subsequent_visible_token_count"] == 2
+    assert summary["opening_wj_record_adapter_visible_token_count"] == 4
+    assert summary["opening_wj_record_opening_token_share_ppm"] == 500_000
+    assert summary["opening_wj_record_subsequent_token_share_ppm"] == 500_000
     assert summary["token_reconciliation_delta"] == 0
     assert summary["record_shapes"] == [
         {"shape": "empty-plus-later", "record_count": 1},
