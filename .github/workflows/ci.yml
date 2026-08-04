@@ -40,6 +40,25 @@ jobs:
         if: always()
         run: cat versification-registry-integrity-report.json
 
+  evidence-package-integrity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: Install Bible OS package
+        run: pip install .
+      - name: Audit evidence package consistency
+        run: >-
+          python -m scripts.evidence_package_integrity
+          --root .
+          --report evidence-package-integrity-report.json
+      - name: Display metadata-only evidence package integrity report
+        if: always()
+        run: cat evidence-package-integrity-report.json
+
   migration:
     runs-on: ubuntu-latest
     services:
