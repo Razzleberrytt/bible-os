@@ -7,17 +7,45 @@ from pathlib import Path
 from typing import Any, Sequence
 
 from scripts.asv_webp_wj_record_shape_ci import (
-    COUNT_KEYS,
     FOCUS_BOOKS,
     run as run_full_diagnostic,
 )
 from scripts.webp_adapter_smoke import load_json
 
 
-RATIO_KEYS = (
+CORPUS_COUNT_KEYS = (
+    "record_count",
+    "source_position_token_count",
+    "adapter_visible_token_count",
+    "token_reconciliation_delta",
+    "opening_wj_line_count",
+    "opening_wj_zero_token_line_count",
+    "opening_wj_visible_token_count",
+    "opening_add_line_count",
+    "opening_add_zero_token_line_count",
+    "opening_add_visible_token_count",
+    "subsequent_wj_line_count",
+    "subsequent_wj_visible_token_count",
+    "records_with_opening_wj",
+    "records_with_opening_wj_and_subsequent_lines",
+    "records_with_opening_wj_and_visible_subsequent_tokens",
+    "opening_wj_record_opening_visible_token_count",
+    "opening_wj_record_subsequent_visible_token_count",
+    "opening_wj_record_adapter_visible_token_count",
     "opening_wj_record_opening_token_share_ppm",
     "opening_wj_record_subsequent_token_share_ppm",
     "source_position_to_adapter_token_ratio_ppm",
+)
+BOOK_COUNT_KEYS = (
+    "opening_wj_line_count",
+    "opening_wj_visible_token_count",
+    "opening_add_line_count",
+    "opening_add_visible_token_count",
+    "subsequent_wj_line_count",
+    "subsequent_wj_visible_token_count",
+    "records_with_opening_wj_and_subsequent_lines",
+    "records_with_opening_wj_and_visible_subsequent_tokens",
+    "opening_wj_record_subsequent_visible_token_count",
 )
 
 
@@ -33,27 +61,23 @@ def canonical_json_bytes(value: Any) -> bytes:
     ).encode("utf-8")
 
 
-def compact_summary(summary: dict[str, Any]) -> dict[str, Any]:
-    return {
-        **{key: int(summary.get(key, 0)) for key in COUNT_KEYS},
-        **{key: int(summary.get(key, 0)) for key in RATIO_KEYS},
-        "record_shapes": summary.get("record_shapes", []),
-        "subsequent_lines_per_opening_wj_record": summary.get(
-            "subsequent_lines_per_opening_wj_record", []
-        ),
-    }
+def select_counts(summary: dict[str, Any], keys: Sequence[str]) -> dict[str, int]:
+    return {key: int(summary.get(key, 0)) for key in keys}
 
 
 def compact_translation(translation: dict[str, Any]) -> dict[str, Any]:
     return {
         "translation_id": translation["translation_id"],
         "book_count": translation["book_count"],
-        "corpus": compact_summary(translation["corpus"]),
+        "corpus": select_counts(translation["corpus"], CORPUS_COUNT_KEYS),
     }
 
 
 def compact_book(book: dict[str, Any]) -> dict[str, Any]:
-    return {"book_code": book["book_code"], **compact_summary(book)}
+    return {
+        "book_code": book["book_code"],
+        **select_counts(book, BOOK_COUNT_KEYS),
+    }
 
 
 def build_profile(comparison: dict[str, Any]) -> dict[str, Any]:
@@ -81,7 +105,6 @@ def build_profile(comparison: dict[str, Any]) -> dict[str, Any]:
             compact_book(book)
             for book in comparison["asv"]["books_with_opening_add"]
         ],
-        "focus_book_profiles": comparison["focus_book_comparisons"],
         "scripture_text_reported": comparison["scripture_text_reported"],
         "token_lists_reported": comparison["token_lists_reported"],
         "locator_identifiers_reported": comparison[
