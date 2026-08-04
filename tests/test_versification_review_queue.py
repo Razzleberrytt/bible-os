@@ -9,13 +9,24 @@ from jsonschema import Draft202012Validator, FormatChecker
 
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA_PATH = ROOT / "schemas/versification-review-queue-item.schema.json"
-FIXTURE_PATH = (
+SYNTHETIC_FIXTURE_PATH = (
     ROOT
     / "registry"
     / "versification"
     / "review-queue"
     / "synthetic-split-candidate.json"
 )
+ROMANS_FIXTURE_PATH = (
+    ROOT
+    / "registry"
+    / "versification"
+    / "review-queue"
+    / "asv-webp-romans-structural-candidate.json"
+)
+CANDIDATE_PROFILE_PATH = (
+    ROOT / "registry/experiments/asv-webp-locator-candidates.json"
+)
+FIXTURE_PATH = SYNTHETIC_FIXTURE_PATH
 
 
 def load(path: Path) -> dict:
@@ -32,13 +43,85 @@ def errors(item: dict) -> list:
     )
 
 
-def test_review_queue_schema_and_fixture_validate():
+def test_review_queue_schema_and_fixtures_validate():
     schema = load(SCHEMA_PATH)
     Draft202012Validator.check_schema(schema)
-    Draft202012Validator(
-        schema,
-        format_checker=FormatChecker(),
-    ).validate(load(FIXTURE_PATH))
+    validator = Draft202012Validator(schema, format_checker=FormatChecker())
+    validator.validate(load(SYNTHETIC_FIXTURE_PATH))
+    validator.validate(load(ROMANS_FIXTURE_PATH))
+
+
+def test_romans_proposal_is_exactly_scoped_to_six_pinned_observations():
+    item = load(ROMANS_FIXTURE_PATH)
+    profile = load(CANDIDATE_PROFILE_PATH)
+    profile_candidates = {
+        candidate["candidate_id"]: candidate
+        for candidate in profile["exceptional_candidates"]
+    }
+    evidence_ids = [
+        evidence["locator"].rsplit("#", 1)[1]
+        for evidence in item["evidence"]
+    ]
+
+    assert item["queue_item_id"] == "vrq_asvwebpromans01"
+    assert item["candidate_kind"] == "uncertain"
+    assert item["status"] == "queued"
+    assert item["proposed_confidence"] == 0.0
+    assert item["source_system"] == {
+        "versification_system_id": "vrs_pmkqrxv7lvez52xxkan2",
+        "references": ["ROM 16:25", "ROM 16:26", "ROM 16:27"],
+    }
+    assert item["target_system"] == {
+        "versification_system_id": "vrs_dfqdldqfzy7udzlxspyw",
+        "references": [
+            "ROM 14:24",
+            "ROM 14:25",
+            "ROM 14:26",
+            "ROM 16:25",
+        ],
+    }
+    assert evidence_ids == [
+        "can_py26v3umswbmzskskpp5",
+        "can_wj6w6pd7c37roqplxvrh",
+        "can_3sgamesf53renovukq6w",
+        "can_hdyty2uvb3s3kuylkc57",
+        "can_lyiw5ovpe7ir3acvsd6m",
+        "can_qy4pdugmdaq26f52akxm",
+    ]
+    assert [profile_candidates[candidate_id]["locator"] for candidate_id in evidence_ids] == [
+        "ROM 14:24",
+        "ROM 14:25",
+        "ROM 14:26",
+        "ROM 16:25",
+        "ROM 16:26",
+        "ROM 16:27",
+    ]
+    assert [
+        profile_candidates[candidate_id]["candidate_class"]
+        for candidate_id in evidence_ids
+    ] == [
+        "webp-only-locus",
+        "webp-only-locus",
+        "webp-only-locus",
+        "realization-mismatch-observation",
+        "asv-only-locus",
+        "asv-only-locus",
+    ]
+    assert "can_k6cfuv7sbumommdi2ha7" not in evidence_ids
+    assert all(evidence["sha256"] == profile["sha256"] for evidence in item["evidence"])
+    assert all(evidence["contains_source_text"] is False for evidence in item["evidence"])
+    assert item["review_requirements"] == {
+        "required_roles": [
+            "textual-scholar",
+            "data-curator",
+            "engineering-reviewer",
+        ],
+        "minimum_approvals": 3,
+        "conflict_policy": "unanimous",
+    }
+    assert item["materialization_state"] == "not-materialized"
+    assert item["execution_eligible"] is False
+    assert item["publication_eligible"] is False
 
 
 def test_queue_item_is_inert_by_contract():
