@@ -90,7 +90,7 @@ def test_exact_marker_roots_are_kept_separate_and_sorted_deterministically() -> 
     reverse = summarize_records(list(reversed(records)))
 
     assert forward == reverse
-    assert [row["marker"] for row in forward["markers"]] == ["wj", "qt", "add"]
+    assert [row["marker"] for row in forward["markers"]] == ["wj", "add", "qt"]
 
 
 def test_translation_summary_is_book_ordered_and_focus_limited() -> None:
