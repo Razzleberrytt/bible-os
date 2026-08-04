@@ -1,0 +1,234 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bible-os.example/schemas/versification-evidence-requirements.schema.json",
+  "title": "Bible OS Versification Evidence Requirements",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "requirements_id",
+    "queue_item_id",
+    "queue_item_sha256",
+    "trigger_attestation_id",
+    "trigger_attestation_sha256",
+    "status",
+    "scope",
+    "requirements",
+    "completion_policy",
+    "created_at",
+    "supersedes_requirements_id",
+    "created_by",
+    "record_policy",
+    "decision_authority",
+    "queue_status_authority",
+    "materialization_authority",
+    "execution_eligible",
+    "publication_eligible",
+    "source_text_embedded"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "requirements_id": {
+      "type": "string",
+      "pattern": "^ver_[a-z0-9]{12,}$"
+    },
+    "queue_item_id": {
+      "type": "string",
+      "pattern": "^vrq_[a-z0-9]{12,}$"
+    },
+    "queue_item_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "trigger_attestation_id": {
+      "type": "string",
+      "pattern": "^vra_[a-z0-9]{12,}$"
+    },
+    "trigger_attestation_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "status": {
+      "const": "open"
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_references",
+        "target_references",
+        "excluded_candidate_ids"
+      ],
+      "properties": {
+        "source_references": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/reference"
+          }
+        },
+        "target_references": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/reference"
+          }
+        },
+        "excluded_candidate_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^can_[a-z0-9]{12,}$"
+          }
+        }
+      }
+    },
+    "requirements": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "requirement_id",
+          "category",
+          "description",
+          "required_artifacts",
+          "acceptance_criteria",
+          "contains_source_text",
+          "human_validation_required"
+        ],
+        "properties": {
+          "requirement_id": {
+            "type": "string",
+            "pattern": "^req_[a-z0-9]{12,}$"
+          },
+          "category": {
+            "enum": [
+              "source-anchored-textual-comparison",
+              "numbering-tradition-provenance",
+              "independent-scholarly-analysis",
+              "alternative-hypothesis-assessment"
+            ]
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1
+          },
+          "required_artifacts": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "registered-source-locator-index",
+                "source-unit-digests",
+                "comparison-notes",
+                "provenance-citations",
+                "scholarly-citations",
+                "hypothesis-matrix"
+              ]
+            }
+          },
+          "acceptance_criteria": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "contains_source_text": {
+            "const": false
+          },
+          "human_validation_required": {
+            "const": true
+          }
+        }
+      }
+    },
+    "completion_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "all_requirements_required",
+        "required_reviewer_role",
+        "independent_human_reviewer_required",
+        "completion_effect",
+        "approval_implied"
+      ],
+      "properties": {
+        "all_requirements_required": {
+          "const": true
+        },
+        "required_reviewer_role": {
+          "const": "textual-scholar"
+        },
+        "independent_human_reviewer_required": {
+          "const": true
+        },
+        "completion_effect": {
+          "const": "evidence-ready-for-review-only"
+        },
+        "approval_implied": {
+          "const": false
+        }
+      }
+    },
+    "supersedes_requirements_id": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^ver_[a-z0-9]{12,}$"
+        }
+      ]
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "created_by": {
+      "type": "string",
+      "minLength": 1
+    },
+    "record_policy": {
+      "const": "append-only"
+    },
+    "decision_authority": {
+      "const": "none"
+    },
+    "queue_status_authority": {
+      "const": "none"
+    },
+    "materialization_authority": {
+      "const": "none"
+    },
+    "execution_eligible": {
+      "const": false
+    },
+    "publication_eligible": {
+      "const": false
+    },
+    "source_text_embedded": {
+      "const": false
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "reference": {
+      "type": "string",
+      "pattern": "^[A-Z0-9]{3} [1-9][0-9]*:[1-9][0-9]*$"
+    }
+  }
+}
