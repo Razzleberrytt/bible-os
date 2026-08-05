@@ -1,0 +1,28 @@
+name: asv-webp-wj-token-strata
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  asv-webp-wj-token-strata:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: Install Bible OS package
+        run: pip install .
+      - name: Observe compact text-private opening-wj token strata
+        run: >-
+          python -m scripts.asv_webp_wj_token_strata_profile_ci
+          --report asv-webp-wj-token-strata-report.json
+      - name: Display metadata-only opening-wj token strata evidence
+        if: always()
+        run: cat asv-webp-wj-token-strata-report.json
