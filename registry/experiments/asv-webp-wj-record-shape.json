@@ -1,0 +1,134 @@
+{
+  "asv": {
+    "book_count": 66,
+    "corpus": {
+      "adapter_visible_token_count": 788127,
+      "opening_add_line_count": 119,
+      "opening_add_visible_token_count": 2262,
+      "opening_add_zero_token_line_count": 0,
+      "opening_wj_line_count": 0,
+      "opening_wj_record_adapter_visible_token_count": 0,
+      "opening_wj_record_opening_token_share_ppm": 0,
+      "opening_wj_record_opening_visible_token_count": 0,
+      "opening_wj_record_subsequent_token_share_ppm": 0,
+      "opening_wj_record_subsequent_visible_token_count": 0,
+      "opening_wj_visible_token_count": 0,
+      "opening_wj_zero_token_line_count": 0,
+      "record_count": 31102,
+      "records_with_opening_wj": 0,
+      "records_with_opening_wj_and_subsequent_lines": 0,
+      "records_with_opening_wj_and_visible_subsequent_tokens": 0,
+      "source_position_to_adapter_token_ratio_ppm": 1000000,
+      "source_position_token_count": 788127,
+      "subsequent_wj_line_count": 0,
+      "subsequent_wj_visible_token_count": 0,
+      "token_reconciliation_delta": 0
+    },
+    "translation_id": "eng-asv"
+  },
+  "comparison_byte_size": 116201,
+  "comparison_sha256": "c82c395296e48f12223bd482e413e5e5faf5013968501de15e3b8e00cdcfe9ed",
+  "corpus_mutation": "not-performed",
+  "diagnostic_contract": "source-verse-opening-marker-accounting-v2",
+  "execution_eligible": false,
+  "focus_books": [
+    "MAT",
+    "MRK",
+    "LUK",
+    "JHN",
+    "ACT",
+    "ROM",
+    "REV"
+  ],
+  "locator_identifiers_reported": false,
+  "mapping_authority": "none",
+  "opening_add_definition": "a verse-opening payload whose exact leading marker root is add",
+  "opening_wj_definition": "a verse-opening payload whose exact leading marker root is wj",
+  "parser_behavior_changed": false,
+  "per_locator_text_digests_reported": false,
+  "profile_contract": "asv-webp-wj-record-shape-profile-v2",
+  "publication_eligible": false,
+  "scripture_text_reported": false,
+  "subsequent_line_definition": "source lines after a verse marker and before the next verse or chapter marker",
+  "text_boundaries_defined": false,
+  "token_lists_reported": false,
+  "token_reconciliation_definition": "source-position visible-token sum minus adapter raw-payload visible-token count",
+  "verse_opening_definition": "the optional source payload carried on the same USFM line as the verse marker",
+  "webp": {
+    "book_count": 66,
+    "corpus": {
+      "adapter_visible_token_count": 836655,
+      "opening_add_line_count": 0,
+      "opening_add_visible_token_count": 0,
+      "opening_add_zero_token_line_count": 0,
+      "opening_wj_line_count": 1430,
+      "opening_wj_record_adapter_visible_token_count": 91292,
+      "opening_wj_record_opening_token_share_ppm": 978903,
+      "opening_wj_record_opening_visible_token_count": 89366,
+      "opening_wj_record_subsequent_token_share_ppm": 21097,
+      "opening_wj_record_subsequent_visible_token_count": 1926,
+      "opening_wj_visible_token_count": 89366,
+      "opening_wj_zero_token_line_count": 0,
+      "record_count": 31103,
+      "records_with_opening_wj": 1430,
+      "records_with_opening_wj_and_subsequent_lines": 432,
+      "records_with_opening_wj_and_visible_subsequent_tokens": 58,
+      "source_position_to_adapter_token_ratio_ppm": 1000000,
+      "source_position_token_count": 836655,
+      "subsequent_wj_line_count": 0,
+      "subsequent_wj_visible_token_count": 0,
+      "token_reconciliation_delta": 0
+    },
+    "translation_id": "eng-webp"
+  },
+  "webp_books_with_opening_wj": [
+    {
+      "book_code": "MAT",
+      "opening_wj_line_count": 509,
+      "opening_wj_record_subsequent_visible_token_count": 722,
+      "opening_wj_visible_token_count": 31217,
+      "records_with_opening_wj_and_subsequent_lines": 149,
+      "records_with_opening_wj_and_visible_subsequent_tokens": 25
+    },
+    {
+      "book_code": "MRK",
+      "opening_wj_line_count": 160,
+      "opening_wj_record_subsequent_visible_token_count": 171,
+      "opening_wj_visible_token_count": 9435,
+      "records_with_opening_wj_and_subsequent_lines": 55,
+      "records_with_opening_wj_and_visible_subsequent_tokens": 8
+    },
+    {
+      "book_code": "LUK",
+      "opening_wj_line_count": 415,
+      "opening_wj_record_subsequent_visible_token_count": 566,
+      "opening_wj_visible_token_count": 26137,
+      "records_with_opening_wj_and_subsequent_lines": 146,
+      "records_with_opening_wj_and_visible_subsequent_tokens": 16
+    },
+    {
+      "book_code": "JHN",
+      "opening_wj_line_count": 273,
+      "opening_wj_record_subsequent_visible_token_count": 35,
+      "opening_wj_visible_token_count": 17307,
+      "records_with_opening_wj_and_subsequent_lines": 59,
+      "records_with_opening_wj_and_visible_subsequent_tokens": 2
+    },
+    {
+      "book_code": "ACT",
+      "opening_wj_line_count": 9,
+      "opening_wj_record_subsequent_visible_token_count": 0,
+      "opening_wj_visible_token_count": 657,
+      "records_with_opening_wj_and_subsequent_lines": 7,
+      "records_with_opening_wj_and_visible_subsequent_tokens": 0
+    },
+    {
+      "book_code": "REV",
+      "opening_wj_line_count": 64,
+      "opening_wj_record_subsequent_visible_token_count": 432,
+      "opening_wj_visible_token_count": 4613,
+      "records_with_opening_wj_and_subsequent_lines": 16,
+      "records_with_opening_wj_and_visible_subsequent_tokens": 7
+    }
+  ]
+}
