@@ -13,6 +13,15 @@ from scripts.asv_webp_wj_token_strata_ci import (
 from scripts.webp_adapter_smoke import load_json
 
 
+COMPACT_STRATUM_KEYS = (
+    "locator_count",
+    "asv_token_count",
+    "webp_token_count",
+    "token_count_delta",
+    "webp_to_asv_total_token_ratio_ppm",
+)
+
+
 def canonical_json_bytes(value: Any) -> bytes:
     return (
         json.dumps(
@@ -28,6 +37,23 @@ def canonical_json_bytes(value: Any) -> bytes:
 def rows_by_book(summary: dict[str, Any]) -> dict[str, dict[str, Any]]:
     return {
         row["book_code"]: row for row in summary["book_summaries"]
+    }
+
+
+def compact_stratum(row: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "stratum": row["stratum"],
+        **{key: int(row.get(key, 0)) for key in COMPACT_STRATUM_KEYS},
+    }
+
+
+def compact_book(row: dict[str, Any]) -> dict[str, Any]:
+    strata = {item["stratum"]: item for item in row["strata"]}
+    return {
+        "book_code": row["book_code"],
+        "locator_count": int(row["locator_count"]),
+        "opening_wj": compact_stratum(strata["webp-opening-wj"]),
+        "non_wj": compact_stratum(strata["webp-non-wj"]),
     }
 
 
@@ -55,7 +81,7 @@ def build_profile(summary: dict[str, Any]) -> dict[str, Any]:
         "strata": summary["strata"],
         "focus_books": list(FOCUS_BOOKS),
         "focus_book_profiles": [
-            books[book_code]
+            compact_book(books[book_code])
             for book_code in FOCUS_BOOKS
             if book_code in books
         ],
