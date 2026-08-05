@@ -1,0 +1,214 @@
+{
+  "analysis_contract": "shared-text-locator-opening-wj-stratification-v1",
+  "books_with_opening_wj": [
+    "MAT",
+    "MRK",
+    "LUK",
+    "JHN",
+    "ACT",
+    "REV"
+  ],
+  "corpus_mutation": "not-performed",
+  "execution_eligible": false,
+  "focus_book_profiles": [
+    {
+      "book_code": "MAT",
+      "locator_count": 1068,
+      "non_wj": {
+        "asv_token_count": 12068,
+        "locator_count": 562,
+        "stratum": "webp-non-wj",
+        "token_count_delta": 3615,
+        "webp_to_asv_total_token_ratio_ppm": 1299553,
+        "webp_token_count": 15683
+      },
+      "opening_wj": {
+        "asv_token_count": 11386,
+        "locator_count": 506,
+        "stratum": "webp-opening-wj",
+        "token_count_delta": 20495,
+        "webp_to_asv_total_token_ratio_ppm": 2800018,
+        "webp_token_count": 31881
+      }
+    },
+    {
+      "book_code": "MRK",
+      "locator_count": 673,
+      "non_wj": {
+        "asv_token_count": 11460,
+        "locator_count": 517,
+        "stratum": "webp-non-wj",
+        "token_count_delta": 2907,
+        "webp_to_asv_total_token_ratio_ppm": 1253665,
+        "webp_token_count": 14367
+      },
+      "opening_wj": {
+        "asv_token_count": 3422,
+        "locator_count": 156,
+        "stratum": "webp-opening-wj",
+        "token_count_delta": 6138,
+        "webp_to_asv_total_token_ratio_ppm": 2793688,
+        "webp_token_count": 9560
+      }
+    },
+    {
+      "book_code": "LUK",
+      "locator_count": 1149,
+      "non_wj": {
+        "asv_token_count": 15942,
+        "locator_count": 734,
+        "stratum": "webp-non-wj",
+        "token_count_delta": 4019,
+        "webp_to_asv_total_token_ratio_ppm": 1252101,
+        "webp_token_count": 19961
+      },
+      "opening_wj": {
+        "asv_token_count": 9770,
+        "locator_count": 415,
+        "stratum": "webp-opening-wj",
+        "token_count_delta": 16933,
+        "webp_to_asv_total_token_ratio_ppm": 2733163,
+        "webp_token_count": 26703
+      }
+    },
+    {
+      "book_code": "JHN",
+      "locator_count": 878,
+      "non_wj": {
+        "asv_token_count": 12963,
+        "locator_count": 605,
+        "stratum": "webp-non-wj",
+        "token_count_delta": 4085,
+        "webp_to_asv_total_token_ratio_ppm": 1315128,
+        "webp_token_count": 17048
+      },
+      "opening_wj": {
+        "asv_token_count": 6072,
+        "locator_count": 273,
+        "stratum": "webp-opening-wj",
+        "token_count_delta": 11270,
+        "webp_to_asv_total_token_ratio_ppm": 2856061,
+        "webp_token_count": 17342
+      }
+    },
+    {
+      "book_code": "ACT",
+      "locator_count": 1003,
+      "non_wj": {
+        "asv_token_count": 24000,
+        "locator_count": 994,
+        "stratum": "webp-non-wj",
+        "token_count_delta": -450,
+        "webp_to_asv_total_token_ratio_ppm": 981250,
+        "webp_token_count": 23550
+      },
+      "opening_wj": {
+        "asv_token_count": 229,
+        "locator_count": 9,
+        "stratum": "webp-opening-wj",
+        "token_count_delta": 428,
+        "webp_to_asv_total_token_ratio_ppm": 2868996,
+        "webp_token_count": 657
+      }
+    },
+    {
+      "book_code": "ROM",
+      "locator_count": 429,
+      "non_wj": {
+        "asv_token_count": 9417,
+        "locator_count": 429,
+        "stratum": "webp-non-wj",
+        "token_count_delta": 37,
+        "webp_to_asv_total_token_ratio_ppm": 1003929,
+        "webp_token_count": 9454
+      },
+      "opening_wj": {
+        "asv_token_count": 0,
+        "locator_count": 0,
+        "stratum": "webp-opening-wj",
+        "token_count_delta": 0,
+        "webp_to_asv_total_token_ratio_ppm": 0,
+        "webp_token_count": 0
+      }
+    },
+    {
+      "book_code": "REV",
+      "locator_count": 404,
+      "non_wj": {
+        "asv_token_count": 10389,
+        "locator_count": 340,
+        "stratum": "webp-non-wj",
+        "token_count_delta": -533,
+        "webp_to_asv_total_token_ratio_ppm": 948696,
+        "webp_token_count": 9856
+      },
+      "opening_wj": {
+        "asv_token_count": 1779,
+        "locator_count": 64,
+        "stratum": "webp-opening-wj",
+        "token_count_delta": 3266,
+        "webp_to_asv_total_token_ratio_ppm": 2835863,
+        "webp_token_count": 5045
+      }
+    }
+  ],
+  "focus_books": [
+    "MAT",
+    "MRK",
+    "LUK",
+    "JHN",
+    "ACT",
+    "ROM",
+    "REV"
+  ],
+  "locator_identifiers_reported": false,
+  "mapping_authority": "none",
+  "normalization_contract": "unicode-nfkc-casefold-alnum-apostrophe-token-v1",
+  "numeric_stream": {
+    "byte_size": 9243206,
+    "record_count": 31083,
+    "sha256": "6f0f9b46d237788a9b2aca8c323f63170cf45ac3175b4762e25efd5b5b5e8eff"
+  },
+  "parser_behavior_changed": false,
+  "per_locator_text_digests_reported": false,
+  "profile_contract": "asv-webp-wj-token-strata-profile-v1",
+  "publication_eligible": false,
+  "scripture_text_reported": false,
+  "shared_text_text_locator_count": 31083,
+  "strata": [
+    {
+      "asv_longer_count": 0,
+      "asv_token_count": 32658,
+      "equal_count": 0,
+      "locator_count": 1423,
+      "mean_locator_token_ratio_ppm": 2805238,
+      "median_locator_token_ratio_ppm": 2818182,
+      "p90_locator_token_ratio_ppm": 3085714,
+      "stratum": "webp-opening-wj",
+      "token_count_abs_delta": 58530,
+      "token_count_delta": 58530,
+      "webp_longer_count": 1423,
+      "webp_to_asv_total_token_ratio_ppm": 2792210,
+      "webp_token_count": 91188
+    },
+    {
+      "asv_longer_count": 16101,
+      "asv_token_count": 755388,
+      "equal_count": 8405,
+      "locator_count": 29660,
+      "mean_locator_token_ratio_ppm": 988469,
+      "median_locator_token_ratio_ppm": 971429,
+      "p90_locator_token_ratio_ppm": 1055556,
+      "stratum": "webp-non-wj",
+      "token_count_abs_delta": 58560,
+      "token_count_delta": -10188,
+      "webp_longer_count": 5154,
+      "webp_to_asv_total_token_ratio_ppm": 986513,
+      "webp_token_count": 745200
+    }
+  ],
+  "summary_byte_size": 51748,
+  "summary_sha256": "9d78fd3fc2a7f7f4d2500da1a776fe85c196f749dfdc96d7453155b6e61e2286",
+  "text_boundaries_defined": false,
+  "token_lists_reported": false
+}
