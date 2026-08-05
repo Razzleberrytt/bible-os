@@ -19,9 +19,10 @@ jobs:
           cache: pip
       - name: Install Bible OS package
         run: pip install .
-      - name: Observe compact text-private opening-wj token strata
+      - name: Reproduce compact text-private opening-wj token strata
         run: >-
           python -m scripts.asv_webp_wj_token_strata_profile_ci
+          --expected registry/experiments/asv-webp-wj-token-strata.json
           --report asv-webp-wj-token-strata-report.json
       - name: Display metadata-only opening-wj token strata evidence
         if: always()
