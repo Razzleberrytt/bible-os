@@ -62,6 +62,10 @@ def test_profile_hashes_full_summary_and_keeps_focus_metrics() -> None:
         "MAT",
         "ROM",
     ]
+    matthew = profile["focus_book_profiles"][0]
+    assert matthew["opening_wj"]["locator_count"] == 1
+    assert matthew["opening_wj"]["token_count_delta"] == 1
+    assert matthew["non_wj"]["locator_count"] == 0
 
 
 def test_profile_hash_changes_when_hidden_book_metric_changes() -> None:
@@ -74,14 +78,14 @@ def test_profile_hash_changes_when_hidden_book_metric_changes() -> None:
     ]
 
 
-def test_profile_contains_no_wording_or_locators() -> None:
+def test_profile_contains_no_wording_or_locator_values() -> None:
     rendered = json.dumps(build_profile(summary_fixture()), sort_keys=True)
 
     assert "one two three" not in rendered
     assert "same tokens" not in rendered
     assert "MAT 1:1" not in rendered
     assert "source_text" not in rendered
-    assert "locator" not in rendered.replace("locator_count", "")
+    assert '"locator":' not in rendered
 
 
 def test_profile_mismatch_fails_closed(tmp_path: Path) -> None:
