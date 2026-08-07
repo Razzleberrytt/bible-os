@@ -1,0 +1,74 @@
+{
+  "study_contract": "webp-wj-semantics-provenance-v1",
+  "marker": "wj",
+  "standard_semantics": {
+    "standard": "USFM-USX-USJ",
+    "version": "3.1.2",
+    "documentation_url": "https://docs.usfm.bible/usfm/3.1.2/char/features/wj.html",
+    "description": "Words of Jesus",
+    "style_type": "Character",
+    "added_in": "1.0",
+    "semantic_status": "normative-standard-definition"
+  },
+  "verified_source": {
+    "source_id": "src_engwebp2020stable",
+    "artifact_id": "art_engwebpusfm202607",
+    "artifact_sha256": "9b4330ba6baf9bd5fa8ea63a8ff255c9ab326da8c843f0355c23734e61ee6276",
+    "source_name": "World English Bible Protestant Edition",
+    "official_details_url": "https://ebible.org/bible/details.php?all=1&id=engwebp",
+    "official_usfm_url": "https://ebible.org/Scriptures/engwebp_usfm.zip",
+    "license_status": "public-domain",
+    "upstream_version": "2020 stable text edition; source files dated 2026-07-24",
+    "verification_status": "verified",
+    "source_specific_wj_policy_url": null,
+    "source_specific_override_observed": false
+  },
+  "reproduced_usage_anchors": {
+    "record_shape_profile_contract": "asv-webp-wj-record-shape-profile-v2",
+    "record_shape_comparison_sha256": "c82c395296e48f12223bd482e413e5e5faf5013968501de15e3b8e00cdcfe9ed",
+    "webp_opening_wj_record_count": 1430,
+    "webp_opening_wj_visible_token_count": 89366,
+    "webp_subsequent_wj_line_count": 0,
+    "webp_token_reconciliation_delta": 0,
+    "token_strata_profile_contract": "asv-webp-wj-token-strata-profile-v1",
+    "token_strata_numeric_stream_sha256": "6f0f9b46d237788a9b2aca8c323f63170cf45ac3175b4762e25efd5b5b5e8eff",
+    "shared_text_text_opening_wj_locator_count": 1423,
+    "shared_text_text_non_wj_locator_count": 29660,
+    "opening_wj_token_delta": 58530
+  },
+  "interpretation": {
+    "normative_fact": "USFM defines wj as the Words of Jesus character marker.",
+    "source_specific_assessment": "The verified WEBP USFM artifact uses the standard wj marker and no source-specific semantic override is registered; standards-aligned interpretation is therefore the current provenance hypothesis.",
+    "normative_definition_confidence": "high",
+    "source_specific_intent_confidence": "moderate",
+    "content_treatment": "retain-as-verse-text",
+    "marker_treatment": "preserve-as-semantic-metadata",
+    "marker_is_not_separate_source_text": true,
+    "parser_removal_authorized": false,
+    "text_removal_authorized": false,
+    "semantic_drift_claimed": false,
+    "mistranslation_claimed": false
+  },
+  "evidence": [
+    {
+      "kind": "normative-marker-documentation",
+      "url": "https://docs.usfm.bible/usfm/3.1.2/char/features/wj.html",
+      "retrieved_on": "2026-08-07"
+    },
+    {
+      "kind": "official-source-details",
+      "url": "https://ebible.org/bible/details.php?all=1&id=engwebp",
+      "retrieved_on": "2026-08-07"
+    }
+  ],
+  "scripture_text_reported": false,
+  "token_lists_reported": false,
+  "locator_identifiers_reported": false,
+  "per_locator_text_digests_reported": false,
+  "text_boundaries_defined": false,
+  "parser_behavior_changed": false,
+  "corpus_mutation": "not-performed",
+  "mapping_authority": "none",
+  "execution_eligible": false,
+  "publication_eligible": false
+}
