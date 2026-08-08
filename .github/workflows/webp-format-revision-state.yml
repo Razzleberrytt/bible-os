@@ -1,0 +1,25 @@
+name: webp-format-revision-state
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  webp-format-revision-state:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: Install Bible OS test dependencies
+        run: pip install '.[dev]'
+      - name: Test revision-state summary logic
+        run: python -m pytest -q tests/test_webp_format_revision_state.py
+      - name: Fingerprint live WEBP delivery artifacts
+        run: >-
+          python -m scripts.webp_format_revision_state
+          --report webp-format-revision-state.json
