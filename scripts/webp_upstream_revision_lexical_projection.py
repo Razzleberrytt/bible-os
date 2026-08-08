@@ -12,6 +12,8 @@ from scripts.asv_full_ci import source_rows as asv_source_rows
 from scripts.asv_webp_lexical_fingerprint_ci import (
     ASV_TARGET_PATH,
     build_fingerprint_records,
+    locator,
+    normalize_tokens,
     summarize_fingerprints,
 )
 from scripts.webp_adapter_smoke import download_verified_archive
@@ -26,6 +28,7 @@ from scripts.webp_upstream_revision_impact import (
 ROOT = Path(__file__).resolve().parents[1]
 BASELINE_PATH = ROOT / "registry" / "experiments" / "asv-webp-lexical-fingerprints.json"
 OFFICIAL_2026_08_05_WEBP_CANDIDATES = ("MIC 3:11", "DAN 4:19", "DAN 6:11", "NEH 13:5")
+LEGACY_MIC_3_11_BIGRAM = ("of", "it")
 
 
 def compare_profile(observed: dict[str, Any], baseline: dict[str, Any]) -> dict[str, Any]:
@@ -50,25 +53,52 @@ def compare_profile(observed: dict[str, Any], baseline: dict[str, Any]) -> dict[
 def candidate_metrics(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
     by_locator = {record["locator"]: record for record in records}
     result: list[dict[str, Any]] = []
-    for locator in OFFICIAL_2026_08_05_WEBP_CANDIDATES:
-        record = by_locator.get(locator)
+    for value in OFFICIAL_2026_08_05_WEBP_CANDIDATES:
+        record = by_locator.get(value)
         if record is None:
-            raise ValueError(f"official WEBP update candidate missing from lexical projection: {locator}")
+            raise ValueError(f"official WEBP update candidate missing from lexical projection: {value}")
         result.append(
             {
-                "locator": locator,
+                "locator": value,
                 "asv_token_count": record["asv_token_count"],
                 "webp_token_count": record["webp_token_count"],
                 "token_count_delta": record["token_count_delta"],
                 "token_edit_distance": record["token_edit_distance"],
                 "token_edit_distance_ppm": record["token_edit_distance_ppm"],
-                "token_set_jaccard_distance_ppm": record["token_set_jaccard_distance_ppm"],
+                "token_set_jaccard_distance_ppm": record[
+                    "token_set_jaccard_distance_ppm"
+                ],
                 "normalized_token_sequence_equal_to_asv": record[
                     "normalized_token_sequence_equal"
                 ],
             }
         )
     return result
+
+
+def micah_3_11_legacy_bigram_diagnostic(webp_rows: list[dict[str, Any]]) -> dict[str, Any]:
+    """Check a historical two-token signature without exposing Scripture text."""
+    matching_rows = [row for row in webp_rows if locator(row) == "MIC 3:11"]
+    if len(matching_rows) != 1:
+        raise ValueError(f"expected one WEBP MIC 3:11 row, found {len(matching_rows)}")
+    row = matching_rows[0]
+    if row.get("realization_type") != "text" or not isinstance(row.get("source_text"), str):
+        raise ValueError("WEBP MIC 3:11 is not a text realization")
+
+    tokens = normalize_tokens(row["source_text"])
+    contains_legacy_bigram = any(
+        tokens[index : index + 2] == LEGACY_MIC_3_11_BIGRAM
+        for index in range(max(0, len(tokens) - 1))
+    )
+    return {
+        "locator": "MIC 3:11",
+        "normalized_token_count": len(tokens),
+        "legacy_bigram_contract": "normalized-consecutive-token-pair-v1",
+        "legacy_bigram_token_count": 2,
+        "legacy_bigram_present": contains_legacy_bigram,
+        "source_text_reported": False,
+        "token_values_reported": False,
+    }
 
 
 def run() -> dict[str, Any]:
@@ -100,6 +130,9 @@ def run() -> dict[str, Any]:
         "official_update_date": "2026-08-05",
         "official_update_candidates": list(OFFICIAL_2026_08_05_WEBP_CANDIDATES),
         "candidate_metrics": candidate_metrics(records),
+        "micah_3_11_legacy_bigram_diagnostic": micah_3_11_legacy_bigram_diagnostic(
+            webp_rows
+        ),
         "lexical_projection": projection,
         "observed_summary": {
             "sha256": observed["sha256"],
