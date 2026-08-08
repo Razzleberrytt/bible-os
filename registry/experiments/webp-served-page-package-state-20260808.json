@@ -1,0 +1,77 @@
+{
+  "analysis_contract": "webp-served-page-package-state-registry-v1",
+  "observed_at_utc": "2026-08-08T02:36:04.897925Z",
+  "source_id": "src_engwebp2020stable",
+  "normalization_contract": "unicode-nfkc-casefold-alnum-apostrophe-token-v1",
+  "locator": "MIC 3:11",
+  "pinned_artifacts": {
+    "usfm": {
+      "sha256": "1c5957d487d9473c87ea5c7e6acffd0caa402ce98c4a577f3164cfd94b9b437d",
+      "byte_size": 2903587
+    },
+    "html": {
+      "sha256": "ec2e8896204abb5dabe69d4f9aee02d05bc70227a32ee17d40480721d8f723df",
+      "byte_size": 4365921
+    }
+  },
+  "downloadable_html_member": {
+    "member": "MIC03.htm",
+    "byte_size": 5138,
+    "sha256": "93492ff18dd00aa75a6eed24725a92aa4f5844019add6a007dce71e1a9f8066e",
+    "visible_normalized_token_count": 420,
+    "visible_normalized_token_sha256": "5b640a63035909486d08164fb1e46122f68da9751a6971470f77405bd8192641"
+  },
+  "served_html_page": {
+    "requested_url": "https://ebible.org/engwebp/MIC03.htm",
+    "resolved_url": "https://ebible.org/engwebp/MIC03.htm",
+    "byte_size": 5564,
+    "sha256": "bc2411bfdbb9f2a82453a037ac99f7b410d32b91cbcb9775895f567088788cf3",
+    "visible_normalized_token_count": 420,
+    "visible_normalized_token_sha256": "5b640a63035909486d08164fb1e46122f68da9751a6971470f77405bd8192641",
+    "http": {
+      "content_type": "text/html",
+      "content_length": "",
+      "last_modified": "Thu, 06 Aug 2026 00:01:11 GMT",
+      "etag": "",
+      "cache_control": "",
+      "age": "",
+      "date": "Sat, 08 Aug 2026 02:36:04 GMT"
+    }
+  },
+  "comparison": {
+    "current_usfm_normalized_token_count": 38,
+    "current_sequence_occurrences_in_downloadable_html_member": 1,
+    "current_sequence_occurrences_in_served_page": 1,
+    "downloadable_member_and_served_page_byte_equal": false,
+    "downloadable_member_and_served_page_normalized_visible_sequence_equal": true,
+    "current_sequence_delivery_surface_divergence_detected": false
+  },
+  "interpretation": {
+    "current_served_page_and_downloadable_member_agree_under_visible_text_normalization": true,
+    "current_micah_sequence_present_on_both_surfaces": true,
+    "byte_level_wrapper_or_delivery_difference_present": true,
+    "current_delivery_surface_text_state_divergence_supported": false,
+    "historical_older_looking_page_observation_reproducible_as_current_live_state": false,
+    "cache_cause_claimed": false,
+    "deployment_cause_claimed": false,
+    "publisher_intent_claimed": false,
+    "semantic_drift_claimed": false,
+    "meaning_change_claimed": false
+  },
+  "evidence_limits": [
+    "The served page was observed once in this reproducible workflow; the result establishes its state at that observation time, not every prior state seen through every cache or client path.",
+    "Byte inequality between the downloadable member and served page is expected to be compatible with wrapper, navigation, metadata, or delivery-layer differences and is not textual disagreement when normalized visible text is identical.",
+    "An earlier same-edition web-surface observation appeared to expose an older Micah state, but that state was not reproduced by this direct live workflow and must not be treated as current delivery divergence evidence."
+  ],
+  "follow_up_research": [
+    "Do not continue chasing a current served-page lag unless a future independently fingerprinted observation reproduces it.",
+    "Promote delivery artifacts and served surfaces to independently fingerprintable provenance objects only where repeated observations demonstrate meaningful revision-state behavior.",
+    "Return research effort to scalable source-observation infrastructure and cross-translation analysis rather than this resolved single-page hypothesis."
+  ],
+  "scripture_text_reported": false,
+  "token_lists_reported": false,
+  "corpus_bytes_retained": false,
+  "registered_artifact_mutated": false,
+  "baseline_mutated": false,
+  "publication_eligible": false
+}
