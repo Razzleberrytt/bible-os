@@ -80,7 +80,7 @@ def test_archive_registered_source_deduplicates_identical_observation(tmp_path: 
 
 def test_archive_rejects_hash_drift_without_retaining_changed_bytes(tmp_path: Path) -> None:
     registered = b"registered"
-    changed = b"publisherrr"
+    changed = b"changed!!!"
     assert len(registered) == len(changed)
     target = target_for(registered)
     store = tmp_path / "store"
