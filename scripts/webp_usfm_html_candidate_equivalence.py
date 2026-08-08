@@ -8,7 +8,7 @@ import urllib.request
 import zipfile
 from html.parser import HTMLParser
 from pathlib import Path, PurePosixPath
-from typing import Any, Iterable
+from typing import Any, Iterable, Sequence
 
 from scripts.asv_webp_lexical_fingerprint_ci import locator, normalize_tokens
 from scripts.probe_acquisition import CHUNK_SIZE, USER_AGENT, safe_zip_members
@@ -46,7 +46,7 @@ class VisibleTextParser(HTMLParser):
         if not self._suppressed_depth and data:
             self._chunks.append(data)
 
-    def normalized_tokens(self) -> list[str]:
+    def normalized_tokens(self) -> tuple[str, ...]:
         return normalize_tokens(" ".join(self._chunks))
 
 
@@ -91,11 +91,15 @@ def download_pinned(record: dict[str, Any], destination: Path) -> dict[str, Any]
     return {"sha256": observed_sha256, "byte_size": observed_bytes}
 
 
-def count_subsequence(haystack: list[str], needle: list[str]) -> int:
+def count_subsequence(haystack: Sequence[str], needle: Sequence[str]) -> int:
     if not needle or len(needle) > len(haystack):
         return 0
     width = len(needle)
-    return sum(1 for index in range(len(haystack) - width + 1) if haystack[index : index + width] == needle)
+    return sum(
+        1
+        for index in range(len(haystack) - width + 1)
+        if tuple(haystack[index : index + width]) == tuple(needle)
+    )
 
 
 def find_member_by_basename(archive: zipfile.ZipFile, basename: str) -> zipfile.ZipInfo:
@@ -110,7 +114,7 @@ def find_member_by_basename(archive: zipfile.ZipFile, basename: str) -> zipfile.
     return matches[0]
 
 
-def html_page_tokens(archive: zipfile.ZipFile, basename: str) -> tuple[str, list[str]]:
+def html_page_tokens(archive: zipfile.ZipFile, basename: str) -> tuple[str, tuple[str, ...]]:
     member = find_member_by_basename(archive, basename)
     raw = archive.read(member)
     try:
@@ -123,7 +127,9 @@ def html_page_tokens(archive: zipfile.ZipFile, basename: str) -> tuple[str, list
     return member.filename, parser.normalized_tokens()
 
 
-def candidate_usfm_tokens(rows: Iterable[dict[str, Any]], wanted_locator: str) -> list[str]:
+def candidate_usfm_tokens(
+    rows: Iterable[dict[str, Any]], wanted_locator: str
+) -> tuple[str, ...]:
     matches = [row for row in rows if locator(row) == wanted_locator]
     if len(matches) != 1:
         raise ValueError(f"expected one USFM row for {wanted_locator}, found {len(matches)}")
