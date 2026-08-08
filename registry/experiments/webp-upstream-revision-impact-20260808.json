@@ -1,0 +1,156 @@
+{
+  "analysis_contract": "webp-upstream-revision-impact-registry-v1.0.2",
+  "observed_at_utc": "2026-08-08T02:07:03Z",
+  "source_id": "src_engwebp2020stable",
+  "source_provenance": {
+    "registered_download_url": "https://ebible.org/Scriptures/engwebp_usfm.zip",
+    "official_update_log_url": "https://worldenglish.bible/webupdates.php",
+    "official_update_date": "2026-08-05",
+    "official_update_description_scope": "Corrected grammar and typos",
+    "official_webp_candidate_locators": [
+      "MIC 3:11",
+      "DAN 4:19",
+      "DAN 6:11",
+      "NEH 13:5"
+    ]
+  },
+  "registered_artifact": {
+    "byte_size": 2903202,
+    "sha256": "9b4330ba6baf9bd5fa8ea63a8ff255c9ab326da8c843f0355c23734e61ee6276"
+  },
+  "quarantined_revision": {
+    "byte_size": 2903587,
+    "byte_delta": 385,
+    "sha256": "1c5957d487d9473c87ea5c7e6acffd0caa402ce98c4a577f3164cfd94b9b437d",
+    "http_last_modified": "Thu, 06 Aug 2026 00:01:09 GMT",
+    "http_etag": "\"2c4e23-6585595d4007c\"",
+    "zip_entry_count": 71,
+    "usfm_like_entry_count": 68,
+    "acquisition_result": "quarantined",
+    "accepted_as_registered_artifact": false
+  },
+  "normalized_export": {
+    "record_count": 31103,
+    "baseline_byte_size": 27680660,
+    "observed_byte_size": 27680658,
+    "byte_delta": -2,
+    "baseline_sha256": "5d721a56a3ef94a914255617203460ebf8976cd845f40d47e2963be74fce6568",
+    "observed_sha256": "005b82642c80e0dcefe39ee935a3e1ae501d2b05b4d234741c4e6e16bf3dc214",
+    "equivalent": false,
+    "reproducibility_status": "verified"
+  },
+  "lexical_projection": {
+    "normalization_contract": "unicode-nfkc-casefold-alnum-apostrophe-token-v1",
+    "shared_text_locator_count": 31083,
+    "baseline_webp_token_count": 836388,
+    "observed_webp_token_count": 836386,
+    "token_count_delta": -2,
+    "baseline_sha256": "3f732e4dc901576e02d034394e4b897b0ca52f029ea709c93916b7011fa2b8cd",
+    "observed_sha256": "ac73ca4d0cdb5725ab5f47230f12958eb90a0e21417965eb33802fe3cd74f6e5",
+    "normalized_equal_locator_count": 951,
+    "same_token_count_locator_count": 8405,
+    "mean_token_edit_distance_ppm_baseline": 297933,
+    "mean_token_edit_distance_ppm_observed": 297934,
+    "mean_token_set_jaccard_distance_ppm_baseline": 308089,
+    "mean_token_set_jaccard_distance_ppm_observed": 308090,
+    "distance_band_delta": {
+      "low": -1,
+      "moderate": 1,
+      "all_other_bands": 0
+    },
+    "equivalent": false
+  },
+  "official_candidate_metrics_current_revision": [
+    {
+      "locator": "MIC 3:11",
+      "asv_token_count": 41,
+      "webp_token_count": 38,
+      "webp_minus_asv_token_count": -3,
+      "token_edit_distance": 23,
+      "token_edit_distance_ppm": 560976,
+      "token_set_jaccard_distance_ppm": 642857
+    },
+    {
+      "locator": "DAN 4:19",
+      "asv_token_count": 53,
+      "webp_token_count": 49,
+      "webp_minus_asv_token_count": -4,
+      "token_edit_distance": 16,
+      "token_edit_distance_ppm": 301887,
+      "token_set_jaccard_distance_ppm": 355556
+    },
+    {
+      "locator": "DAN 6:11",
+      "asv_token_count": 15,
+      "webp_token_count": 15,
+      "webp_minus_asv_token_count": 0,
+      "token_edit_distance": 0,
+      "token_edit_distance_ppm": 0,
+      "token_set_jaccard_distance_ppm": 0,
+      "normalized_equal_to_asv": true
+    },
+    {
+      "locator": "NEH 13:5",
+      "asv_token_count": 52,
+      "webp_token_count": 50,
+      "webp_minus_asv_token_count": -2,
+      "token_edit_distance": 6,
+      "token_edit_distance_ppm": 115385,
+      "token_set_jaccard_distance_ppm": 210526
+    }
+  ],
+  "micah_3_11_diagnostic": {
+    "current_quarantined_normalized_token_count": 38,
+    "legacy_two_token_signature_present_in_current_quarantined_revision": false,
+    "historical_html_surface_url": "https://ebible.org/engwebp/MIC03.htm",
+    "historical_html_surface_translation_id": "engwebp",
+    "historical_html_surface_normalized_token_count_observation": 40,
+    "historical_html_surface_contains_legacy_two_token_signature": true,
+    "historical_html_evidence_scope": "same-edition retrieval-surface observation; not a bytewise copy of the frozen registered USFM artifact and not independently fingerprinted at observation time",
+    "historical_html_observation_reproduced_by_later_direct_live_workflow": false
+  },
+  "later_live_surface_check": {
+    "experiment": "webp-served-page-package-state-20260808",
+    "observed_at_utc": "2026-08-08T02:36:04.897925Z",
+    "served_page_last_modified": "Thu, 06 Aug 2026 00:01:11 GMT",
+    "served_page_normalized_visible_token_count": 420,
+    "downloadable_member_normalized_visible_token_count": 420,
+    "normalized_visible_sequence_equal": true,
+    "current_micah_sequence_occurs_in_served_page": true,
+    "current_micah_sequence_occurs_in_downloadable_member": true,
+    "current_delivery_surface_divergence_detected": false,
+    "effect_on_historical_observation": "downgraded to non-reproducible historical supporting evidence; not evidence of current page/package lag"
+  },
+  "interpretation": {
+    "archive_level_drift": true,
+    "normalized_representation_drift": true,
+    "normalized_lexical_drift": true,
+    "global_lexical_change_size_tokens": -2,
+    "best_supported_localization": "MIC 3:11",
+    "localization_confidence": "strongly suggestive but not direct old-USFM/new-USFM proof",
+    "localization_rationale": "The official 2026-08-05 update names four 66-book WEBP loci. The current MIC 3:11 projection is 38 normalized tokens and lacks the historical two-token signature; an earlier same-edition retrieval-surface observation normalized to 40 tokens, exactly matching the corpus-wide -2 token delta. However, that older-looking retrieval state was not independently fingerprinted and was not reproduced by a later direct live workflow, so it remains supporting rather than dispositive evidence.",
+    "other_official_loci_may_include_token_count_neutral_changes": true,
+    "current_html_or_served_page_lag_claimed": false,
+    "semantic_drift_claimed": false,
+    "mistranslation_claimed": false,
+    "meaning_change_claimed": false
+  },
+  "evidence_limits": [
+    "The frozen registered WEBP source archive bytes were not retained in-repository, so this experiment cannot perform a direct old-USFM-versus-new-USFM byte or field diff.",
+    "The older-looking MIC 3:11 HTML retrieval observation was not independently fingerprinted at observation time and was not reproduced by the later direct live workflow; it must not be used as evidence of current page/package divergence.",
+    "Token-count-neutral corrections at DAN 4:19, DAN 6:11, and NEH 13:5 require a separate punctuation/casing/raw-USFM diagnostic if exact edit classification is needed."
+  ],
+  "follow_up_research": [
+    "Implement immutable content-addressed retention for legally retainable source observations so future upstream drift can be diffed exactly.",
+    "Do not continue the current page/package lag hypothesis unless a future independently fingerprinted observation reproduces divergence.",
+    "Classify remaining source revisions only when the result generalizes to scalable provenance or cross-translation analysis."
+  ],
+  "registered_artifact_mutated": false,
+  "baseline_mutated": false,
+  "corpus_bytes_retained": false,
+  "scripture_text_reported": false,
+  "token_lists_reported": false,
+  "mapping_authority": "none",
+  "execution_eligible": false,
+  "publication_eligible": false
+}
