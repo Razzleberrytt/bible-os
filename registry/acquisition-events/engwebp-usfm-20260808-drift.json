@@ -1,0 +1,17 @@
+{
+  "event_id": "acq_engwebp20260808a",
+  "source_id": "src_engwebp2020stable",
+  "requested_url": "https://ebible.org/Scriptures/engwebp_usfm.zip",
+  "resolved_url": "https://ebible.org/Scriptures/engwebp_usfm.zip",
+  "started_at": "2026-08-08T01:54:12Z",
+  "finished_at": "2026-08-08T01:54:14Z",
+  "result": "quarantined",
+  "http_status": 200,
+  "retrieval_tool": {
+    "name": "Bible-OS-Acquisition-Probe",
+    "version": "0.2.0-observe"
+  },
+  "observed_sha256": "1c5957d487d9473c87ea5c7e6acffd0caa402ce98c4a577f3164cfd94b9b437d",
+  "observed_bytes": 2903587,
+  "error": "Registered artifact mismatch: expected 2903202 bytes and SHA-256 9b4330ba6baf9bd5fa8ea63a8ff255c9ab326da8c843f0355c23734e61ee6276; live observation differed and was not accepted."
+}
