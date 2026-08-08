@@ -1,5 +1,5 @@
 {
-  "analysis_contract": "webp-upstream-revision-impact-registry-v1.0.1",
+  "analysis_contract": "webp-upstream-revision-impact-registry-v1.0.2",
   "observed_at_utc": "2026-08-08T02:07:03Z",
   "source_id": "src_engwebp2020stable",
   "source_provenance": {
@@ -106,7 +106,20 @@
     "historical_html_surface_translation_id": "engwebp",
     "historical_html_surface_normalized_token_count_observation": 40,
     "historical_html_surface_contains_legacy_two_token_signature": true,
-    "historical_html_evidence_scope": "same-edition WEBP delivery-surface observation; not a bytewise copy of the frozen registered USFM artifact"
+    "historical_html_evidence_scope": "same-edition retrieval-surface observation; not a bytewise copy of the frozen registered USFM artifact and not independently fingerprinted at observation time",
+    "historical_html_observation_reproduced_by_later_direct_live_workflow": false
+  },
+  "later_live_surface_check": {
+    "experiment": "webp-served-page-package-state-20260808",
+    "observed_at_utc": "2026-08-08T02:36:04.897925Z",
+    "served_page_last_modified": "Thu, 06 Aug 2026 00:01:11 GMT",
+    "served_page_normalized_visible_token_count": 420,
+    "downloadable_member_normalized_visible_token_count": 420,
+    "normalized_visible_sequence_equal": true,
+    "current_micah_sequence_occurs_in_served_page": true,
+    "current_micah_sequence_occurs_in_downloadable_member": true,
+    "current_delivery_surface_divergence_detected": false,
+    "effect_on_historical_observation": "downgraded to non-reproducible historical supporting evidence; not evidence of current page/package lag"
   },
   "interpretation": {
     "archive_level_drift": true,
@@ -114,21 +127,23 @@
     "normalized_lexical_drift": true,
     "global_lexical_change_size_tokens": -2,
     "best_supported_localization": "MIC 3:11",
-    "localization_rationale": "The official 2026-08-05 update names four 66-book WEBP loci; the quarantined MIC 3:11 projection is two normalized tokens shorter than the same-edition historical HTML observation and lacks the historical two-token signature, exactly matching the corpus-wide token delta.",
+    "localization_confidence": "strongly suggestive but not direct old-USFM/new-USFM proof",
+    "localization_rationale": "The official 2026-08-05 update names four 66-book WEBP loci. The current MIC 3:11 projection is 38 normalized tokens and lacks the historical two-token signature; an earlier same-edition retrieval-surface observation normalized to 40 tokens, exactly matching the corpus-wide -2 token delta. However, that older-looking retrieval state was not independently fingerprinted and was not reproduced by a later direct live workflow, so it remains supporting rather than dispositive evidence.",
     "other_official_loci_may_include_token_count_neutral_changes": true,
+    "current_html_or_served_page_lag_claimed": false,
     "semantic_drift_claimed": false,
     "mistranslation_claimed": false,
     "meaning_change_claimed": false
   },
   "evidence_limits": [
     "The frozen registered WEBP source archive bytes were not retained in-repository, so this experiment cannot perform a direct old-USFM-versus-new-USFM byte or field diff.",
-    "The historical MIC 3:11 observation comes from the same-edition engwebp HTML delivery surface and is therefore supporting evidence, not proof that every old delivery format contained byte-identical source text.",
+    "The older-looking MIC 3:11 HTML retrieval observation was not independently fingerprinted at observation time and was not reproduced by the later direct live workflow; it must not be used as evidence of current page/package divergence.",
     "Token-count-neutral corrections at DAN 4:19, DAN 6:11, and NEH 13:5 require a separate punctuation/casing/raw-USFM diagnostic if exact edit classification is needed."
   ],
   "follow_up_research": [
     "Implement immutable content-addressed retention for legally retainable source observations so future upstream drift can be diffed exactly.",
-    "Measure cross-format revision skew between USFM, HTML, and other official delivery surfaces.",
-    "Classify the remaining 2026-08-05 candidate corrections without exposing or committing Scripture text."
+    "Do not continue the current page/package lag hypothesis unless a future independently fingerprinted observation reproduces divergence.",
+    "Classify remaining source revisions only when the result generalizes to scalable provenance or cross-translation analysis."
   ],
   "registered_artifact_mutated": false,
   "baseline_mutated": false,
