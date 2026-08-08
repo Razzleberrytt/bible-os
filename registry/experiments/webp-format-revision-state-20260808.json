@@ -1,0 +1,181 @@
+{
+  "analysis_contract": "webp-format-revision-state-registry-v1.1",
+  "observed_at_utc": "2026-08-08T02:24:19.604138Z",
+  "source_id": "src_engwebp2020stable",
+  "publisher_catalog_evidence": {
+    "format_catalog_url": "https://ebible.org/bible/details.php?all=1&id=engwebp",
+    "scripts_directory_url": "https://ebible.org/Scriptures/dir.php",
+    "relationship_claim": "listed as official WEBP delivery artifacts by eBible.org"
+  },
+  "usfm_anchor": {
+    "quarantined_event_id": "acq_engwebp20260808a",
+    "byte_size": 2903587,
+    "sha256": "1c5957d487d9473c87ea5c7e6acffd0caa402ce98c4a577f3164cfd94b9b437d",
+    "matches_quarantined_revision": true
+  },
+  "delivery_artifacts": [
+    {
+      "format": "usfm",
+      "requested_url": "https://ebible.org/Scriptures/engwebp_usfm.zip",
+      "resolved_url": "https://ebible.org/Scriptures/engwebp_usfm.zip",
+      "sha256": "1c5957d487d9473c87ea5c7e6acffd0caa402ce98c4a577f3164cfd94b9b437d",
+      "byte_size": 2903587,
+      "zip_entry_count": 71,
+      "zip_file_entry_count": 71,
+      "archive_safe": true,
+      "http": {
+        "content_type": "application/zip",
+        "content_length": "2903587",
+        "last_modified": "Thu, 06 Aug 2026 00:01:09 GMT",
+        "etag": "\"2c4e23-6585595d4007c\""
+      }
+    },
+    {
+      "format": "html",
+      "requested_url": "https://ebible.org/Scriptures/engwebp_html.zip",
+      "resolved_url": "https://ebible.org/Scriptures/engwebp_html.zip",
+      "sha256": "ec2e8896204abb5dabe69d4f9aee02d05bc70227a32ee17d40480721d8f723df",
+      "byte_size": 4365921,
+      "zip_entry_count": 1270,
+      "zip_file_entry_count": 1270,
+      "archive_safe": true,
+      "http": {
+        "content_type": "application/zip",
+        "content_length": "4365921",
+        "last_modified": "Thu, 06 Aug 2026 00:01:14 GMT",
+        "etag": "\"429e61-65855961ca34d\""
+      }
+    },
+    {
+      "format": "usfx",
+      "requested_url": "https://ebible.org/Scriptures/engwebp_usfx.zip",
+      "resolved_url": "https://ebible.org/Scriptures/engwebp_usfx.zip",
+      "sha256": "2a5072ea70af18d08d7c4dd66d64c50396ce7f9f56f7b26a275cc8d13877be2f",
+      "byte_size": 3314129,
+      "zip_entry_count": 8,
+      "zip_file_entry_count": 8,
+      "archive_safe": true,
+      "http": {
+        "content_type": "application/zip",
+        "content_length": "3314129",
+        "last_modified": "Thu, 06 Aug 2026 00:01:11 GMT",
+        "etag": "\"3291d1-6585595edf42f\""
+      }
+    },
+    {
+      "format": "vpl",
+      "requested_url": "https://ebible.org/Scriptures/engwebp_vpl.zip",
+      "resolved_url": "https://ebible.org/Scriptures/engwebp_vpl.zip",
+      "sha256": "9273bd80381ce9ad242450e11ab06228d5126ce3e8673c3c9156edd6d487fd2a",
+      "byte_size": 4281527,
+      "zip_entry_count": 5,
+      "zip_file_entry_count": 5,
+      "archive_safe": true,
+      "http": {
+        "content_type": "application/zip",
+        "content_length": "4281527",
+        "last_modified": "Thu, 06 Aug 2026 00:01:14 GMT",
+        "etag": "\"4154b7-65855961cafe3\""
+      }
+    },
+    {
+      "format": "readaloud",
+      "requested_url": "https://ebible.org/Scriptures/engwebp_readaloud.zip",
+      "resolved_url": "https://ebible.org/Scriptures/engwebp_readaloud.zip",
+      "sha256": "f35d433bb8b4c957b72884a3e32fe9151d81a432cde96302346c7b8ef8a3b86b",
+      "byte_size": 1916695,
+      "zip_entry_count": 1192,
+      "zip_file_entry_count": 1192,
+      "archive_safe": true,
+      "http": {
+        "content_type": "application/zip",
+        "content_length": "1916695",
+        "last_modified": "Thu, 06 Aug 2026 00:01:09 GMT",
+        "etag": "\"1d3f17-6585595cf9493\""
+      }
+    },
+    {
+      "format": "browserBible",
+      "requested_url": "https://ebible.org/Scriptures/engwebp_browserBible.zip",
+      "resolved_url": "https://ebible.org/Scriptures/engwebp_browserBible.zip",
+      "sha256": "ebd38643aaca732726c1607416468c5690bbbeb1461002438d97183675551e01",
+      "byte_size": 16845796,
+      "zip_entry_count": 1309,
+      "zip_file_entry_count": 1306,
+      "archive_safe": true,
+      "http": {
+        "content_type": "application/zip",
+        "content_length": "16845796",
+        "last_modified": "Thu, 06 Aug 2026 00:01:10 GMT",
+        "etag": "\"1010be4-6585595e34788\""
+      }
+    },
+    {
+      "format": "xetex",
+      "requested_url": "https://ebible.org/Scriptures/engwebp_xetex.zip",
+      "resolved_url": "https://ebible.org/Scriptures/engwebp_xetex.zip",
+      "sha256": "51cd7ee8236d3f624ccdfd9ca908c6226b5827f2f84abe05b1668b47da9ef293",
+      "byte_size": 1577366,
+      "zip_entry_count": 153,
+      "zip_file_entry_count": 153,
+      "archive_safe": true,
+      "http": {
+        "content_type": "application/zip",
+        "content_length": "1577366",
+        "last_modified": "Thu, 06 Aug 2026 00:53:55 GMT",
+        "etag": "\"181196-6585652900593\""
+      }
+    }
+  ],
+  "revision_state_summary": {
+    "artifact_count": 7,
+    "last_modified_date_group_count": 1,
+    "last_modified_date_groups": {
+      "2026-08-06": [
+        "browserBible",
+        "html",
+        "readaloud",
+        "usfm",
+        "usfx",
+        "vpl",
+        "xetex"
+      ]
+    },
+    "missing_last_modified_formats": [],
+    "oldest_last_modified_format": "usfm",
+    "oldest_last_modified": "2026-08-06T00:01:09Z",
+    "latest_last_modified_format": "xetex",
+    "latest_last_modified": "2026-08-06T00:53:55Z",
+    "max_observed_modification_lag_seconds": 3166,
+    "calendar_date_skew_detected": false,
+    "modification_timestamp_skew_detected": true
+  },
+  "interpretation": {
+    "best_supported_model": "same-day staggered build-or-publish batch",
+    "rationale": "All seven observed official delivery artifacts carry 2026-08-06 HTTP Last-Modified dates. Six were modified between 00:01:09 and 00:01:14 UTC; XeTeX was modified at 00:53:55 UTC, producing a 3166-second maximum timestamp spread without crossing a calendar date.",
+    "cross_date_release_skew_observed": false,
+    "non_simultaneous_artifact_modification_observed": true,
+    "build_or_publish_stagger_is_compatible_with_evidence": true,
+    "independent_textual_revision_claimed": false,
+    "textual_equivalence_claimed": false,
+    "semantic_equivalence_claimed": false,
+    "meaning_change_claimed": false
+  },
+  "evidence_limits": [
+    "HTTP Last-Modified and ETag values characterize delivery artifacts, not the semantic or textual equivalence of their internal Scripture representations.",
+    "Different formats necessarily have different bytes and hashes, so cross-format digest differences are not evidence of textual difference.",
+    "A shared modification date is compatible with a coordinated release batch but does not prove every artifact was generated from byte-identical source state.",
+    "The 3166-second timestamp spread may reflect build order, packaging, or publication mechanics rather than source-content revision skew."
+  ],
+  "follow_up_research": [
+    "Perform a text-private normalized comparison of the four official 2026-08-05 correction loci across current USFM and HTML delivery artifacts.",
+    "If USFM and HTML agree at those loci, expand cross-format equivalence testing to USFX and VPL using canonical token projections.",
+    "Model delivery artifacts as independently fingerprinted evidence objects linked to a hypothesized release batch rather than assuming either total synchronization or independent revision by default."
+  ],
+  "corpus_bytes_retained": false,
+  "scripture_text_reported": false,
+  "token_lists_reported": false,
+  "registered_artifact_mutated": false,
+  "baseline_mutated": false,
+  "publication_eligible": false
+}
