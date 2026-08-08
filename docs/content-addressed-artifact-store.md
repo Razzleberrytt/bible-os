@@ -33,10 +33,11 @@ The object filename is the digest. Original upstream filenames are metadata, not
 5. Manifest verification binds `archive_uri`, `sha256`, and `byte_size` together.
 6. Raw corpus bytes remain outside Git history.
 7. A local CAS copy is a cache/preservation layer, not by itself a complete durability strategy.
+8. Acquisition bytes enter the evidence store only after their registered byte count and SHA-256 both verify exactly.
 
 ## CLI
 
-Store a source observation:
+Store an already available source observation:
 
 ```bash
 python -m scripts.artifact_store --root artifacts/raw put /path/to/source.zip
@@ -57,6 +58,33 @@ python -m scripts.artifact_store --root artifacts/raw verify \
 ```
 
 `BIBLE_OS_ARTIFACT_ROOT` may be used to change the default root.
+
+## Acquire, verify, and archive in one operation
+
+For a registered acquisition target with a pinned byte count and SHA-256:
+
+```bash
+python -m scripts.archive_acquisition \
+  registry/acquisitions/eng-asv-usfm.json \
+  --store-root artifacts/raw \
+  --report archive-acquisition-report.json
+```
+
+The command follows this order:
+
+```text
+Download to temporary file
+  -> enforce size safety margin
+  -> verify exact registered byte count
+  -> verify exact registered SHA-256
+  -> copy into content-addressed storage
+  -> verify stored object again
+  -> delete temporary download
+```
+
+A byte-count or hash mismatch aborts before the changed bytes enter the evidence store. Repeating the operation for the same verified bytes deduplicates to the existing content object.
+
+Unpinned source observations cannot use this archival path. They must first acquire an explicit evidence identity rather than silently turning a transient live response into canonical raw evidence.
 
 ## Durability boundary
 
