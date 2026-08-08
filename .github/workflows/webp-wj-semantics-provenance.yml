@@ -1,0 +1,23 @@
+name: webp-wj-semantics-provenance
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  webp-wj-semantics-provenance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: Install Bible OS package and test dependencies
+        run: pip install '.[dev]'
+      - name: Verify metadata-only wj semantics and provenance anchors
+        run: python -m pytest -q tests/test_webp_wj_semantics_provenance.py
