@@ -1,0 +1,29 @@
+{
+  "source_id": "src_engyltpublic",
+  "name": "Young's Literal Translation",
+  "source_type": "translation",
+  "authority_status": "official",
+  "language_codes": ["eng"],
+  "official_urls": [
+    "https://ebible.org/bible/details.php?all=1&id=engylt",
+    "https://ebible.org/engylt/copyright.htm",
+    "https://ebible.org/Scriptures/engylt_usfm.zip"
+  ],
+  "license_status": "public-domain",
+  "spdx_expression": null,
+  "commercial_use": "allowed",
+  "attribution_text": "Young's Literal Translation of the Holy Bible, translated by Robert Young; public-domain eBible.org edition.",
+  "license_evidence_urls": [
+    "https://ebible.org/bible/details.php?all=1&id=engylt",
+    "https://ebible.org/engylt/copyright.htm",
+    "https://ebible.org/publicdomain.htm"
+  ],
+  "notes": [
+    "Official eBible identifier: ENGYLT / engylt.",
+    "eBible describes the dialect as archaic British and identifies Robert Young as translator.",
+    "eBible labels this translation Public Domain and exposes engylt_usfm.zip as the official USFM delivery artifact.",
+    "The current eBible HTML surface states that files generated 2026-06-11 were produced from source files dated 2025-12-12.",
+    "Source registration does not imply that any downloaded artifact has passed digest verification.",
+    "No cross-translation passage identity, semantic mapping, or authority relationship is implied by this source record."
+  ]
+}

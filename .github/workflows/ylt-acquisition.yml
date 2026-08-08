@@ -1,0 +1,32 @@
+name: ylt-acquisition
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ylt-acquisition:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: Install Bible OS test dependencies
+        run: pip install '.[dev]'
+      - name: Validate YLT source registration contract
+        run: python -m pytest -q tests/test_ylt_source_registry.py
+      - name: Strictly reproduce YLT USFM artifact identity without retention
+        run: >-
+          python scripts/probe_acquisition.py
+          registry/acquisitions/engylt-usfm.json
+          --report ylt-acquisition-report.json
+      - name: Display metadata-only acquisition evidence
+        if: always()
+        run: |
+          if [ -f ylt-acquisition-report.json ]; then
+            cat ylt-acquisition-report.json
+          fi

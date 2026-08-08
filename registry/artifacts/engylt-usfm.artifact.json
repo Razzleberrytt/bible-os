@@ -1,0 +1,31 @@
+{
+  "manifest_version": "1.0.0",
+  "artifact_id": "art_engyltusfm202606",
+  "source_id": "src_engyltpublic",
+  "acquisition_event_id": "acq_engylt20260808a",
+  "sha256": "1a7f889c412b03c04dc65be386c83d4e3bafb4c58fd5f4e35584240dafe09831",
+  "byte_size": 1385550,
+  "media_type": "application/zip",
+  "filename": "engylt_usfm.zip",
+  "upstream_version": "Young's Literal Translation; eBible generated files dated 2026-06-11 from source files dated 2025-12-12",
+  "archive_uri": "artifact+sha256://1a7f889c412b03c04dc65be386c83d4e3bafb4c58fd5f4e35584240dafe09831",
+  "verification_status": "verified",
+  "verified_at": "2026-08-08T02:45:15.842817Z",
+  "license_assertion": {
+    "status": "public-domain",
+    "spdx_expression": null,
+    "commercial_use": "allowed",
+    "attribution_text": "Young's Literal Translation of the Holy Bible, translated by Robert Young. Public domain. Source files distributed by eBible.org.",
+    "evidence_urls": [
+      "https://ebible.org/bible/details.php?all=1&id=engylt",
+      "https://ebible.org/engylt/copyright.htm"
+    ]
+  },
+  "notes": [
+    "Controlled acquisition observed HTTP Last-Modified Thu, 11 Jun 2026 13:23:20 GMT and ETag \"15244e-653fa4393b566\".",
+    "ZIP integrity and path safety passed for 70 file entries; 66 entries used .usfm or .sfm extensions.",
+    "The acquisition probe deleted the downloaded archive after verification; no corpus bytes are committed to Git history.",
+    "The content-addressed URI records logical artifact identity. Physical durable retention remains governed by the approved artifact-storage implementation when available.",
+    "Any later upstream byte change requires a new acquisition event and artifact identity; this manifest must not be silently rebaselined."
+  ]
+}

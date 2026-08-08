@@ -1,0 +1,16 @@
+{
+  "event_id": "acq_engylt20260808a",
+  "source_id": "src_engyltpublic",
+  "requested_url": "https://ebible.org/Scriptures/engylt_usfm.zip",
+  "resolved_url": "https://ebible.org/Scriptures/engylt_usfm.zip",
+  "started_at": "2026-08-08T02:45:15.474763Z",
+  "finished_at": "2026-08-08T02:45:15.842817Z",
+  "result": "success",
+  "retrieval_tool": {
+    "name": "Bible-OS-Acquisition-Probe",
+    "version": "0.1.0"
+  },
+  "observed_sha256": "1a7f889c412b03c04dc65be386c83d4e3bafb4c58fd5f4e35584240dafe09831",
+  "observed_bytes": 1385550,
+  "error": null
+}
