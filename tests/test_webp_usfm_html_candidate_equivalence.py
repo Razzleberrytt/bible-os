@@ -18,7 +18,7 @@ def test_visible_text_parser_excludes_script_and_style_content() -> None:
     )
     parser.close()
 
-    assert parser.normalized_tokens() == ["alpha", "beta", "gamma"]
+    assert parser.normalized_tokens() == ("alpha", "beta", "gamma")
 
 
 def test_count_subsequence_counts_exact_normalized_sequence_occurrences() -> None:
