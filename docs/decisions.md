@@ -20,6 +20,8 @@ Use PostgreSQL for canonical records, constraints, migrations, provenance, align
 **Status:** Accepted  
 Archive source downloads by content digest. Never overwrite or hand-edit acquired bytes. Corrections create new artifacts and lineage records.
 
+**Implementation note (2026-08-08):** `artifact+sha256://<digest>` is the logical artifact identity. The repository provides a local content-addressed filesystem implementation with atomic writes, deduplication, digest verification, and manifest binding. Raw bytes remain outside Git history. Durable production preservation still requires at least one independently verified remote immutable replica.
+
 ## ADR-0005 — Opaque stable identifiers
 
 **Status:** Accepted  
@@ -44,3 +46,8 @@ Use JSON Schema 2020-12 for contracts, OpenAPI 3.2.0 for the HTTP API, in-toto S
 
 **Status:** Proposed  
 Do not imply an open-source license until the contribution, patent, and redistribution posture is deliberately selected and recorded.
+
+## ADR-0010 — Artifact identity is independent of storage backend
+
+**Status:** Accepted  
+Treat the SHA-256 content identity as the stable logical reference and physical storage locations as replaceable replicas. Upstream URLs record acquisition provenance; `artifact+sha256://` records the exact evidence object; local or remote storage backends record where verified replicas can currently be retrieved. No backend-specific URL becomes the primary identity of an evidence artifact.
