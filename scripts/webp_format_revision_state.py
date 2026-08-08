@@ -16,7 +16,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DRIFT_EVENT_PATH = ROOT / "registry" / "acquisition-events" / "engwebp-usfm-20260808-drift.json"
 FORMAT_CATALOG_URL = "https://ebible.org/bible/details.php?all=1&id=engwebp"
 SCRIPTS_DIRECTORY_URL = "https://ebible.org/Scriptures/dir.php"
-USER_AGENT = "Bible-OS-WEBP-Format-Revision-State/0.1 (+https://github.com/Razzleberrytt/bible-os)"
+USER_AGENT = "Bible-OS-WEBP-Format-Revision-State/0.2 (+https://github.com/Razzleberrytt/bible-os)"
 CHUNK_SIZE = 1024 * 1024
 MAX_ARTIFACT_BYTES = 64 * 1024 * 1024
 
@@ -121,6 +121,8 @@ def summarize_revision_state(observations: list[dict[str, Any]]) -> dict[str, An
         oldest_iso = latest_iso = None
         lag_seconds = None
 
+    calendar_date_skew = len(sorted_groups) > 1
+    modification_timestamp_skew = lag_seconds is not None and lag_seconds > 0
     return {
         "artifact_count": len(observations),
         "last_modified_date_groups": sorted_groups,
@@ -131,7 +133,8 @@ def summarize_revision_state(observations: list[dict[str, Any]]) -> dict[str, An
         "latest_last_modified_format": latest_format,
         "latest_last_modified": latest_iso,
         "max_observed_modification_lag_seconds": lag_seconds,
-        "delivery_artifact_modification_skew_detected": len(sorted_groups) > 1,
+        "calendar_date_skew_detected": calendar_date_skew,
+        "modification_timestamp_skew_detected": modification_timestamp_skew,
     }
 
 
@@ -151,7 +154,7 @@ def run() -> dict[str, Any]:
         )
 
     return {
-        "study_contract": "webp-format-revision-state-v1",
+        "study_contract": "webp-format-revision-state-v1.1",
         "source_id": drift_event["source_id"],
         "observed_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         "publisher_catalog_evidence": {
@@ -168,11 +171,12 @@ def run() -> dict[str, Any]:
         "delivery_artifacts": observations,
         "revision_state_summary": summarize_revision_state(observations),
         "interpretation_boundary": {
-            "artifact_level_skew_only": True,
+            "artifact_metadata_only": True,
+            "build_or_publish_stagger_may_explain_timestamp_skew": True,
+            "independent_textual_revision_claimed": False,
             "semantic_equivalence_claimed": False,
             "textual_equivalence_claimed": False,
             "meaning_change_claimed": False,
-            "synchronized_revision_claimed": False,
         },
         "corpus_bytes_retained": False,
         "scripture_text_reported": False,
