@@ -14,6 +14,8 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 DRIFT_EVENT_PATH = ROOT / "registry" / "acquisition-events" / "engwebp-usfm-20260808-drift.json"
+FORMAT_CATALOG_URL = "https://ebible.org/bible/details.php?all=1&id=engwebp"
+SCRIPTS_DIRECTORY_URL = "https://ebible.org/Scriptures/dir.php"
 USER_AGENT = "Bible-OS-WEBP-Format-Revision-State/0.1 (+https://github.com/Razzleberrytt/bible-os)"
 CHUNK_SIZE = 1024 * 1024
 MAX_ARTIFACT_BYTES = 64 * 1024 * 1024
@@ -51,7 +53,9 @@ def observe_zip(format_name: str, url: str) -> dict[str, Any]:
             while chunk := response.read(CHUNK_SIZE):
                 byte_size += len(chunk)
                 if byte_size > MAX_ARTIFACT_BYTES:
-                    raise ValueError(f"{format_name} exceeded the {MAX_ARTIFACT_BYTES}-byte safety limit")
+                    raise ValueError(
+                        f"{format_name} exceeded the {MAX_ARTIFACT_BYTES}-byte safety limit"
+                    )
                 digest.update(chunk)
                 output.write(chunk)
 
@@ -150,6 +154,11 @@ def run() -> dict[str, Any]:
         "study_contract": "webp-format-revision-state-v1",
         "source_id": drift_event["source_id"],
         "observed_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+        "publisher_catalog_evidence": {
+            "format_catalog_url": FORMAT_CATALOG_URL,
+            "scripts_directory_url": SCRIPTS_DIRECTORY_URL,
+            "relationship_claim": "listed as official WEBP delivery artifacts by eBible.org",
+        },
         "usfm_anchor": {
             "quarantined_event_id": drift_event["event_id"],
             "sha256": expected_usfm_sha256,
