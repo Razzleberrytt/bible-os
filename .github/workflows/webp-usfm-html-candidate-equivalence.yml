@@ -1,0 +1,26 @@
+name: webp-usfm-html-candidate-equivalence
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  webp-usfm-html-candidate-equivalence:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: Install Bible OS test dependencies
+        run: pip install '.[dev]'
+      - name: Test text-private comparison helpers
+        run: python -m pytest -q tests/test_webp_usfm_html_candidate_equivalence.py
+      - name: Compare pinned USFM candidate sequences with pinned HTML package
+        run: >-
+          python -m scripts.webp_usfm_html_candidate_equivalence
+          --report webp-usfm-html-candidate-equivalence.json
