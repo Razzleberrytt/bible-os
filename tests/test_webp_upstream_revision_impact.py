@@ -1,7 +1,10 @@
 from __future__ import annotations
 
 from scripts.webp_upstream_revision_impact import compare_export
-from scripts.webp_upstream_revision_lexical_projection import compare_profile
+from scripts.webp_upstream_revision_lexical_projection import (
+    compare_profile,
+    micah_3_11_legacy_bigram_diagnostic,
+)
 
 
 def fingerprint(sha256: str = "a" * 64, byte_size: int = 100) -> dict:
@@ -51,3 +54,31 @@ def test_compare_profile_reports_mismatched_keys() -> None:
 
     assert comparison["lexical_projection_equivalent"] is False
     assert comparison["mismatched_keys"] == ["sha256"]
+
+
+def webp_row(source_text: str) -> dict:
+    return {
+        "book_code": "MIC",
+        "chapter": 3,
+        "verse": 11,
+        "realization_type": "text",
+        "source_text": source_text,
+    }
+
+
+def test_micah_diagnostic_detects_legacy_bigram_without_reporting_text() -> None:
+    report = micah_3_11_legacy_bigram_diagnostic(
+        [webp_row("alpha of it omega")]
+    )
+
+    assert report["legacy_bigram_present"] is True
+    assert report["normalized_token_count"] == 4
+    assert report["source_text_reported"] is False
+    assert report["token_values_reported"] is False
+
+
+def test_micah_diagnostic_confirms_legacy_bigram_absence() -> None:
+    report = micah_3_11_legacy_bigram_diagnostic([webp_row("alpha omega")])
+
+    assert report["legacy_bigram_present"] is False
+    assert report["normalized_token_count"] == 2
