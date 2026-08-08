@@ -1,0 +1,80 @@
+{
+  "analysis_contract": "webp-usfm-html-candidate-equivalence-registry-v1",
+  "observed_at_utc": "2026-08-08T02:31:32Z",
+  "source_id": "src_engwebp2020stable",
+  "normalization_contract": "unicode-nfkc-casefold-alnum-apostrophe-token-v1",
+  "artifacts": {
+    "usfm": {
+      "sha256": "1c5957d487d9473c87ea5c7e6acffd0caa402ce98c4a577f3164cfd94b9b437d",
+      "byte_size": 2903587
+    },
+    "html": {
+      "sha256": "ec2e8896204abb5dabe69d4f9aee02d05bc70227a32ee17d40480721d8f723df",
+      "byte_size": 4365921
+    }
+  },
+  "candidate_results": [
+    {
+      "locator": "MIC 3:11",
+      "html_member": "MIC03.htm",
+      "usfm_normalized_token_count": 38,
+      "html_page_normalized_token_count": 420,
+      "exact_usfm_sequence_occurrences_in_html_page": 1,
+      "exact_normalized_sequence_found": true
+    },
+    {
+      "locator": "DAN 4:19",
+      "html_member": "DAN04.htm",
+      "usfm_normalized_token_count": 49,
+      "html_page_normalized_token_count": 1341,
+      "exact_usfm_sequence_occurrences_in_html_page": 1,
+      "exact_normalized_sequence_found": true
+    },
+    {
+      "locator": "DAN 6:11",
+      "html_member": "DAN06.htm",
+      "usfm_normalized_token_count": 15,
+      "html_page_normalized_token_count": 970,
+      "exact_usfm_sequence_occurrences_in_html_page": 1,
+      "exact_normalized_sequence_found": true
+    },
+    {
+      "locator": "NEH 13:5",
+      "html_member": "NEH13.htm",
+      "usfm_normalized_token_count": 50,
+      "html_page_normalized_token_count": 1010,
+      "exact_usfm_sequence_occurrences_in_html_page": 1,
+      "exact_normalized_sequence_found": true
+    }
+  ],
+  "summary": {
+    "candidate_count": 4,
+    "exact_normalized_sequence_match_count": 4,
+    "all_candidates_exact_normalized_sequence_match": true
+  },
+  "interpretation": {
+    "current_downloadable_html_agrees_with_current_usfm_at_all_candidate_loci_under_normalization": true,
+    "best_supported_scope": "four official 2026-08-05 correction loci only",
+    "stale_served_micah_page_explained_by_downloadable_html_package_lag": false,
+    "served_page_or_deployment_surface_lag_remains_a_live_hypothesis": true,
+    "whole_corpus_textual_equivalence_claimed": false,
+    "semantic_equivalence_claimed": false,
+    "meaning_change_claimed": false
+  },
+  "evidence_limits": [
+    "The comparison establishes exact normalized token-sequence occurrence within the corresponding current HTML chapter page; it does not prove byte-level or markup-level equivalence.",
+    "The result is limited to four loci named in the official 2026-08-05 correction log.",
+    "The older served engwebp MIC03 page must be tested directly as an independently observed delivery surface before classifying its divergence as deployment, cache, or publication lag."
+  ],
+  "follow_up_research": [
+    "Compare the live served engwebp MIC03 page text-privately against the pinned current USFM sequence and the historical two-token signature.",
+    "Record HTTP Last-Modified and ETag for the served page when available so page delivery state can be treated as an independent provenance observation.",
+    "If page/package divergence is confirmed, model served web pages and downloadable HTML packages as separate delivery surfaces linked to the same source edition."
+  ],
+  "scripture_text_reported": false,
+  "token_lists_reported": false,
+  "corpus_bytes_retained": false,
+  "registered_artifact_mutated": false,
+  "baseline_mutated": false,
+  "publication_eligible": false
+}
