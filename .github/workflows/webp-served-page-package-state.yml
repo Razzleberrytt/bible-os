@@ -1,0 +1,26 @@
+name: webp-served-page-package-state
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  webp-served-page-package-state:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: Install Bible OS test dependencies
+        run: pip install '.[dev]'
+      - name: Test served-page comparison helpers
+        run: python -m pytest -q tests/test_webp_served_page_package_state.py
+      - name: Compare live served Micah page with pinned package state
+        run: >-
+          python -m scripts.webp_served_page_package_state
+          --report webp-served-page-package-state.json
