@@ -1,5 +1,5 @@
 {
-  "analysis_contract": "webp-upstream-revision-impact-registry-v1",
+  "analysis_contract": "webp-upstream-revision-impact-registry-v1.0.1",
   "observed_at_utc": "2026-08-08T02:07:03Z",
   "source_id": "src_engwebp2020stable",
   "source_provenance": {
@@ -102,10 +102,11 @@
   "micah_3_11_diagnostic": {
     "current_quarantined_normalized_token_count": 38,
     "legacy_two_token_signature_present_in_current_quarantined_revision": false,
-    "historical_html_surface_url": "https://ebible.org/eng-web/MIC03.htm",
+    "historical_html_surface_url": "https://ebible.org/engwebp/MIC03.htm",
+    "historical_html_surface_translation_id": "engwebp",
     "historical_html_surface_normalized_token_count_observation": 40,
     "historical_html_surface_contains_legacy_two_token_signature": true,
-    "historical_html_evidence_scope": "delivery-surface observation; not a bytewise copy of the frozen registered USFM artifact"
+    "historical_html_evidence_scope": "same-edition WEBP delivery-surface observation; not a bytewise copy of the frozen registered USFM artifact"
   },
   "interpretation": {
     "archive_level_drift": true,
@@ -113,7 +114,7 @@
     "normalized_lexical_drift": true,
     "global_lexical_change_size_tokens": -2,
     "best_supported_localization": "MIC 3:11",
-    "localization_rationale": "The official 2026-08-05 update names four 66-book WEBP loci; the quarantined MIC 3:11 projection is two normalized tokens shorter than the historical HTML observation and lacks the historical two-token signature, exactly matching the corpus-wide token delta.",
+    "localization_rationale": "The official 2026-08-05 update names four 66-book WEBP loci; the quarantined MIC 3:11 projection is two normalized tokens shorter than the same-edition historical HTML observation and lacks the historical two-token signature, exactly matching the corpus-wide token delta.",
     "other_official_loci_may_include_token_count_neutral_changes": true,
     "semantic_drift_claimed": false,
     "mistranslation_claimed": false,
@@ -121,7 +122,7 @@
   },
   "evidence_limits": [
     "The frozen registered WEBP source archive bytes were not retained in-repository, so this experiment cannot perform a direct old-USFM-versus-new-USFM byte or field diff.",
-    "The historical MIC 3:11 observation comes from an HTML delivery surface and is therefore supporting evidence, not proof that every old delivery format contained byte-identical source text.",
+    "The historical MIC 3:11 observation comes from the same-edition engwebp HTML delivery surface and is therefore supporting evidence, not proof that every old delivery format contained byte-identical source text.",
     "Token-count-neutral corrections at DAN 4:19, DAN 6:11, and NEH 13:5 require a separate punctuation/casing/raw-USFM diagnostic if exact edit classification is needed."
   ],
   "follow_up_research": [
