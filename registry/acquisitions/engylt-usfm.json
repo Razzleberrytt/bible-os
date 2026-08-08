@@ -8,15 +8,16 @@
   "upstream_last_modified": "2026-06-11T13:23:20Z",
   "upstream_edition": "Young's Literal Translation, public-domain eBible.org edition",
   "source_files_date": "2025-12-12",
-  "expected_sha256": null,
-  "verification_status": "registered",
+  "expected_sha256": "1a7f889c412b03c04dc65be386c83d4e3bafb4c58fd5f4e35584240dafe09831",
+  "verification_status": "verified",
   "archive_policy": "content-addressed-external",
   "notes": [
     "eBible.org identifies ENGYLT / engylt as Young's Literal Translation, archaic British English, translated by Robert Young, and Public Domain.",
     "The official eBible developer format listing exposes engylt_usfm.zip as the USFM source archive.",
     "The official eBible Scripts directory listed engylt_usfm.zip at 1,385,550 bytes with timestamp 2026-06-11 13:23:20 at registration time.",
     "The source/copyright HTML states that generated files dated 2026-06-11 were produced from source files dated 2025-12-12.",
-    "The SHA-256 is intentionally unpinned until a bounded controlled acquisition observation succeeds.",
+    "Controlled observation on 2026-08-08 reproduced 1,385,550 bytes, SHA-256 1a7f889c412b03c04dc65be386c83d4e3bafb4c58fd5f4e35584240dafe09831, HTTP Last-Modified Thu, 11 Jun 2026 13:23:20 GMT, ETag \"15244e-653fa4393b566\", 70 ZIP entries, and 66 USFM-like entries.",
+    "The pinned identity must be reproduced strictly on a subsequent acquisition run before this draft is considered merge-ready.",
     "The corpus ZIP must not be committed to Git history."
   ]
 }
