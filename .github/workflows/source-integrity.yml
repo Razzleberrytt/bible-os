@@ -1,0 +1,48 @@
+name: source-integrity
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 6 * * *'
+
+permissions:
+  contents: read
+
+jobs:
+  registered-source-integrity:
+    name: registered-source-integrity (${{ matrix.source_id }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - source_id: eng-asv-usfm
+            target: registry/acquisitions/eng-asv-usfm.json
+          - source_id: engwebp-usfm
+            target: registry/acquisitions/engwebp-usfm.json
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Strictly compare live publisher artifact with registered identity
+        id: probe
+        continue-on-error: true
+        run: >-
+          python scripts/probe_acquisition.py
+          ${{ matrix.target }}
+          --report source-integrity-${{ matrix.source_id }}.json
+      - name: Display verification evidence when available
+        if: always()
+        run: |
+          if [ -f source-integrity-${{ matrix.source_id }}.json ]; then
+            cat source-integrity-${{ matrix.source_id }}.json
+          else
+            echo "No report file was produced; inspect the strict probe log above for the provenance failure."
+          fi
+      - name: Fail the source-integrity watch on provenance drift
+        if: steps.probe.outcome != 'success'
+        run: |
+          echo "Registered source identity no longer matches the live publisher artifact."
+          echo "Treat this as an upstream provenance event, not as a deterministic code regression."
+          exit 1
