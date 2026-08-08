@@ -18,6 +18,10 @@ Bible OS treats data correctness and provenance as product requirements.
 - Do not place AI-generated content in evidence records.
 - Update schemas, migrations, documentation, and examples together when contracts change.
 - Explain licensing or attribution consequences for new datasets.
+- Keep pull-request gating deterministic: a PR workflow must not require a live publisher URL to continue serving the bytes of a historical source observation.
+- Put live upstream hash/size checks in source-integrity monitoring or explicit research workflows; never weaken strict verification merely to make CI green.
+
+See `docs/ci-source-integrity.md` for the execution-lane contract.
 
 ## Local verification
 
