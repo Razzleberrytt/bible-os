@@ -21,3 +21,7 @@ jobs:
         run: python -m pytest -q tests/test_webp_upstream_revision_impact.py
       - name: Compare quarantined revision to frozen normalized export
         run: python -m scripts.webp_upstream_revision_impact --report webp-upstream-revision-impact.json
+      - name: Compare normalized lexical projection to frozen profile
+        run: >-
+          python -m scripts.webp_upstream_revision_lexical_projection
+          --report webp-upstream-revision-lexical-projection.json
