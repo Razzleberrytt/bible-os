@@ -1,0 +1,30 @@
+name: webp-upstream-drift-observation
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  observe-webp-upstream:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test observe-first acquisition behavior
+        run: |
+          pip install '.[dev]'
+          python -m pytest -q tests/test_probe_acquisition.py
+      - name: Observe current official WEBP archive without accepting drift
+        run: >-
+          python scripts/probe_acquisition.py
+          registry/acquisitions/engwebp-usfm.json
+          --observe-only
+          --report webp-upstream-observation.json
+      - name: Display metadata-only drift evidence
+        if: always()
+        run: cat webp-upstream-observation.json
