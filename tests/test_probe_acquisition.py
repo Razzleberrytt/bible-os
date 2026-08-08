@@ -2,11 +2,16 @@ from __future__ import annotations
 
 import hashlib
 import io
+import json
 import zipfile
+from pathlib import Path
 
 import pytest
+from jsonschema import Draft202012Validator, FormatChecker
 
 from scripts import probe_acquisition
+
+ROOT = Path(__file__).resolve().parents[1]
 
 
 def make_zip() -> bytes:
@@ -93,3 +98,19 @@ def test_strict_probe_verifies_exact_registered_artifact(monkeypatch: pytest.Mon
     assert report["verification_status"] == "verified"
     assert report["byte_count_matches"] is True
     assert report["sha256_matches"] is True
+
+
+def test_recorded_webp_drift_is_quarantined_and_schema_valid() -> None:
+    foundation = json.loads((ROOT / "schemas/foundation.schema.json").read_text(encoding="utf-8"))
+    event = json.loads(
+        (ROOT / "registry/acquisition-events/engwebp-usfm-20260808-drift.json").read_text(encoding="utf-8")
+    )
+    Draft202012Validator(
+        foundation["$defs"]["acquisition_event"],
+        format_checker=FormatChecker(),
+    ).validate(event)
+
+    assert event["result"] == "quarantined"
+    assert event["observed_bytes"] == 2_903_587
+    assert event["observed_sha256"] == "1c5957d487d9473c87ea5c7e6acffd0caa402ce98c4a577f3164cfd94b9b437d"
+    assert "not accepted" in event["error"]
