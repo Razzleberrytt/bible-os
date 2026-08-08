@@ -1,0 +1,26 @@
+name: ylt-structure-profile
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ylt-structure-profile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Bible OS package
+        run: pip install .
+      - name: Observe text-private YLT structure and three-corpus locator field
+        run: >-
+          python -m scripts.ylt_adapter_smoke
+          registry/acquisitions/engylt-usfm.json
+          --asv-target registry/acquisitions/eng-asv-usfm.json
+          --webp-target registry/acquisitions/engwebp-usfm.json
+          --report ylt-structure-report.json
