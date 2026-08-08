@@ -25,6 +25,7 @@ from scripts.webp_upstream_revision_impact import (
 
 ROOT = Path(__file__).resolve().parents[1]
 BASELINE_PATH = ROOT / "registry" / "experiments" / "asv-webp-lexical-fingerprints.json"
+OFFICIAL_2026_08_05_WEBP_CANDIDATES = ("MIC 3:11", "DAN 4:19", "DAN 6:11", "NEH 13:5")
 
 
 def compare_profile(observed: dict[str, Any], baseline: dict[str, Any]) -> dict[str, Any]:
@@ -44,6 +45,30 @@ def compare_profile(observed: dict[str, Any], baseline: dict[str, Any]) -> dict[
         "mismatched_keys": mismatched_keys,
         "comparisons": comparisons,
     }
+
+
+def candidate_metrics(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    by_locator = {record["locator"]: record for record in records}
+    result: list[dict[str, Any]] = []
+    for locator in OFFICIAL_2026_08_05_WEBP_CANDIDATES:
+        record = by_locator.get(locator)
+        if record is None:
+            raise ValueError(f"official WEBP update candidate missing from lexical projection: {locator}")
+        result.append(
+            {
+                "locator": locator,
+                "asv_token_count": record["asv_token_count"],
+                "webp_token_count": record["webp_token_count"],
+                "token_count_delta": record["token_count_delta"],
+                "token_edit_distance": record["token_edit_distance"],
+                "token_edit_distance_ppm": record["token_edit_distance_ppm"],
+                "token_set_jaccard_distance_ppm": record["token_set_jaccard_distance_ppm"],
+                "normalized_token_sequence_equal_to_asv": record[
+                    "normalized_token_sequence_equal"
+                ],
+            }
+        )
+    return result
 
 
 def run() -> dict[str, Any]:
@@ -72,6 +97,9 @@ def run() -> dict[str, Any]:
         "asv_artifact_sha256": asv_artifact["sha256"],
         "registered_webp_sha256": webp_target["expected_sha256"],
         "quarantined_webp_sha256": webp_observation["observed_sha256"],
+        "official_update_date": "2026-08-05",
+        "official_update_candidates": list(OFFICIAL_2026_08_05_WEBP_CANDIDATES),
+        "candidate_metrics": candidate_metrics(records),
         "lexical_projection": projection,
         "observed_summary": {
             "sha256": observed["sha256"],
@@ -84,6 +112,7 @@ def run() -> dict[str, Any]:
         },
         "scripture_text_reported": False,
         "token_lists_reported": False,
+        "per_locator_text_digests_reported": False,
         "corpus_bytes_retained": False,
         "registered_artifact_mutated": False,
         "baseline_mutated": False,
